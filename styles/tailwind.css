@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: Metropolis;
+    src: url("/assets/fonts/Metropolis-Regular.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: Metropolis;
+    font-weight: 600;
+    src: url("/assets/fonts/Metropolis-SemiBold.woff2") format("woff2");
+}
+
+
+.wave {
+    animation: wave 3s linear;
+    animation-iteration-count: infinite;
+    fill: #1c581f;
+}
+#wave3 {
+    animation-duration: 7s;
+    opacity: .3;
+}
+#wave2 {
+    animation-duration: 5s;
+    animation-direction: reverse;
+    opacity: .6;
+}
+@-webkit-keyframes wave {
+    to {
+        transform: translateX(-100%)
+    }
+}
+
+@keyframes wave {
+    to {
+        transform: translateX(-100%)
+    }
+}
+
+@layer base {
+    *:focus-visible {
+        @apply outline-2 outline-light outline-dashed outline-offset-4;
+    }
+
+    body {
+        @apply text-light;
+        @apply font-metropolis;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+}

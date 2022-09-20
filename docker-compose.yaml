@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  db_faritas:
+    image: postgres:11.5
+    container_name: db_kauri
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=kauri
+      - POSTGRES_USER=kauri_user
+      - POSTGRES_PASSWORD=kauri_password
+
+  db_kauri_test:
+    image: postgres:11.5
+    container_name: db_kauri_test
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_DB=kauri
+      - POSTGRES_USER=kauri_user
+      - POSTGRES_PASSWORD=kauri_password

@@ -1,0 +1,52 @@
+module.exports = {
+  content: ["./app/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {
+      fontFamily: {
+        metropolis: [
+          "Metropolis",
+          "-apple-system",
+          "Segoe UI",
+          "Helvetica Neue",
+          "Helvetica",
+          "Roboto",
+          "Arial",
+          "sans-serif",
+          "system-ui",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+        ],
+      },
+      colors: {
+        darker: "hsl(234,19%,79%)",
+        dark: "hsl(124,55%,24%)",
+        faded: "hsl(240,14%,28%)",
+        lighter: "hsl(0, 0%, 100%)",
+        light: "hsl(220,9%,46%)",
+        inverse: "hsl(235, 19%, 12%)",
+        "primary-darker": "hsl(240,100%,17%)",
+        primary: "hsl(123,52%,23%)",
+        "primary-lighter": "hsl(240, 25%, 64%)",
+        "danger-darker": "hsl(345,96%,19%)",
+        danger: "hsl(345, 86%, 56%)",
+        "danger-lighter": "hsl(345, 86%, 80%)",
+      },
+      keyframes: {
+        "scale-in": {
+          "0%": { opacity: 0, transform: "scaleX(0.5)" },
+          "100%": { opacity: 1, transform: "scaleX(1)" },
+        },
+        enter: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+      },
+      animation: {
+        "scale-in": "scale-in 0.1s ease-in-out forwards",
+        enter: "enter 0.2s ease-in-out forwards",
+      },
+    },
+  },
+  plugins: [],
+};
+
