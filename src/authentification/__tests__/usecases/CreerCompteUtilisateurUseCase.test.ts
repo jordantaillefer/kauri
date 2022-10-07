@@ -1,10 +1,11 @@
 import { afterEach, describe, expect, test } from "vitest"
+import { mock, MockProxy } from "vitest-mock-extended"
+
 import {
   CompteUtilisateurRepository
 } from "../../infrastructure/adapters/compte_utilisateur_repository/CompteUtilisateurRepository"
-import { CreerCompteUtilisateurUseCase } from "../../usecases/CreerCompteUtilisateurUseCase"
-import { mock, MockProxy } from "vitest-mock-extended"
 import { CompteUtilisateur } from "../../infrastructure/domain/CompteUtilisateur"
+import { CreerCompteUtilisateurUseCase } from "../../usecases/CreerCompteUtilisateurUseCase"
 
 describe("CreerCompteUtilisateurUseCase", () => {
   let compteUtilisateurRepository: MockProxy<CompteUtilisateurRepository>
@@ -20,11 +21,12 @@ describe("CreerCompteUtilisateurUseCase", () => {
   test("doit créer le compte utilisateur", async () => {
     // Arrange
     const userId = "userId"
-    compteUtilisateurRepository.creerCompteUtilisateur.mockResolvedValue(CompteUtilisateur.creerCompteUtilisateur(userId))
+    const compteUtilisateur = CompteUtilisateur.creerCompteUtilisateur(userId)
+    compteUtilisateurRepository.creerCompteUtilisateur.mockResolvedValue(compteUtilisateur)
     // Act
     const user = await creerCompteUtilisateurUseCase.execute(userId)
     // Assert
-    expect(compteUtilisateurRepository.creerCompteUtilisateur).toHaveBeenNthCalledWith(1, userId)
+    expect(compteUtilisateurRepository.creerCompteUtilisateur).toHaveBeenNthCalledWith(1, compteUtilisateur)
     expect(user.id).toEqual("userId")
   })
 })

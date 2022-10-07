@@ -3,10 +3,37 @@
     "@remix-run/eslint-config",
     "@remix-run/eslint-config/node"
   ],
-  "overrides": [{
-    "files": ["src/**/*.ts"],
-    "rules": {
-      "@typescript-eslint/consistent-type-imports": "off"
+  "overrides": [
+    {
+      "files": [
+        "src/**/*.ts",
+        "app/**/*.tsx"
+      ],
+      "rules": {
+        "@typescript-eslint/consistent-type-imports": "off",
+        "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
+        "import/order": [
+          "error",
+          {
+            "alphabetize": {
+              "order": "asc",
+              "caseInsensitive": false
+            },
+            "groups": [
+              [
+                "builtin",
+                "external"
+              ],
+              [
+                "internal",
+                "parent",
+                "sibling"
+              ]
+            ],
+            "newlines-between": "always"
+          }
+        ]
+      }
     }
-  }]
+  ]
 }

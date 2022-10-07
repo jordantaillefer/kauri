@@ -13,36 +13,19 @@
     src: url("/assets/fonts/Metropolis-SemiBold.woff2") format("woff2");
 }
 
-
-.wave {
-    animation: wave 3s linear;
-    animation-iteration-count: infinite;
-    fill: #1c581f;
-}
-#wave3 {
-    animation-duration: 7s;
-    opacity: .3;
-}
-#wave2 {
-    animation-duration: 5s;
-    animation-direction: reverse;
-    opacity: .6;
-}
-@-webkit-keyframes wave {
-    to {
-        transform: translateX(-100%)
-    }
-}
-
-@keyframes wave {
-    to {
-        transform: translateX(-100%)
-    }
-}
-
 @layer base {
     *:focus-visible {
         @apply outline-2 outline-light outline-dashed outline-offset-4;
+    }
+    :root {
+        --gap: 4rem;
+        --max-column-count: 4;
+        --grid-item--min-width: 200px;
+        --main-padding: max(5vw, 2rem);
+
+        --max-number-of-gaps-in-row: calc(var(--max-column-count) - 1);
+        --total-gap-width: calc(var(--max-number-of-gaps-in-row) * var(--gap));
+        --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--max-column-count));
     }
 
     body {

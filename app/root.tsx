@@ -1,8 +1,22 @@
-import type { LinksFunction, MetaFunction } from "@remix-run/node"
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from "@remix-run/react"
+import type { LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node"
+import { json } from "@remix-run/node"
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+  useLocation,
+  useOutletContext
+} from "@remix-run/react"
 import styles from "./styles/styles.css"
 import * as React from "react"
 import { RootLayout } from "~/ui/RootLayout"
+import { authenticator } from "~/services/auth.server"
+
+type ContextType = { authenticated: boolean };
 
 export const links: LinksFunction = () => {
   return [
@@ -30,7 +44,7 @@ function Document({ children }: DocumentProps) {
       <Meta />
       <Links />
     </head>
-    <body>
+    <body className="bg-gray-100">
     {children}
     <RouteChangeAnnouncement />
     <ScrollRestoration />
@@ -41,14 +55,28 @@ function Document({ children }: DocumentProps) {
   )
 }
 
-export default function App() {
+export const loader: LoaderFunction = async ({ request }) => {
+  let user = await authenticator.isAuthenticated(request)
+  return json({
+    authenticated: !!user
+  })
+}
+
+
+export default function App(): React.ReactNode {
+  const { authenticated } = useLoaderData<{ authenticated: boolean }>()
+
   return (
     <Document>
-      <RootLayout>
-        <Outlet />
+      <RootLayout authenticated={authenticated}>
+        <Outlet context={{ authenticated }} />
       </RootLayout>
     </Document>
   )
+}
+
+export function useAuthenticated() {
+  return useOutletContext<ContextType>()
 }
 
 const RouteChangeAnnouncement = React.memo(function RouteChangeAnnouncement() {
