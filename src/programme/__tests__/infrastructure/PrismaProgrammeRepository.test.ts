@@ -35,7 +35,7 @@ describe("PrismaProgrammeRepository", () => {
       const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("userId").withNomProgramme("nomProgramme").build()
       // Act
       await prismaProgrammeRepository.creerProgramme(programme)
-      // Assert
+      // Assert test notion
       const programmeResult = await prismaProgrammeRepository.recupererParId("54d9eb29-5410-4428-936f-9d252799e4ce")
       expect(programmeResult.id).toEqual("54d9eb29-5410-4428-936f-9d252799e4ce")
       expect(programmeResult.userId).toEqual("userId")
