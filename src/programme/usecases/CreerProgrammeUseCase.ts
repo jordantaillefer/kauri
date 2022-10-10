@@ -1,5 +1,5 @@
 import { Programme } from "../domain/Programme"
-import { ProgrammeRepository } from "../domain/ports/ProgrammeRepository"
+import { ProgrammeRepository } from "../infrastructure/adapters/ProgrammeRepository"
 
 export class CreerProgrammeUseCase {
   private programmeRepository: ProgrammeRepository

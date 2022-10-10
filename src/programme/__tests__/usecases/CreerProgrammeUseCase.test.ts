@@ -2,7 +2,7 @@ import { describe, it } from "vitest"
 import { mock, MockProxy } from "vitest-mock-extended"
 
 import { Programme } from "../../domain/Programme"
-import { ProgrammeRepository } from "../../domain/ports/ProgrammeRepository"
+import { ProgrammeRepository } from "../../infrastructure/adapters/ProgrammeRepository"
 import { CreerProgrammeUseCase } from "../../usecases/CreerProgrammeUseCase"
 
 describe("CreerProgrammeUseCase", () => {
