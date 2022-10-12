@@ -1,14 +1,26 @@
 import { v4 as uuid } from "uuid"
 
 export class Programme {
-  private userId: string
-  private nomProgramme: string
-  private id: string
+  private readonly _userId: string
+  private readonly _nomProgramme: string
+  private readonly _id: string
 
   constructor({ id, userId, nomProgramme }: { id: string, userId: string, nomProgramme: string }) {
-    this.id = id
-    this.userId = userId
-    this.nomProgramme = nomProgramme
+    this._id = id
+    this._userId = userId
+    this._nomProgramme = nomProgramme
+  }
+
+  get userId(): string {
+    return this._userId
+  }
+
+  get nomProgramme(): string {
+    return this._nomProgramme
+  }
+
+  get id(): string {
+    return this._id
   }
 
   static creerProgramme({ id, userId, nomProgramme }: { id?: string, userId: string, nomProgramme: string }): Programme {

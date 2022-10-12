@@ -11,5 +11,11 @@ datasource db {
 }
 
 model User {
-  id    String     @id
+  id String @id
+}
+
+model Programme {
+  id           String @id
+  nomProgramme String
+  userId       String
 }

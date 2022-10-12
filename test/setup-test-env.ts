@@ -11,5 +11,6 @@ installGlobals();
 
 afterEach(async () => {
   await prisma.user.deleteMany()
+  await prisma.programme.deleteMany()
   vi.restoreAllMocks()
 })

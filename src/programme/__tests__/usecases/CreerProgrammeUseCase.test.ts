@@ -1,5 +1,6 @@
-import { describe, it } from "vitest"
-import { mock, MockProxy } from "vitest-mock-extended"
+import { describe, expect, it } from "vitest"
+import { captor, mock, MockProxy } from "vitest-mock-extended"
+import { CaptorMatcher } from "vitest-mock-extended/lib/Matchers"
 
 import { Programme } from "../../domain/Programme"
 import { ProgrammeRepository } from "../../infrastructure/adapters/ProgrammeRepository"
@@ -15,11 +16,13 @@ describe("CreerProgrammeUseCase", () => {
   })
   it("doit créer le programme pour un utilisateur", async () => {
     // Arrange
-    const userId = "id"
-    const nomProgramme = "nomProgramme"
+    const programmeCaptor: CaptorMatcher<Programme> = captor()
     // Act
-    await creerProgrammeUseCase.execute(userId, nomProgramme)
+    await creerProgrammeUseCase.execute("id", "nomProgramme")
     // Assert
-    expect(programmeRepository.creerProgramme).toHaveBeenNthCalledWith(1, Programme.creerProgramme(userId, nomProgramme))
+    expect(programmeRepository.creerProgramme).toHaveBeenNthCalledWith(1, programmeCaptor)
+    expect(programmeCaptor.value.id).toBeDefined()
+    expect(programmeCaptor.value.nomProgramme).toEqual("nomProgramme")
+    expect(programmeCaptor.value.userId).toEqual("id")
   })
 })

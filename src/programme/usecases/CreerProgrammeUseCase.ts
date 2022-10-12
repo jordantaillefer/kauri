@@ -9,7 +9,7 @@ export class CreerProgrammeUseCase {
   }
 
   async execute(userId: string, nomProgramme: string) {
-    const programme = Programme.creerProgramme(userId, nomProgramme)
+    const programme = Programme.creerProgramme({ userId, nomProgramme })
     await this.programmeRepository.creerProgramme(programme)
   }
 }
