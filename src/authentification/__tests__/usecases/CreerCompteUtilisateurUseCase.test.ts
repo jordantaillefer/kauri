@@ -1,10 +1,8 @@
 import { afterEach, describe, expect, test } from "vitest"
 import { mock, MockProxy } from "vitest-mock-extended"
 
-import {
-  CompteUtilisateurRepository
-} from "../../infrastructure/adapters/compte_utilisateur_repository/CompteUtilisateurRepository"
 import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
+import { CompteUtilisateurRepository } from "../../domain/ports/CompteUtilisateurRepository"
 import { CreerCompteUtilisateurUseCase } from "../../usecases/CreerCompteUtilisateurUseCase"
 
 describe("CreerCompteUtilisateurUseCase", () => {
@@ -13,7 +11,7 @@ describe("CreerCompteUtilisateurUseCase", () => {
 
   beforeEach(() => {
     compteUtilisateurRepository = mock<CompteUtilisateurRepository>()
-    creerCompteUtilisateurUseCase = new CreerCompteUtilisateurUseCase(compteUtilisateurRepository)
+    creerCompteUtilisateurUseCase = new CreerCompteUtilisateurUseCase({ compteUtilisateurRepository })
   })
   afterEach(() => {
     vi.restoreAllMocks()

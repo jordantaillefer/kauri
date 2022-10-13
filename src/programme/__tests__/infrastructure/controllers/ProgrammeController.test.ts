@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { ProgrammeRepository } from "../../../infrastructure/adapters/ProgrammeRepository"
+import { ProgrammeRepository } from "../../../domain/ports/ProgrammeRepository"
 import { ProgrammeController } from "../../../infrastructure/controllers/ProgrammeController"
 import { container } from "api"
 

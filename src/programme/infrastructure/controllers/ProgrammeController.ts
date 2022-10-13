@@ -1,10 +1,13 @@
 import { CreerProgrammeUseCase } from "../../usecases/CreerProgrammeUseCase"
-import { ContainerDependencies } from "api"
 
-export class ProgrammeController {
-  private creerProgrammeUseCase: CreerProgrammeUseCase
+interface Dependencies {
+  creerProgrammeUseCase: CreerProgrammeUseCase
+}
 
-  constructor({ creerProgrammeUseCase }: ContainerDependencies) {
+export class ProgrammeController implements Dependencies {
+  creerProgrammeUseCase: CreerProgrammeUseCase
+
+  constructor({ creerProgrammeUseCase }: Dependencies) {
     this.creerProgrammeUseCase = creerProgrammeUseCase
   }
 

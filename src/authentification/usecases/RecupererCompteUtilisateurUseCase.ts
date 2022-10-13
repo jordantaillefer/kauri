@@ -1,17 +1,18 @@
-import {
-  CompteUtilisateurRepository
-} from "../infrastructure/adapters/compte_utilisateur_repository/CompteUtilisateurRepository"
 import { CompteUtilisateur } from "../domain/CompteUtilisateur"
-import { ContainerDependencies } from "api"
+import { CompteUtilisateurRepository } from "../domain/ports/CompteUtilisateurRepository"
 
-export class RecupererCompteUtilisateurUseCase {
-  private compteUtilisateurRepository: CompteUtilisateurRepository
+interface Dependencies {
+  compteUtilisateurRepository: CompteUtilisateurRepository
+}
 
-  constructor(depedencies: ContainerDependencies) {
-    this.compteUtilisateurRepository = depedencies.compteUtilisateurRepository
+export class RecupererCompteUtilisateurUseCase implements Dependencies {
+  compteUtilisateurRepository: CompteUtilisateurRepository
+
+  constructor({ compteUtilisateurRepository }: Dependencies) {
+    this.compteUtilisateurRepository = compteUtilisateurRepository
   }
 
-  async execute(userId: string): Promise<CompteUtilisateur | null> {
-    return this.compteUtilisateurRepository.recupererCompteUtilisateur(userId)
+  async execute(userId: string): Promise<CompteUtilisateur> {
+    return this.compteUtilisateurRepository.recupererCompteUtilisateurParId(userId)
   }
 }

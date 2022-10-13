@@ -3,7 +3,7 @@ import type { Programme as ProgrammeModel } from "@prisma/client"
 import { prisma } from "../../../db/prisma"
 import { Programme } from "../../domain/Programme"
 import { ProgrammeNotFoundError } from "../../domain/errors/ProgrammeNotFoundError"
-import { ProgrammeRepository } from "./ProgrammeRepository"
+import { ProgrammeRepository } from "../../domain/ports/ProgrammeRepository"
 
 export class PrismaProgrammeRepository implements ProgrammeRepository {
   async creerProgramme(programme: Programme) {

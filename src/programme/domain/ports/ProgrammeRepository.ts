@@ -1,4 +1,4 @@
-import { Programme } from "../../domain/Programme"
+import { Programme } from "../Programme"
 
 export interface ProgrammeRepository {
   creerProgramme(programme: Programme): Promise<void>

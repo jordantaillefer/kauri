@@ -1,11 +1,14 @@
 import { Programme } from "../domain/Programme"
-import { ProgrammeRepository } from "../infrastructure/adapters/ProgrammeRepository"
-import { ContainerDependencies } from "api"
+import { ProgrammeRepository } from "../domain/ports/ProgrammeRepository"
+
+interface Dependencies {
+  programmeRepository: ProgrammeRepository
+}
 
 export class CreerProgrammeUseCase {
   private programmeRepository: ProgrammeRepository
 
-  constructor({ programmeRepository }: ContainerDependencies) {
+  constructor({ programmeRepository }: Dependencies) {
     this.programmeRepository = programmeRepository
   }
 

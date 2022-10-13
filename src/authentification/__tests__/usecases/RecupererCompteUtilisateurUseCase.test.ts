@@ -1,10 +1,9 @@
 import { describe, expect } from "vitest"
 import { mock, MockProxy } from "vitest-mock-extended"
-import {
-  CompteUtilisateurRepository
-} from "../../infrastructure/adapters/compte_utilisateur_repository/CompteUtilisateurRepository"
-import { RecupererCompteUtilisateurUseCase } from "../../usecases/RecupererCompteUtilisateurUseCase"
+
 import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
+import { CompteUtilisateurRepository } from "../../domain/ports/CompteUtilisateurRepository"
+import { RecupererCompteUtilisateurUseCase } from "../../usecases/RecupererCompteUtilisateurUseCase"
 
 describe("RecupererCompteUtilisateurUseCase", () => {
   let compteUtilisateurRepository: MockProxy<CompteUtilisateurRepository>
@@ -12,16 +11,16 @@ describe("RecupererCompteUtilisateurUseCase", () => {
 
   beforeEach(() => {
     compteUtilisateurRepository = mock<CompteUtilisateurRepository>()
-    recupererCompteUtilisateurUseCase = new RecupererCompteUtilisateurUseCase(compteUtilisateurRepository)
+    recupererCompteUtilisateurUseCase = new RecupererCompteUtilisateurUseCase({ compteUtilisateurRepository })
   })
   it("doit récupérer le compte utilisateur associé à l'id", async () => {
     // Arrange
     const userId = "userId"
-    compteUtilisateurRepository.recupererCompteUtilisateur.mockResolvedValue(CompteUtilisateur.creerCompteUtilisateur(userId))
+    compteUtilisateurRepository.recupererCompteUtilisateurParId.mockResolvedValue(CompteUtilisateur.creerCompteUtilisateur(userId))
     // Act
     const user = await recupererCompteUtilisateurUseCase.execute(userId)
     // Assert
-    expect(compteUtilisateurRepository.recupererCompteUtilisateur).toHaveBeenNthCalledWith(1, userId)
+    expect(compteUtilisateurRepository.recupererCompteUtilisateurParId).toHaveBeenNthCalledWith(1, userId)
     expect(user.id).toEqual("userId")
   })
 })
