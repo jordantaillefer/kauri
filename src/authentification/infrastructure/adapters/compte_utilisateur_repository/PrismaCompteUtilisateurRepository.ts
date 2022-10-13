@@ -1,7 +1,7 @@
 import type { User as UserModel } from "@prisma/client"
 
 import { prisma } from "../../../../db/prisma"
-import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
+import { CompteUtilisateur } from "../../../domain/CompteUtilisateur"
 import { CompteUtilisateurRepository } from "./CompteUtilisateurRepository"
 
 export class PrismaCompteUtilisateurRepository implements CompteUtilisateurRepository {

@@ -11,10 +11,11 @@ import {
   useLocation,
   useOutletContext
 } from "@remix-run/react"
-import styles from "./styles/styles.css"
 import * as React from "react"
-import { RootLayout } from "~/ui/RootLayout"
+
+import styles from "./styles/styles.css"
 import { authenticator } from "~/services/auth.server"
+import { RootLayout } from "~/ui/RootLayout"
 
 type ContextType = { authenticated: boolean };
 
@@ -62,7 +63,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   })
 }
 
-
 export default function App(): React.ReactNode {
   const { authenticated } = useLoaderData<{ authenticated: boolean }>()
 
@@ -77,6 +77,9 @@ export default function App(): React.ReactNode {
 
 export function useAuthenticated() {
   return useOutletContext<ContextType>()
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
 }
 
 const RouteChangeAnnouncement = React.memo(function RouteChangeAnnouncement() {

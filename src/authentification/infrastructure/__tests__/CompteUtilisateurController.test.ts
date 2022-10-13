@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect } from "vitest"
 
 import { CompteUtilisateurBuilder } from "../../../testUtils/builders/CompteUtilisateurBuilder"
-import { CompteUtilisateurController } from "../CompteUtilisateurController"
+import { CompteUtilisateurController } from "../controllers/CompteUtilisateurController"
 import { CompteUtilisateurRepository } from "../adapters/compte_utilisateur_repository/CompteUtilisateurRepository"
 import { container } from "api"
 

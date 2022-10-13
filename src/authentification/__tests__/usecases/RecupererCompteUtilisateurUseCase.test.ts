@@ -4,7 +4,7 @@ import {
   CompteUtilisateurRepository
 } from "../../infrastructure/adapters/compte_utilisateur_repository/CompteUtilisateurRepository"
 import { RecupererCompteUtilisateurUseCase } from "../../usecases/RecupererCompteUtilisateurUseCase"
-import { CompteUtilisateur } from "../../infrastructure/domain/CompteUtilisateur"
+import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
 
 describe("RecupererCompteUtilisateurUseCase", () => {
   let compteUtilisateurRepository: MockProxy<CompteUtilisateurRepository>

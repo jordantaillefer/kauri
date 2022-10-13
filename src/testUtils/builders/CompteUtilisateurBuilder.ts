@@ -1,4 +1,4 @@
-import { CompteUtilisateur } from "../../authentification/infrastructure/domain/CompteUtilisateur"
+import { CompteUtilisateur } from "../../authentification/domain/CompteUtilisateur"
 
 export class CompteUtilisateurBuilder {
   private id: string = "id"

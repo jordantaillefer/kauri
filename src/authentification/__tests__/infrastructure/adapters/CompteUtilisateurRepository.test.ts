@@ -1,7 +1,7 @@
 import { describe, expect } from "vitest"
 import {
   PrismaCompteUtilisateurRepository
-} from "../../infrastructure/adapters/compte_utilisateur_repository/PrismaCompteUtilisateurRepository"
+} from "../../../infrastructure/adapters/compte_utilisateur_repository/PrismaCompteUtilisateurRepository"
 
 describe("CreerCompteUtilisateur", () => {
   let prismaCompteUtilisateurRepository: PrismaCompteUtilisateurRepository

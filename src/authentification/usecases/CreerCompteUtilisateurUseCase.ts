@@ -1,7 +1,7 @@
 import {
   CompteUtilisateurRepository
 } from "../infrastructure/adapters/compte_utilisateur_repository/CompteUtilisateurRepository"
-import { CompteUtilisateur } from "../infrastructure/domain/CompteUtilisateur"
+import { CompteUtilisateur } from "../domain/CompteUtilisateur"
 import { ContainerDependencies } from "api"
 
 export class CreerCompteUtilisateurUseCase {

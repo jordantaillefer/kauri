@@ -4,7 +4,7 @@ import { mock, MockProxy } from "vitest-mock-extended"
 import {
   CompteUtilisateurRepository
 } from "../../infrastructure/adapters/compte_utilisateur_repository/CompteUtilisateurRepository"
-import { CompteUtilisateur } from "../../infrastructure/domain/CompteUtilisateur"
+import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
 import { CreerCompteUtilisateurUseCase } from "../../usecases/CreerCompteUtilisateurUseCase"
 
 describe("CreerCompteUtilisateurUseCase", () => {

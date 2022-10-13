@@ -19,6 +19,10 @@ export class PrismaProgrammeRepository implements ProgrammeRepository {
     return convertirEnProgramme(programmeModel)
   }
 
+  async recupererTout(): Promise<Programme[]> {
+    const listeDeProgrammesModels = await prisma.programme.findMany()
+    return listeDeProgrammesModels.map(convertirEnProgramme)
+  }
 }
 
 function convertirEnModel(programme: Programme): ProgrammeModel {

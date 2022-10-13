@@ -1,4 +1,4 @@
-import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
+import { CompteUtilisateur } from "../../../domain/CompteUtilisateur"
 
 export interface CompteUtilisateurRepository {
   creerCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Promise<CompteUtilisateur>
