@@ -2,6 +2,7 @@ import type { Programme as ProgrammeModel } from "@prisma/client"
 
 import { prisma } from "../../../db/prisma"
 import { Programme } from "../../domain/Programme"
+import { ProgrammeNotFoundError } from "../../domain/errors/ProgrammeNotFoundError"
 import { ProgrammeRepository } from "./ProgrammeRepository"
 
 export class PrismaProgrammeRepository implements ProgrammeRepository {
@@ -10,9 +11,12 @@ export class PrismaProgrammeRepository implements ProgrammeRepository {
     await prisma.programme.create({ data: programmeModel })
   }
 
-  async recupererParId(id: string): Promise<Programme | null> {
+  async recupererParId(id: string): Promise<Programme> {
     const programmeModel = await prisma.programme.findUnique({ where: { id } })
-    return programmeModel ? convertirEnProgramme(programmeModel) : null
+    if (programmeModel === null) {
+      throw new ProgrammeNotFoundError()
+    }
+    return convertirEnProgramme(programmeModel)
   }
 
 }
@@ -24,6 +28,7 @@ function convertirEnModel(programme: Programme): ProgrammeModel {
     nomProgramme: programme.nomProgramme
   }
 }
+
 function convertirEnProgramme(programmeModel: ProgrammeModel): Programme {
   return Programme.creerProgramme({
     id: programmeModel.id,
