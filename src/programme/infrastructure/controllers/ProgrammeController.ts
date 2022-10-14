@@ -4,8 +4,8 @@ interface Dependencies {
   creerProgrammeUseCase: CreerProgrammeUseCase
 }
 
-export class ProgrammeController implements Dependencies {
-  creerProgrammeUseCase: CreerProgrammeUseCase
+export class ProgrammeController {
+  private creerProgrammeUseCase: CreerProgrammeUseCase
 
   constructor({ creerProgrammeUseCase }: Dependencies) {
     this.creerProgrammeUseCase = creerProgrammeUseCase

@@ -1,17 +1,19 @@
+import "reflect-metadata"
+
 import { DomainError } from "./DomainError"
 
 // Decorator factory function
-export const Controller = (): any => {
-  return (target: any) => {
+export const Controller = (): any =>
+  (target: any) => {
     // Iterate over class properties except constructor
     for (const propertyName of Reflect.ownKeys(target.prototype).filter(prop => prop !== "constructor")) {
       const desc = Object.getOwnPropertyDescriptor(target.prototype, propertyName)!
       const isMethod = desc.value instanceof Function
-      if (!isMethod) continue
+      const isProducingApiResponse = Reflect.getMetadata(propertyName, target.prototype, propertyName)
+      if (!isMethod || !isProducingApiResponse) continue
       Object.defineProperty(target.prototype, propertyName, _generateDescriptor(desc))
     }
   }
-}
 
 function _generateDescriptor(
   descriptor: PropertyDescriptor

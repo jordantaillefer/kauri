@@ -1,7 +1,7 @@
 export class CompteUtilisateur {
   private readonly _id: string
 
-  private constructor(id: string) {
+  constructor(id: string) {
     this._id = id
   }
 

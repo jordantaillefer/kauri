@@ -6,7 +6,7 @@ export interface Dependencies {
 }
 
 export class CreerCompteUtilisateurUseCase {
-  compteUtilisateurRepository: CompteUtilisateurRepository
+  private compteUtilisateurRepository: CompteUtilisateurRepository
 
   constructor({ compteUtilisateurRepository }: Dependencies) {
     this.compteUtilisateurRepository = compteUtilisateurRepository

@@ -1,9 +1,10 @@
 import { ReasonPhrases } from "http-status-codes"
 
-import { Controller } from "../../../app/ErrorHandlingDecorator"
+import { Controller } from "../../../app/ControllerDecorator"
 import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
 import { CreerCompteUtilisateurUseCase } from "../../usecases/CreerCompteUtilisateurUseCase"
 import { RecupererCompteUtilisateurUseCase } from "../../usecases/RecupererCompteUtilisateurUseCase"
+import { ProduceApiResponse } from "../../../app/ProduceApiResponseDecorator"
 
 interface Dependencies {
   creerCompteUtilisateurUseCase: CreerCompteUtilisateurUseCase
@@ -18,21 +19,30 @@ type ApiResponse<T> = {
 const success = <T>(data: T): ApiResponse<T> => ({ reasonPhrase: ReasonPhrases.OK, data })
 
 @Controller()
-export class CompteUtilisateurController implements Dependencies {
-  creerCompteUtilisateurUseCase: CreerCompteUtilisateurUseCase
-  recupererCompteUtilisateurUseCase: RecupererCompteUtilisateurUseCase
+export class CompteUtilisateurController {
+  private creerCompteUtilisateurUseCase: CreerCompteUtilisateurUseCase
+  private recupererCompteUtilisateurUseCase: RecupererCompteUtilisateurUseCase
 
   constructor({ creerCompteUtilisateurUseCase, recupererCompteUtilisateurUseCase }: Dependencies) {
     this.creerCompteUtilisateurUseCase = creerCompteUtilisateurUseCase
     this.recupererCompteUtilisateurUseCase = recupererCompteUtilisateurUseCase
   }
 
+  @ProduceApiResponse()
   async recupererCompteUtilisateur(id: string): Promise<ApiResponse<CompteUtilisateur>> {
     const compteUtilisateur = await this.recupererCompteUtilisateurUseCase.execute(id)
     return success(compteUtilisateur)
   }
 
+  @ProduceApiResponse()
   async creerCompteUtilisateur(id: string): Promise<void> {
     await this.creerCompteUtilisateurUseCase.execute(id)
+  }
+
+  private testPrivate() {
+
+  }
+  testPasPrivate() {
+
   }
 }

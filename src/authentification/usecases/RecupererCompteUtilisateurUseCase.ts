@@ -5,8 +5,8 @@ interface Dependencies {
   compteUtilisateurRepository: CompteUtilisateurRepository
 }
 
-export class RecupererCompteUtilisateurUseCase implements Dependencies {
-  compteUtilisateurRepository: CompteUtilisateurRepository
+export class RecupererCompteUtilisateurUseCase {
+  private compteUtilisateurRepository: CompteUtilisateurRepository
 
   constructor({ compteUtilisateurRepository }: Dependencies) {
     this.compteUtilisateurRepository = compteUtilisateurRepository

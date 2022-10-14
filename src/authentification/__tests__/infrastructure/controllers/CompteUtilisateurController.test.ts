@@ -33,7 +33,6 @@ describe("CompteUtilisateurController", () => {
     it("S'il n'existe pas, doit retourner une erreur", async () => {
       // Act
       const response = await compteUtilisateurController.recupererCompteUtilisateur("id")
-      console.log(response)
       // Assert
       expect(response.reasonPhrase).toEqual(ReasonPhrases.NOT_FOUND)
       expect(response.data).toBeDefined()

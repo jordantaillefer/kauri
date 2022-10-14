@@ -2,8 +2,8 @@ import type { User as UserModel } from "@prisma/client"
 
 import { prisma } from "../../../db/prisma"
 import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
-import { CompteUtilisateurRepository } from "../../domain/ports/CompteUtilisateurRepository"
 import { LUtilisateurNExistePasError } from "../../domain/errors/LUtilisateurNExistePasError"
+import { CompteUtilisateurRepository } from "../../domain/ports/CompteUtilisateurRepository"
 
 export class PrismaCompteUtilisateurRepository implements CompteUtilisateurRepository {
   async creerCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Promise<CompteUtilisateur> {
