@@ -2,9 +2,8 @@ import "reflect-metadata"
 
 import { DomainError } from "./DomainError"
 
-// Decorator factory function
-export const Controller = (): any =>
-  (target: any) => {
+export const Controller = (): ClassDecorator =>
+  (target: Function) => {
     // Iterate over class properties except constructor
     for (const propertyName of Reflect.ownKeys(target.prototype).filter(prop => prop !== "constructor")) {
       const desc = Object.getOwnPropertyDescriptor(target.prototype, propertyName)!
@@ -40,12 +39,8 @@ function _generateDescriptor(
 }
 
 function _handleError(error: DomainError) {
-  if (error) {
-    return {
-      reasonPhrase: error.reason,
-      data: error.message
-    }
-  } else {
-    throw error
+  return {
+    reasonPhrase: error.reason,
+    data: error.message
   }
 }

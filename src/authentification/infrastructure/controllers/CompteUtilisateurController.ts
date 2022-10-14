@@ -1,10 +1,10 @@
 import { ReasonPhrases } from "http-status-codes"
 
 import { Controller } from "../../../app/ControllerDecorator"
+import { ProduceApiResponse } from "../../../app/ProduceApiResponseDecorator"
 import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
 import { CreerCompteUtilisateurUseCase } from "../../usecases/CreerCompteUtilisateurUseCase"
 import { RecupererCompteUtilisateurUseCase } from "../../usecases/RecupererCompteUtilisateurUseCase"
-import { ProduceApiResponse } from "../../../app/ProduceApiResponseDecorator"
 
 interface Dependencies {
   creerCompteUtilisateurUseCase: CreerCompteUtilisateurUseCase
