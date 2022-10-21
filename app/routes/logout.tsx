@@ -1,6 +1,13 @@
 import type { ActionFunction } from "@remix-run/node"
-import { authenticator } from "~/services/auth.server"
+import { redirect } from "@remix-run/node"
+
+import { container } from "api"
 
 export const action: ActionFunction = async ({ request }) => {
-  await authenticator.logout(request, { redirectTo: "/" });
-};
+  return redirect("/",
+    {
+      headers: {
+        "Set-Cookie": await container.resolve("compteUtilisateurController").seDeconnecter({ request, payload: null })
+      }
+    })
+}

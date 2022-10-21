@@ -1,11 +1,10 @@
 import type { ActionFunction } from "@remix-run/node"
-import { SocialsProvider } from "remix-auth-socials"
+import { redirect } from "@remix-run/node"
 
-import { authenticator } from "~/services/auth.server"
+import { container } from "api"
 
 export const action: ActionFunction = async ({ request }) => {
-  return await authenticator.authenticate(SocialsProvider.GOOGLE, request, {
-    successRedirect: "/profile",
-    failureRedirect: "/"
-  })
+  const compteUtilisateurController = container.resolve("compteUtilisateurController")
+  await compteUtilisateurController.authenticate(request)
+  return redirect("/profile")
 }

@@ -1,22 +1,15 @@
-import type { ActionFunction } from "@remix-run/node"
-import { redirect } from "@remix-run/node"
-import { Form } from "@remix-run/react"
+import { useFetcher } from "@remix-run/react"
 
-import { container } from "api"
 import { H2Title } from "~/ui/components/H2Title"
 import { PrimaryButton } from "~/ui/components/PrimaryButton"
 
-export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData()
-  const project = await container.resolve("programmeController").creerProgramme(formData)
-  return redirect(`/projects/${project.id}`)
-}
-
 function CreerProgramme() {
+  const creerPrograme = useFetcher<any>()
+
   return (
     <div className="container mx-auto">
       <H2Title>Création d'un nouveau programme</H2Title>
-      <Form method="post" action="programme/creer-programme">
+      <creerPrograme.Form method="post">
         <div className="mb-5">
           <input
             type="text"
@@ -28,7 +21,7 @@ function CreerProgramme() {
         </div>
 
         <PrimaryButton>Créer le programme</PrimaryButton>
-      </Form>
+      </creerPrograme.Form>
     </div>
   )
 }

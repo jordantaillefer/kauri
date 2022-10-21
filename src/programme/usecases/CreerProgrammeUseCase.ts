@@ -12,8 +12,9 @@ export class CreerProgrammeUseCase {
     this.programmeRepository = programmeRepository
   }
 
-  async execute(userId: string, nomProgramme: string) {
+  async execute(userId: string, nomProgramme: string): Promise<Programme> {
     const programme = Programme.creerProgramme({ userId, nomProgramme })
     await this.programmeRepository.creerProgramme(programme)
+    return programme
   }
 }

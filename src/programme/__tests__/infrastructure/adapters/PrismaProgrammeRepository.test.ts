@@ -52,7 +52,7 @@ describe("PrismaProgrammeRepository", () => {
       } catch (error: unknown) {
         // Assert
         expect(error).toBeInstanceOf(ProgrammeNotFoundError)
-        expect((error as ProgrammeNotFoundError).reason).toEqual(ReasonPhrases.NOT_FOUND)
+        expect((error as ProgrammeNotFoundError).reasonPhrase).toEqual(ReasonPhrases.NOT_FOUND)
       }
     })
   })

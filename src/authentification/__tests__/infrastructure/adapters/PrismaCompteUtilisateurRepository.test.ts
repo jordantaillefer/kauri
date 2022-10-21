@@ -41,7 +41,7 @@ describe("PrismaCompteUtilisateurRepository", () => {
       } catch (error: unknown) {
         // Assert
         expect(error).toBeInstanceOf(LUtilisateurNExistePasError)
-        expect((error as LUtilisateurNExistePasError).reason).toEqual(ReasonPhrases.NOT_FOUND)
+        expect((error as LUtilisateurNExistePasError).reasonPhrase).toEqual(ReasonPhrases.NOT_FOUND)
       }
     })
   })

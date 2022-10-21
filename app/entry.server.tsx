@@ -22,7 +22,6 @@ export default function handleRequest(
           const body = new PassThrough()
 
           responseHeaders.set("Content-Type", "text/html")
-
           resolve(
             new Response(body, {
               headers: responseHeaders,
@@ -38,7 +37,6 @@ export default function handleRequest(
         onError: (error) => {
           didError = true
 
-          console.error(error)
         }
       }
     )

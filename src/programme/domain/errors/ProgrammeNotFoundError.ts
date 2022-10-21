@@ -1,4 +1,4 @@
-import { NotFoundError } from "../../../app/NotFoundError"
+import { NotFoundError } from "../../../app/errors/NotFoundError"
 
 export class ProgrammeNotFoundError extends NotFoundError {
   get message() {

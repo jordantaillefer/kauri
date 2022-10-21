@@ -992,20 +992,6 @@ body {
   outline-offset: 2px;
 }
 
-@font-face {
-  font-family: Metropolis;
-
-  src: url("/assets/fonts/Metropolis-Regular.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: Metropolis;
-
-  font-weight: 600;
-
-  src: url("/assets/fonts/Metropolis-SemiBold.woff2") format("woff2");
-}
-
 .focus\:border-primary:focus {
   --tw-border-opacity: 1;
   border-color: rgb(16 185 129 / var(--tw-border-opacity));

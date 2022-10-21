@@ -28,7 +28,7 @@ describe("CompteUtilisateurController", () => {
       expect(response.data).toBeDefined()
       const compteUtilisateurResult: CompteUtilisateur = response.data as CompteUtilisateur
 
-      expect(compteUtilisateurResult.id).toEqual("id")
+      expect(compteUtilisateurResult.getId()).toEqual("id")
     })
     it("S'il n'existe pas, doit retourner une erreur", async () => {
       // Act
@@ -45,11 +45,28 @@ describe("CompteUtilisateurController", () => {
   describe("#creerCompteUtilisateur", () => {
     it("doit créer le compte utilisateur", async () => {
       // Act
-      await compteUtilisateurController.creerCompteUtilisateur("id")
+      const response = await compteUtilisateurController.creerCompteUtilisateur({ payload : { id: "id" }})
       // Assert
       const compteUtilisateurResult = await compteUtilisateurRepository.recupererCompteUtilisateurParId("id")
       expect(compteUtilisateurResult).toBeDefined()
-      expect(compteUtilisateurResult?.id).toEqual("id")
+      expect(compteUtilisateurResult?.getId()).toEqual("id")
+
+      expect(response.reasonPhrase).toEqual(ReasonPhrases.CREATED)
     })
+    it("Quand le compte utilisateur existe déjà, doit renvoyer une Bad Request", async () => {
+      // Act
+      await compteUtilisateurController.creerCompteUtilisateur({ payload : { id: "id" }})
+      const response = await compteUtilisateurController.creerCompteUtilisateur({ payload : { id: "id" }})
+      // Assert
+      const compteUtilisateurResult = await compteUtilisateurRepository.recupererCompteUtilisateurParId("id")
+      expect(compteUtilisateurResult).toBeDefined()
+      expect(compteUtilisateurResult?.getId()).toEqual("id")
+
+      expect(response.reasonPhrase).toEqual(ReasonPhrases.BAD_REQUEST)
+    })
+  })
+
+  describe("#authenticate", () => {
+
   })
 })
