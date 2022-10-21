@@ -9,7 +9,6 @@ export class SeConnecterUseCase {
   }
 
   async execute(request: Request): Promise<CompteUtilisateur> {
-    console.log("hey2")
     return this.authentificationService.seConnecter(request)
   }
 }

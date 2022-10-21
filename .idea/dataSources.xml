@@ -15,5 +15,12 @@
       <jdbc-url>jdbc:postgresql://localhost:5433/kauri</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="kauri-prod" uuid="c0b8584a-52b4-444c-be7c-fd187ba779af">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://kaurifit-831.postgresql.a.osc-fr1.scalingo-dbs.com:39749/kaurifit_831</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

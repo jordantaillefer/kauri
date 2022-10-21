@@ -28,7 +28,7 @@ export class GoogleAuthentificatorService implements AuthentificationService {
           clientID: config.google.clientId,
           clientSecret: config.google.clientSecret,
           scope: ["openid", "email", "profile"],
-          callbackURL: `http://localhost:3000/auth/${config.authenticatorStrategy}/callback`,
+          callbackURL: `${config.baseUrl}/auth/${config.authenticatorStrategy}/callback`,
           prompt: "select_account"
         },
         this.handleSocialAuthCallback
@@ -43,7 +43,6 @@ export class GoogleAuthentificatorService implements AuthentificationService {
         failureRedirect: "/"
       })
 
-    console.log("hey compte google")
     let compteUtilisateur = await this._compteUtilisateurRepository.recupererCompteUtilisateurParId(callbackProfile.id)
     if (!compteUtilisateur) {
       compteUtilisateur = await this._compteUtilisateurRepository.creerCompteUtilisateur(CompteUtilisateur.creerCompteUtilisateur(callbackProfile.id))

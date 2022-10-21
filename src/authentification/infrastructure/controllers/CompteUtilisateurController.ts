@@ -59,14 +59,12 @@ export class CompteUtilisateurController {
   }
 
   async authenticate(request: Request) {
-    console.log("hey")
     return this.seConnecterUseCase.execute(request)
   }
 
   @ProduceServerResponse()
   async recupererCompteUtilisateurConnecte(request: Request): Promise<ServerResponse<CompteUtilisateur>> {
     let compteUtilisateur = await this.recupererCompteUtilisateurConnecteUseCase.execute(request)
-    console.log(compteUtilisateur)
     return success(compteUtilisateur)
   }
 

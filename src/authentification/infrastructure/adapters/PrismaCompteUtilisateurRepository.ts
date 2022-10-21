@@ -14,7 +14,6 @@ export class PrismaCompteUtilisateurRepository implements CompteUtilisateurRepos
 
   async recupererCompteUtilisateurParId(compteUtilisateurId: string): Promise<CompteUtilisateur> {
     const compteUtilisateurModel = await prisma.user.findUnique({ where: { id: compteUtilisateurId } })
-    console.log(compteUtilisateurId)
     if (compteUtilisateurModel === null) {
       throw new LUtilisateurNExistePasError()
     }
