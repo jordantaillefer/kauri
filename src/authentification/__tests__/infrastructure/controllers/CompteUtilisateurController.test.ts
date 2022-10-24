@@ -28,7 +28,7 @@ describe("CompteUtilisateurController", () => {
       expect(response.data).toBeDefined()
       const compteUtilisateurResult: CompteUtilisateur = response.data as CompteUtilisateur
 
-      expect(compteUtilisateurResult.getId()).toEqual("id")
+      expect(compteUtilisateurResult.id).toEqual("id")
     })
     it("S'il n'existe pas, doit retourner une erreur", async () => {
       // Act
@@ -49,7 +49,7 @@ describe("CompteUtilisateurController", () => {
       // Assert
       const compteUtilisateurResult = await compteUtilisateurRepository.recupererCompteUtilisateurParId("id")
       expect(compteUtilisateurResult).toBeDefined()
-      expect(compteUtilisateurResult?.getId()).toEqual("id")
+      expect(compteUtilisateurResult?.id).toEqual("id")
 
       expect(response.reasonPhrase).toEqual(ReasonPhrases.CREATED)
     })
@@ -60,7 +60,7 @@ describe("CompteUtilisateurController", () => {
       // Assert
       const compteUtilisateurResult = await compteUtilisateurRepository.recupererCompteUtilisateurParId("id")
       expect(compteUtilisateurResult).toBeDefined()
-      expect(compteUtilisateurResult?.getId()).toEqual("id")
+      expect(compteUtilisateurResult?.id).toEqual("id")
 
       expect(response.reasonPhrase).toEqual(ReasonPhrases.BAD_REQUEST)
     })

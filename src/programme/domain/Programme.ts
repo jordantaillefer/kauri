@@ -1,18 +1,18 @@
 import { v4 as uuid } from "uuid"
 
 export class Programme {
-  private readonly _userId: string
+  private readonly _idUtilisateur: string
   private readonly _nomProgramme: string
   private readonly _id: string
 
-  constructor({ id, userId, nomProgramme }: { id: string, userId: string, nomProgramme: string }) {
+  constructor({ id, idUtilisateur, nomProgramme }: { id: string, idUtilisateur: string, nomProgramme: string }) {
     this._id = id
-    this._userId = userId
+    this._idUtilisateur = idUtilisateur
     this._nomProgramme = nomProgramme
   }
 
-  get userId(): string {
-    return this._userId
+  get idUtilisateur(): string {
+    return this._idUtilisateur
   }
 
   get nomProgramme(): string {
@@ -23,7 +23,7 @@ export class Programme {
     return this._id
   }
 
-  static creerProgramme({ id, userId, nomProgramme }: { id?: string, userId: string, nomProgramme: string }): Programme {
-    return new Programme({ id: id || uuid(), userId, nomProgramme })
+  static creerProgramme({ id, idUtilisateur, nomProgramme }: { id?: string, idUtilisateur: string, nomProgramme: string }): Programme {
+    return new Programme({ id: id || uuid(), idUtilisateur, nomProgramme })
   }
 }

@@ -9,6 +9,6 @@ export class CompteUtilisateurBuilder {
   }
 
   build(): CompteUtilisateur {
-    return CompteUtilisateur.creerCompteUtilisateur(this.id)
+    return CompteUtilisateur.creerCompteUtilisateur({ id: this.id })
   }
 }

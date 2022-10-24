@@ -1,11 +1,28 @@
 import { ReasonPhrases } from "http-status-codes"
+import { v4 as uuid } from "uuid"
 import { describe, expect, it } from "vitest"
 import { mockDeep } from "vitest-mock-extended"
 
 import { CompteUtilisateur } from "../../../../authentification/domain/CompteUtilisateur"
+import { SessionUtilisateur } from "../../../../authentification/domain/SessionUtilisateur"
 import { ProgrammeRepository } from "../../../domain/ports/ProgrammeRepository"
 import { ProgrammeController } from "../../../infrastructure/controllers/ProgrammeController"
 import { container } from "api"
+
+async function creerRequestPourCompteUtilisateur(idUtilisateur?: string) {
+  const request = mockDeep<Request>()
+  const sessionManager = container.resolve("sessionManager")
+  const session = await sessionManager.get(request)
+  session.set("user", SessionUtilisateur.creerSessionUtilisateur({ id: idUtilisateur || uuid() }))
+
+  const headers2 = new Headers({
+    "Cookie": await sessionManager.commitSession(session)
+  })
+  const request2 = mockDeep<Request>({
+    headers: headers2
+  })
+  return request2
+}
 
 describe("ProgrammeController", () => {
   let programmeController: ProgrammeController
@@ -20,29 +37,22 @@ describe("ProgrammeController", () => {
     describe("Quand tout est OK", () => {
       it("doit créer un programme", async () => {
         // Act
-        const request = mockDeep<Request>()
-        const sessionManager = container.resolve("sessionManager")
-        const session = await sessionManager.get(request)
-        session.set("user", CompteUtilisateur.creerCompteUtilisateur("userId"))
-        const headers2 = new Headers({
-          "Cookie": await sessionManager.commitSession(session)
-        })
+        const request2 = await creerRequestPourCompteUtilisateur("idUtilisateur")
+
         const compteUtilisateurRepository = container.resolve("compteUtilisateurRepository")
-        await compteUtilisateurRepository.creerCompteUtilisateur(CompteUtilisateur.creerCompteUtilisateur("userId"))
-        const request2 = mockDeep<Request>({
-          headers: headers2
-        })
+        await compteUtilisateurRepository.creerCompteUtilisateur(CompteUtilisateur.creerCompteUtilisateur({ id: "idUtilisateur" }))
 
         const response = await programmeController.creerProgramme({
           request: request2,
           payload: { nomProgramme: "nomProgramme" }
         })
+        console.log(response)
         // Assert
         const listeDeProgrammes = await programmeRepository.recupererTout()
 
         expect(listeDeProgrammes).toHaveLength(1)
 
-        expect(listeDeProgrammes.at(0)?.userId).toEqual("userId")
+        expect(listeDeProgrammes.at(0)?.idUtilisateur).toEqual("idUtilisateur")
         expect(listeDeProgrammes.at(0)?.nomProgramme).toEqual("nomProgramme")
 
         expect(response.reasonPhrase).toEqual(ReasonPhrases.CREATED)

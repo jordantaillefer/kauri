@@ -12,7 +12,7 @@ export class RecupererCompteUtilisateurUseCase {
     this.compteUtilisateurRepository = compteUtilisateurRepository
   }
 
-  async execute(userId: string): Promise<CompteUtilisateur> {
-    return this.compteUtilisateurRepository.recupererCompteUtilisateurParId(userId)
+  async execute(idUtilisateur: string): Promise<CompteUtilisateur> {
+    return this.compteUtilisateurRepository.recupererCompteUtilisateurParId(idUtilisateur)
   }
 }

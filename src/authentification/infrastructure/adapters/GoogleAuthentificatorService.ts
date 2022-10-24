@@ -45,7 +45,7 @@ export class GoogleAuthentificatorService implements AuthentificationService {
 
     let compteUtilisateur = await this._compteUtilisateurRepository.recupererCompteUtilisateurParId(callbackProfile.id)
     if (!compteUtilisateur) {
-      compteUtilisateur = await this._compteUtilisateurRepository.creerCompteUtilisateur(CompteUtilisateur.creerCompteUtilisateur(callbackProfile.id))
+      compteUtilisateur = await this._compteUtilisateurRepository.creerCompteUtilisateur(CompteUtilisateur.creerCompteUtilisateur({ id: callbackProfile.id }))
     }
     return compteUtilisateur
   }

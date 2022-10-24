@@ -16,14 +16,14 @@ describe("PrismaProgrammeRepository", () => {
   describe("creerProgramme", () => {
     it("doit creer un programme", async () => {
       // Arrange
-      const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("userId").withNomProgramme("nomProgramme").build()
+      const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("idUtilisateur").withNomProgramme("nomProgramme").build()
       // Act
       await prismaProgrammeRepository.creerProgramme(programme)
       // Assert
       const programmeResult = await prismaProgrammeRepository.recupererParId("54d9eb29-5410-4428-936f-9d252799e4ce")
       expect(programmeResult).toBeDefined()
       expect(programmeResult?.id).toEqual("54d9eb29-5410-4428-936f-9d252799e4ce")
-      expect(programmeResult?.userId).toEqual("userId")
+      expect(programmeResult?.idUtilisateur).toEqual("idUtilisateur")
       expect(programmeResult?.nomProgramme).toEqual("nomProgramme")
     })
   })
@@ -31,19 +31,19 @@ describe("PrismaProgrammeRepository", () => {
   describe("recupererParId", () => {
     it("S'il existe, doit récupérer le programme", async () => {
       // Arrange
-      const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("userId").withNomProgramme("nomProgramme").build()
+      const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("idUtilisateur").withNomProgramme("nomProgramme").build()
       await prismaProgrammeRepository.creerProgramme(programme)
       // Act
       const programmeResult = await prismaProgrammeRepository.recupererParId("54d9eb29-5410-4428-936f-9d252799e4ce")
       // Assert
       expect(programmeResult).toBeDefined()
       expect(programmeResult?.id).toEqual("54d9eb29-5410-4428-936f-9d252799e4ce")
-      expect(programmeResult?.userId).toEqual("userId")
+      expect(programmeResult?.idUtilisateur).toEqual("idUtilisateur")
       expect(programmeResult?.nomProgramme).toEqual("nomProgramme")
     })
     it("S'il n'existe pas, doit renvoyer une erreur", async () => {
       // Arrange
-      const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("userId").withNomProgramme("nomProgramme").build()
+      const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("idUtilisateur").withNomProgramme("nomProgramme").build()
       await prismaProgrammeRepository.creerProgramme(programme)
       try {
         // Act
@@ -62,12 +62,12 @@ describe("PrismaProgrammeRepository", () => {
       // Arrange
       const programme1 = Programme.creerProgramme({
         id: "fbefd9d8-d478-419a-9b0e-c5a93c0dbb78",
-        userId: "userId1",
+        idUtilisateur: "idUtilisateur1",
         nomProgramme: "nomProgramme1"
       })
       const programme2 = Programme.creerProgramme({
         id: "86568a1e-9915-4872-989b-8e21bf5ac640",
-        userId: "userId2",
+        idUtilisateur: "idUtilisateur2",
         nomProgramme: "nomProgramme2"
       })
       await prismaProgrammeRepository.creerProgramme(programme1)
@@ -78,10 +78,10 @@ describe("PrismaProgrammeRepository", () => {
       expect(listeDeProgrammes).toHaveLength(2)
 
       expect(listeDeProgrammes.at(0)?.id).toEqual("fbefd9d8-d478-419a-9b0e-c5a93c0dbb78")
-      expect(listeDeProgrammes.at(0)?.userId).toEqual("userId1")
+      expect(listeDeProgrammes.at(0)?.idUtilisateur).toEqual("idUtilisateur1")
       expect(listeDeProgrammes.at(0)?.nomProgramme).toEqual("nomProgramme1")
       expect(listeDeProgrammes.at(1)?.id).toEqual("86568a1e-9915-4872-989b-8e21bf5ac640")
-      expect(listeDeProgrammes.at(1)?.userId).toEqual("userId2")
+      expect(listeDeProgrammes.at(1)?.idUtilisateur).toEqual("idUtilisateur2")
       expect(listeDeProgrammes.at(1)?.nomProgramme).toEqual("nomProgramme2")
     })
   })

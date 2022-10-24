@@ -15,7 +15,7 @@ describe("PrismaCompteUtilisateurRepository", () => {
   describe("CreerCompteUtilisateur", () => {
     it("Doit créer un compte utilisateur", async () => {
       // Arrange
-      const compteUtilisateur = CompteUtilisateur.creerCompteUtilisateur("compteUtilisateurId")
+      const compteUtilisateur = CompteUtilisateur.creerCompteUtilisateur( { id: "compteUtilisateurId" })
       // Act
       const compteUtilisateurResult = await prismaCompteUtilisateurRepository.creerCompteUtilisateur(compteUtilisateur)
       // Assert
@@ -26,7 +26,7 @@ describe("PrismaCompteUtilisateurRepository", () => {
   describe("recupererCompteUtilisateur", () => {
     it("Quand l'utilisateur existe, doit récupérer un compte utilisateur", async () => {
       // Arrange
-      const compteUtilisateur = CompteUtilisateur.creerCompteUtilisateur("compteUtilisateurId")
+      const compteUtilisateur = CompteUtilisateur.creerCompteUtilisateur({ id: "compteUtilisateurId" })
       await prismaCompteUtilisateurRepository.creerCompteUtilisateur(compteUtilisateur)
       // Act
       const compteUtilisateurResult = await prismaCompteUtilisateurRepository.recupererCompteUtilisateurParId("compteUtilisateurId")

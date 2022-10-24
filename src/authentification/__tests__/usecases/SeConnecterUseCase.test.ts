@@ -16,12 +16,12 @@ describe("SeConnecterUseCase", () => {
 
   it("doit connecter l'utilisateur", async () => {
     // Arrange
-    authentificatorService.seConnecter.mockResolvedValue(CompteUtilisateur.creerCompteUtilisateur("id"))
+    authentificatorService.seConnecter.mockResolvedValue(CompteUtilisateur.creerCompteUtilisateur({ id: "id" }))
     const request = mock<Request>()
     // Act
     const profile = await seConnecterUseCase.execute(request)
     // Assert
     expect(authentificatorService.seConnecter).toHaveBeenNthCalledWith(1, request)
-    expect(profile.getId()).toEqual("id")
+    expect(profile.id).toEqual("id")
   })
 })

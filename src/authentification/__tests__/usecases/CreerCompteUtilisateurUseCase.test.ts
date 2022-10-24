@@ -18,13 +18,13 @@ describe("CreerCompteUtilisateurUseCase", () => {
   })
   test("doit créer le compte utilisateur", async () => {
     // Arrange
-    const userId = "userId"
-    const compteUtilisateur = CompteUtilisateur.creerCompteUtilisateur(userId)
+    const idUtilisateur = "idUtilisateur"
+    const compteUtilisateur = CompteUtilisateur.creerCompteUtilisateur({ id: idUtilisateur })
     compteUtilisateurRepository.creerCompteUtilisateur.mockResolvedValue(compteUtilisateur)
     // Act
-    const user = await creerCompteUtilisateurUseCase.execute(userId)
+    const user = await creerCompteUtilisateurUseCase.execute(idUtilisateur)
     // Assert
     expect(compteUtilisateurRepository.creerCompteUtilisateur).toHaveBeenNthCalledWith(1, compteUtilisateur)
-    expect(user.id).toEqual("userId")
+    expect(user.id).toEqual("idUtilisateur")
   })
 })

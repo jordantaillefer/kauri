@@ -2,7 +2,7 @@ import { Programme } from "../../programme/domain/Programme"
 
 export class ProgrammeBuilder {
   private id: string = "id"
-  private userId: string = "userId"
+  private idUtilisateur: string = "idUtilisateur"
   private nomProgramme: string = "nomProgramme"
 
   withId(id: string): ProgrammeBuilder {
@@ -10,8 +10,8 @@ export class ProgrammeBuilder {
     return this
   }
 
-  withUserId(userId: string): ProgrammeBuilder {
-    this.userId = userId
+  withUserId(idUtilisateur: string): ProgrammeBuilder {
+    this.idUtilisateur = idUtilisateur
     return this
   }
 
@@ -21,6 +21,6 @@ export class ProgrammeBuilder {
   }
 
   build() {
-    return Programme.creerProgramme({ id: this.id, userId: this.userId, nomProgramme: this.nomProgramme })
+    return Programme.creerProgramme({ id: this.id, idUtilisateur: this.idUtilisateur, nomProgramme: this.nomProgramme })
   }
 }

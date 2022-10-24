@@ -1,15 +1,15 @@
 export class CompteUtilisateur {
-  private readonly id: string
+  private readonly _id: string
 
   constructor(id: string) {
-    this.id = id
+    this._id = id
   }
 
-  getId(): string {
-    return this.id
+  get id(): string {
+    return this._id
   }
 
-  static creerCompteUtilisateur(id: string) {
+  static creerCompteUtilisateur({ id }: { id: string }) {
     return new CompteUtilisateur(id)
   }
 }

@@ -23,6 +23,6 @@ describe("CreerProgrammeUseCase", () => {
     expect(programmeRepository.creerProgramme).toHaveBeenNthCalledWith(1, programmeCaptor)
     expect(programmeCaptor.value.id).toBeDefined()
     expect(programmeCaptor.value.nomProgramme).toEqual("nomProgramme")
-    expect(programmeCaptor.value.userId).toEqual("id")
+    expect(programmeCaptor.value.idUtilisateur).toEqual("id")
   })
 })

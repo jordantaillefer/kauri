@@ -12,7 +12,7 @@ export class CreerCompteUtilisateurUseCase {
     this.compteUtilisateurRepository = compteUtilisateurRepository
   }
 
-  async execute(userId: string): Promise<CompteUtilisateur> {
-    return this.compteUtilisateurRepository.creerCompteUtilisateur(CompteUtilisateur.creerCompteUtilisateur(userId))
+  async execute(idUtilisateur: string): Promise<CompteUtilisateur> {
+    return this.compteUtilisateurRepository.creerCompteUtilisateur(CompteUtilisateur.creerCompteUtilisateur({ id: idUtilisateur }))
   }
 }

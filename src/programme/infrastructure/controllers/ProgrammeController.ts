@@ -21,7 +21,7 @@ export class ProgrammeController {
   @DoitEtreAuthentifie()
   @ProduceServerResponse()
   async creerProgramme(serverRequest: ServerRequest<{ nomProgramme: string }>): Promise<ServerResponse<Programme>> {
-    const nouveauProgramme = await this.creerProgrammeUseCase.execute(serverRequest.compteUtilisateurConnecte?.getId() as string, serverRequest.payload.nomProgramme)
+    const nouveauProgramme = await this.creerProgrammeUseCase.execute(serverRequest.compteUtilisateurConnecte?.id as string, serverRequest.payload.nomProgramme)
     return created(nouveauProgramme)
   }
 }

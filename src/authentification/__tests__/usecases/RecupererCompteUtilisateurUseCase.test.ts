@@ -15,12 +15,12 @@ describe("RecupererCompteUtilisateurUseCase", () => {
   })
   it("doit récupérer le compte utilisateur associé à l'id", async () => {
     // Arrange
-    const userId = "userId"
-    compteUtilisateurRepository.recupererCompteUtilisateurParId.mockResolvedValue(CompteUtilisateur.creerCompteUtilisateur(userId))
+    const idUtilisateur = "idUtilisateur"
+    compteUtilisateurRepository.recupererCompteUtilisateurParId.mockResolvedValue(CompteUtilisateur.creerCompteUtilisateur({ id: idUtilisateur }))
     // Act
-    const user = await recupererCompteUtilisateurUseCase.execute(userId)
+    const user = await recupererCompteUtilisateurUseCase.execute(idUtilisateur)
     // Assert
-    expect(compteUtilisateurRepository.recupererCompteUtilisateurParId).toHaveBeenNthCalledWith(1, userId)
-    expect(user.id).toEqual("userId")
+    expect(compteUtilisateurRepository.recupererCompteUtilisateurParId).toHaveBeenNthCalledWith(1, idUtilisateur)
+    expect(user.id).toEqual("idUtilisateur")
   })
 })

@@ -28,7 +28,7 @@ export class PrismaProgrammeRepository implements ProgrammeRepository {
 function convertirEnModel(programme: Programme): ProgrammeModel {
   return {
     id: programme.id,
-    userId: programme.userId,
+    idUtilisateur: programme.idUtilisateur,
     nomProgramme: programme.nomProgramme
   }
 }
@@ -36,7 +36,7 @@ function convertirEnModel(programme: Programme): ProgrammeModel {
 function convertirEnProgramme(programmeModel: ProgrammeModel): Programme {
   return Programme.creerProgramme({
     id: programmeModel.id,
-    userId: programmeModel.userId,
+    idUtilisateur: programmeModel.idUtilisateur,
     nomProgramme: programmeModel.nomProgramme
   })
 }

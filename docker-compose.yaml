@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  db_faritas:
+  db_kauri:
     image: postgres:11.5
     container_name: db_kauri
     ports:

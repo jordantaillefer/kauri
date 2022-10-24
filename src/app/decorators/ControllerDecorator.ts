@@ -58,7 +58,6 @@ function _generateDescriptor(
 }
 
 function _handleError(error: DomainError) {
-  console.error(error)
   if (error.reasonPhrase) {
     return {
       reasonPhrase: error.reasonPhrase,
