@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { captor, mock, MockProxy } from "vitest-mock-extended"
-import { CaptorMatcher } from "vitest-mock-extended/lib/Matchers"
+import { captor, CaptorMatcher, mock, MockProxy } from "vitest-mock-extended"
 
 import { Programme } from "../../domain/Programme"
 import { ProgrammeRepository } from "../../domain/ports/ProgrammeRepository"

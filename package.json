@@ -12,7 +12,7 @@
     "migrate:test": "dotenv -e .env.test prisma migrate deploy",
     "prestart": "yarn migrate",
     "start": "remix-serve build",
-    "test": "NODE_ENV=test vitest"
+    "test": "NODE_ENV=test vitest --threads false"
   },
   "dependencies": {
     "@prisma/client": "4.5.0",

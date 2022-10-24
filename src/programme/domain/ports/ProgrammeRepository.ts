@@ -6,4 +6,6 @@ export interface ProgrammeRepository {
   recupererParId(id: string): Promise<Programme | null>
 
   recupererTout(): Promise<Programme[]>
+
+  recupererToutPourLUtilisateur(idUtilisateur: string): Promise<Programme[]>
 }

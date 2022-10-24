@@ -1,6 +1,7 @@
 import { ReasonPhrases } from "http-status-codes"
 import { beforeAll, describe, expect } from "vitest"
 
+import { creerRequestAvecSession } from "../../../../testUtils/RequestUtils"
 import { CompteUtilisateurBuilder } from "../../../../testUtils/builders/CompteUtilisateurBuilder"
 import { CompteUtilisateur } from "../../../domain/CompteUtilisateur"
 import { CompteUtilisateurRepository } from "../../../domain/ports/CompteUtilisateurRepository"
@@ -44,29 +45,29 @@ describe("CompteUtilisateurController", () => {
 
   describe("#creerCompteUtilisateur", () => {
     it("doit créer le compte utilisateur", async () => {
+      // Arrange
+      const request = await creerRequestAvecSession("idUtilisateur")
       // Act
-      const response = await compteUtilisateurController.creerCompteUtilisateur({ payload : { id: "id" }})
+      const response = await compteUtilisateurController.creerCompteUtilisateur(request)
       // Assert
-      const compteUtilisateurResult = await compteUtilisateurRepository.recupererCompteUtilisateurParId("id")
+      const compteUtilisateurResult = await compteUtilisateurRepository.recupererCompteUtilisateurParId("idUtilisateur")
       expect(compteUtilisateurResult).toBeDefined()
-      expect(compteUtilisateurResult?.id).toEqual("id")
+      expect(compteUtilisateurResult?.id).toEqual("idUtilisateur")
 
       expect(response.reasonPhrase).toEqual(ReasonPhrases.CREATED)
     })
     it("Quand le compte utilisateur existe déjà, doit renvoyer une Bad Request", async () => {
+      // Arrange
+      const request = await creerRequestAvecSession("idUtilisateur")
+      await compteUtilisateurController.creerCompteUtilisateur(request)
       // Act
-      await compteUtilisateurController.creerCompteUtilisateur({ payload : { id: "id" }})
-      const response = await compteUtilisateurController.creerCompteUtilisateur({ payload : { id: "id" }})
+      const response = await compteUtilisateurController.creerCompteUtilisateur(request)
       // Assert
-      const compteUtilisateurResult = await compteUtilisateurRepository.recupererCompteUtilisateurParId("id")
+      const compteUtilisateurResult = await compteUtilisateurRepository.recupererCompteUtilisateurParId("idUtilisateur")
       expect(compteUtilisateurResult).toBeDefined()
-      expect(compteUtilisateurResult?.id).toEqual("id")
+      expect(compteUtilisateurResult?.id).toEqual("idUtilisateur")
 
       expect(response.reasonPhrase).toEqual(ReasonPhrases.BAD_REQUEST)
     })
-  })
-
-  describe("#authenticate", () => {
-
   })
 })

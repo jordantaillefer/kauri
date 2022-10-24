@@ -1,28 +1,12 @@
 import { ReasonPhrases } from "http-status-codes"
-import { v4 as uuid } from "uuid"
 import { describe, expect, it } from "vitest"
-import { mockDeep } from "vitest-mock-extended"
 
-import { CompteUtilisateur } from "../../../../authentification/domain/CompteUtilisateur"
-import { SessionUtilisateur } from "../../../../authentification/domain/SessionUtilisateur"
+import { creerRequest, creerRequestPourCompteUtilisateur } from "../../../../testUtils/RequestUtils"
+import { ProgrammeBuilder } from "../../../../testUtils/builders/ProgrammeBuilder"
+import { Programme } from "../../../domain/Programme"
 import { ProgrammeRepository } from "../../../domain/ports/ProgrammeRepository"
 import { ProgrammeController } from "../../../infrastructure/controllers/ProgrammeController"
 import { container } from "api"
-
-async function creerRequestPourCompteUtilisateur(idUtilisateur?: string) {
-  const request = mockDeep<Request>()
-  const sessionManager = container.resolve("sessionManager")
-  const session = await sessionManager.get(request)
-  session.set("user", SessionUtilisateur.creerSessionUtilisateur({ id: idUtilisateur || uuid() }))
-
-  const headers2 = new Headers({
-    "Cookie": await sessionManager.commitSession(session)
-  })
-  const request2 = mockDeep<Request>({
-    headers: headers2
-  })
-  return request2
-}
 
 describe("ProgrammeController", () => {
   let programmeController: ProgrammeController
@@ -33,20 +17,17 @@ describe("ProgrammeController", () => {
     programmeRepository = container.resolve("programmeRepository")
   })
 
-  describe("Créer un nouveau programme", () => {
-    describe("Quand tout est OK", () => {
+  describe("#creerProgramme", () => {
+    describe("Cas OK", () => {
       it("doit créer un programme", async () => {
+        // Arrange
+        const request = await creerRequestPourCompteUtilisateur("idUtilisateur")
+
         // Act
-        const request2 = await creerRequestPourCompteUtilisateur("idUtilisateur")
-
-        const compteUtilisateurRepository = container.resolve("compteUtilisateurRepository")
-        await compteUtilisateurRepository.creerCompteUtilisateur(CompteUtilisateur.creerCompteUtilisateur({ id: "idUtilisateur" }))
-
         const response = await programmeController.creerProgramme({
-          request: request2,
+          request,
           payload: { nomProgramme: "nomProgramme" }
         })
-        console.log(response)
         // Assert
         const listeDeProgrammes = await programmeRepository.recupererTout()
 
@@ -58,10 +39,10 @@ describe("ProgrammeController", () => {
         expect(response.reasonPhrase).toEqual(ReasonPhrases.CREATED)
       })
     })
-    describe("Quand l'utilisateur n'est pas connecté", () => {
-      it("doit retourner une erreur Unauthorized", async () => {
+    describe("Cas KO", () => {
+      it("Quand l'utilisateur n'est pas connecté, erreur Unauthorized", async () => {
         // Arrange
-        const request = mockDeep<Request>({})
+        const request = creerRequest()
         // Act
         const response = await programmeController.creerProgramme({
           request,
@@ -69,6 +50,40 @@ describe("ProgrammeController", () => {
         })
         // Assert
         expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
+      })
+    })
+  })
+
+  describe("#listerProgramme", () => {
+    describe("Cas OK", () => {
+      it("doit lister les programmes pour un utilisateur", async () => {
+        // Arrange
+        const request = await creerRequestPourCompteUtilisateur("idUtilisateur")
+        const programmeAppartenantALUtilisateur = new ProgrammeBuilder()
+          .withId("969013bd-6566-434e-94cd-8ec6a6ad6c09")
+          .withNomProgramme("nomProgramme")
+          .withUserId("idUtilisateur")
+          .build()
+        const programmeDunAutreUtilisateur = new ProgrammeBuilder()
+          .withId("de8de4d5-61a3-4885-a78e-25526f47951e")
+          .withNomProgramme("nomProgramme d'un autre utilisateur")
+          .withUserId("autreIdUtilisateur")
+          .build()
+        await programmeRepository.creerProgramme(programmeAppartenantALUtilisateur)
+        await programmeRepository.creerProgramme(programmeDunAutreUtilisateur)
+
+        // Act
+        const response = await programmeController.listerProgramme({ request, payload: {} })
+        // Assert
+
+        expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
+        const listeDeProgrammes = response.data as Programme[]
+        expect(response.data).toHaveLength(1)
+
+        expect(listeDeProgrammes.at(0)?.id).toEqual("969013bd-6566-434e-94cd-8ec6a6ad6c09")
+        expect(listeDeProgrammes.at(0)?.idUtilisateur).toEqual("idUtilisateur")
+        expect(listeDeProgrammes.at(0)?.nomProgramme).toEqual("nomProgramme")
+
       })
     })
   })

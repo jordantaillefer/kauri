@@ -8,7 +8,7 @@ import HomePage from "~/ui/pages/homepage/HomePage"
 export const loader: LoaderFunction = async ({ request }) => {
   const response = await container.resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
   if (response.reasonPhrase === ReasonPhrases.OK) {
-    return redirect("/profile")
+    return redirect("/profil")
   }
   return json({
     authenticated: !!response.data

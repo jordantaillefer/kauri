@@ -6,5 +6,5 @@
 
 */
 -- AlterTable
-ALTER TABLE "Programme" DROP COLUMN "idUtilisateur",
-ADD COLUMN     "userId" TEXT NOT NULL;
+ ALTER TABLE "Programme"
+ RENAME COLUMN "userId" to "idUtilisateur";

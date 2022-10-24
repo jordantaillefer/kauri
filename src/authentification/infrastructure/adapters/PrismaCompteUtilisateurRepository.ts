@@ -7,16 +7,12 @@ import { CompteUtilisateurRepository } from "../../domain/ports/CompteUtilisateu
 
 export class PrismaCompteUtilisateurRepository implements CompteUtilisateurRepository {
   async creerCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Promise<CompteUtilisateur> {
-    console.log(compteUtilisateur)
     const compteUtilisateurASauvegarder = convertirEnCompteUtilisateurModel(compteUtilisateur)
-    console.log(compteUtilisateurASauvegarder)
     const compteUtilisateurModel = await prisma.user.create({ data: compteUtilisateurASauvegarder })
-    console.log(compteUtilisateurModel)
     return convertirEnCompteUtilisateur(compteUtilisateurModel)
   }
 
   async recupererCompteUtilisateurParId(compteUtilisateurId: string): Promise<CompteUtilisateur> {
-    console.log(compteUtilisateurId)
     const compteUtilisateurModel = await prisma.user.findUnique({ where: { id: compteUtilisateurId } })
     if (compteUtilisateurModel === null) {
       throw new LUtilisateurNExistePasError()

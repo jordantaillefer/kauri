@@ -85,4 +85,30 @@ describe("PrismaProgrammeRepository", () => {
       expect(listeDeProgrammes.at(1)?.nomProgramme).toEqual("nomProgramme2")
     })
   })
+
+  describe("recupererToutPourLUtilisateur", () => {
+    it("Doit récupérer tous les programmes pour un utilisateur", async () => {
+      // Arrange
+      const programme1 = Programme.creerProgramme({
+        id: "fbefd9d8-d478-419a-9b0e-c5a93c0dbb78",
+        idUtilisateur: "idUtilisateur1",
+        nomProgramme: "nomProgramme1"
+      })
+      const programme2 = Programme.creerProgramme({
+        id: "86568a1e-9915-4872-989b-8e21bf5ac640",
+        idUtilisateur: "idUtilisateur2",
+        nomProgramme: "nomProgramme2"
+      })
+      await prismaProgrammeRepository.creerProgramme(programme1)
+      await prismaProgrammeRepository.creerProgramme(programme2)
+      // Act
+      const listeDeProgrammes = await prismaProgrammeRepository.recupererToutPourLUtilisateur("idUtilisateur1")
+      // Assert
+      expect(listeDeProgrammes).toHaveLength(1)
+
+      expect(listeDeProgrammes.at(0)?.id).toEqual("fbefd9d8-d478-419a-9b0e-c5a93c0dbb78")
+      expect(listeDeProgrammes.at(0)?.idUtilisateur).toEqual("idUtilisateur1")
+      expect(listeDeProgrammes.at(0)?.nomProgramme).toEqual("nomProgramme1")
+    })
+  })
 })
