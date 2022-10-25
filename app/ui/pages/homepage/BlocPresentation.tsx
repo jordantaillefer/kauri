@@ -18,7 +18,7 @@ function PresentationKauri() {
 
 function ImagePresentationKauri() {
   return (
-    <img src="/assets/images/mFajn4fwpGFXzI1UsNH6.png"
+    <img src="/assets/images/image-presentation-homepage.png"
          className="w-full max-w-3xl sm:w-auto" />
   )
 }
