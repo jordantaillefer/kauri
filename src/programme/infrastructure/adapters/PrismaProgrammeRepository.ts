@@ -11,9 +11,17 @@ export class PrismaProgrammeRepository implements ProgrammeRepository {
     await prisma.programme.create({ data: programmeModel })
   }
 
-  async recupererParId(id: string): Promise<Programme> {
-    const programmeModel = await prisma.programme.findUnique({ where: { id } })
+  async recupererParId(idProgramme: string): Promise<Programme> {
+    const programmeModel = await prisma.programme.findUnique({ where: { id: idProgramme } })
     if (programmeModel === null) {
+      throw new ProgrammeNotFoundError()
+    }
+    return convertirEnProgramme(programmeModel)
+  }
+
+  async recupererParIdPourLUtilisateur(idUtilisateur: string, idProgramme: string): Promise<Programme> {
+    const programmeModel = await prisma.programme.findUnique({ where: { id: idProgramme } })
+    if (programmeModel === null || programmeModel.idUtilisateur !== idUtilisateur) {
       throw new ProgrammeNotFoundError()
     }
     return convertirEnProgramme(programmeModel)
@@ -23,6 +31,7 @@ export class PrismaProgrammeRepository implements ProgrammeRepository {
     const listeDeProgrammesModels = await prisma.programme.findMany()
     return listeDeProgrammesModels.map(convertirEnProgramme)
   }
+
   async recupererToutPourLUtilisateur(idUtilisateur: string): Promise<Programme[]> {
     const listeDeProgrammesModels = await prisma.programme.findMany({
       where: {

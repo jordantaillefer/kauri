@@ -1,26 +1,30 @@
 import { ServerRequest } from "../../../app/ServerRequest"
 import { created, ServerResponse, success } from "../../../app/ServerResponse"
+import { ProgrammeContrat } from "../../../app/contrats"
 import { Controller } from "../../../app/decorators/ControllerDecorator"
 import { DoitEtreAuthentifie } from "../../../app/decorators/DoitEtreAuthentifieDecorator"
 import { ProduceServerResponse } from "../../../app/decorators/ProduceServerResponseDecorator"
 import { Programme } from "../../domain/Programme"
 import { CreerProgrammeUseCase } from "../../usecases/CreerProgrammeUseCase"
 import { ListerProgrammesUseCase } from "../../usecases/ListerProgrammesUseCase"
-import { ProgrammeContrat } from "../../../app/contrats"
+import { RecupererDetailProgrammeUseCase } from "../../usecases/RecupererDetailProgrammeUseCase"
 
 interface Dependencies {
   creerProgrammeUseCase: CreerProgrammeUseCase
   listerProgrammeUseCase: ListerProgrammesUseCase
+  recupererDetailProgrammeUseCase: RecupererDetailProgrammeUseCase
 }
 
 @Controller()
 export class ProgrammeController {
   private creerProgrammeUseCase: CreerProgrammeUseCase
   private listerProgrammeUseCase: ListerProgrammesUseCase
+  private recupererDetailProgrammeUseCase: RecupererDetailProgrammeUseCase
 
-  constructor({ creerProgrammeUseCase, listerProgrammeUseCase }: Dependencies) {
+  constructor({ creerProgrammeUseCase, listerProgrammeUseCase, recupererDetailProgrammeUseCase }: Dependencies) {
     this.creerProgrammeUseCase = creerProgrammeUseCase
     this.listerProgrammeUseCase = listerProgrammeUseCase
+    this.recupererDetailProgrammeUseCase = recupererDetailProgrammeUseCase
   }
 
   @DoitEtreAuthentifie()
@@ -36,12 +40,18 @@ export class ProgrammeController {
     const listeDeProgrammes = await this.listerProgrammeUseCase.execute(serverRequest.compteUtilisateurConnecte?.id as string)
     return success(listeDeProgrammes.map(presenterProgrammeEnProgrammeContrat))
   }
+
+  @DoitEtreAuthentifie()
+  @ProduceServerResponse()
+  async recupererDetail(serverRequest: ServerRequest<{ idProgramme: string }>) {
+    const programme = await this.recupererDetailProgrammeUseCase.execute(serverRequest.compteUtilisateurConnecte?.id as string, serverRequest.payload.idProgramme)
+    return success((presenterProgrammeEnProgrammeContrat(programme)))
+  }
 }
 
 function presenterProgrammeEnProgrammeContrat(programme: Programme): ProgrammeContrat {
   return {
-    id:  programme.id,
-    idUtilisateur:  programme.idUtilisateur,
-    nomProgramme:  programme.nomProgramme
+    id: programme.id,
+    nomProgramme: programme.nomProgramme
   }
 }

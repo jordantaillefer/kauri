@@ -20,6 +20,7 @@ import { PrismaProgrammeRepository } from "./programme/infrastructure/adapters/P
 import { ProgrammeController } from "./programme/infrastructure/controllers/ProgrammeController"
 import { CreerProgrammeUseCase } from "./programme/usecases/CreerProgrammeUseCase"
 import { ListerProgrammesUseCase } from "./programme/usecases/ListerProgrammesUseCase"
+import { RecupererDetailProgrammeUseCase } from "./programme/usecases/RecupererDetailProgrammeUseCase"
 
 type ApplicationDependencies = {
   sessionManager: SessionManager
@@ -39,6 +40,7 @@ type CompteUtilisateurDependencies = {
 type ProgrammeDependencies = {
   creerProgrammeUseCase: CreerProgrammeUseCase
   listerProgrammeUseCase: ListerProgrammesUseCase
+  recupererDetailProgrammeUseCase: RecupererDetailProgrammeUseCase
   programmeController: ProgrammeController
   programmeRepository: ProgrammeRepository
 }
@@ -80,6 +82,7 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
   container.register({
     creerProgrammeUseCase: asClass(CreerProgrammeUseCase),
     listerProgrammeUseCase: asClass(ListerProgrammesUseCase),
+    recupererDetailProgrammeUseCase: asClass(RecupererDetailProgrammeUseCase),
     programmeController: asClass(ProgrammeController),
     programmeRepository: asClass(PrismaProgrammeRepository)
   })

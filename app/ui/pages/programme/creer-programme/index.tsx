@@ -7,7 +7,7 @@ function CreerProgramme() {
   const creerPrograme = useFetcher<any>()
 
   return (
-    <div className="container mx-auto">
+    <div className="container">
       <H2Title>Création d'un nouveau programme</H2Title>
       <creerPrograme.Form method="post">
         <div className="mb-5">

@@ -1,17 +1,5 @@
-import type { LoaderFunction } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react" // or cloudflare/deno
+import { ConsulterProgramme, loaderFn } from "~/ui/pages/programme/consulter-programme"
 
-export const loader: LoaderFunction = async ({ params}) => {
-  return {
-    programmeId: params.programmeId
-  }
-}
+export const loader = loaderFn
 
-export default function DetailProgramme() {
-  const loaderData = useLoaderData()
-  return (
-    <div className="container mx-auto">
-      <h2>Programme id : { loaderData.programmeId }</h2>
-    </div>
-  )
-}
+export default ConsulterProgramme

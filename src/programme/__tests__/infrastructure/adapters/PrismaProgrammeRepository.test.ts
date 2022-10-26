@@ -111,4 +111,47 @@ describe("PrismaProgrammeRepository", () => {
       expect(listeDeProgrammes.at(0)?.nomProgramme).toEqual("nomProgramme1")
     })
   })
+  
+  describe("recupererParIdPourLUtilisateur", () => {
+    it("S'il existe, doit récupérer le programme", async () => {
+      // Arrange
+      const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("idUtilisateur").withNomProgramme("nomProgramme").build()
+      await prismaProgrammeRepository.creerProgramme(programme)
+      // Act
+      const programmeResult = await prismaProgrammeRepository.recupererParIdPourLUtilisateur("idUtilisateur", "54d9eb29-5410-4428-936f-9d252799e4ce")
+      // Assert
+      expect(programmeResult).toBeDefined()
+      expect(programmeResult?.id).toEqual("54d9eb29-5410-4428-936f-9d252799e4ce")
+      expect(programmeResult?.idUtilisateur).toEqual("idUtilisateur")
+      expect(programmeResult?.nomProgramme).toEqual("nomProgramme")
+    })
+    it("S'il n'existe pas, doit renvoyer une erreur", async () => {
+      // Arrange
+      const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("idUtilisateur").withNomProgramme("nomProgramme").build()
+      await prismaProgrammeRepository.creerProgramme(programme)
+      try {
+        // Act
+        await prismaProgrammeRepository.recupererParIdPourLUtilisateur("idUtilisateur", "a48559a4-9595-4a88-a3f1-ccd385455e63")
+        throw new TestFailedError()
+      } catch (error: unknown) {
+        // Assert
+        expect(error).toBeInstanceOf(ProgrammeNotFoundError)
+        expect((error as ProgrammeNotFoundError).reasonPhrase).toEqual(ReasonPhrases.NOT_FOUND)
+      }
+    })
+    it("S'il n'appartient pas à l'utilisateur, doit renvoyer une erreur", async () => {
+      // Arrange
+      const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("idUtilisateur").withNomProgramme("nomProgramme").build()
+      await prismaProgrammeRepository.creerProgramme(programme)
+      try {
+        // Act
+        await prismaProgrammeRepository.recupererParIdPourLUtilisateur("mauvais idUtilisateur", "54d9eb29-5410-4428-936f-9d252799e4ce")
+        throw new TestFailedError()
+      } catch (error: unknown) {
+        // Assert
+        expect(error).toBeInstanceOf(ProgrammeNotFoundError)
+        expect((error as ProgrammeNotFoundError).reasonPhrase).toEqual(ReasonPhrases.NOT_FOUND)
+      }
+    })
+  })
 })

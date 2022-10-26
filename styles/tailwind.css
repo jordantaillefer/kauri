@@ -19,7 +19,6 @@
 
     body {
         @apply text-light;
-        @apply font-metropolis;
     }
 
     * {

@@ -5,7 +5,7 @@ import { Link, useLoaderData } from "@remix-run/react"
 import { container, ProgrammeContrat } from "api"
 import { H2Title } from "~/ui/components/H2Title"
 
-export const loader: LoaderFunction = async ({ request }): Promise<TypedResponse<Programme[]>> => {
+export const loader: LoaderFunction = async ({ request }): Promise<TypedResponse<ProgrammeContrat[]>> => {
   const programmeController = await container.resolve("programmeController")
   const listeDeProgrammes = await programmeController.listerProgramme({ request, payload: {} })
 
@@ -15,7 +15,7 @@ export const loader: LoaderFunction = async ({ request }): Promise<TypedResponse
 export default function Profil() {
   const listeDeProgrammes = useLoaderData<ProgrammeContrat[]>()
   return (
-    <div className="container mx-auto">
+    <div className="container">
       <H2Title>Mon profil</H2Title>
       <main className="grid gap-16 grid-cols-responsive py-[max(5vw,_2rem)]">
         <Link to="/programme/creer-programme"

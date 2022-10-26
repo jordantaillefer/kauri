@@ -1,22 +1,19 @@
-const colors = require('tailwindcss/colors')
+const colors = require("tailwindcss/colors")
 
 module.exports = {
   content: ["./app/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "2rem",
+        md: "0"
+      }
+    },
     extend: {
       fontFamily: {
-        metropolis: [
-          "Metropolis",
-          "-apple-system",
-          "Segoe UI",
-          "Helvetica Neue",
-          "Helvetica",
-          "Roboto",
-          "Arial",
-          "sans-serif",
-          "system-ui",
-          "Apple Color Emoji",
-          "Segoe UI Emoji"
+        roboto: [
+          "Roboto Thin"
         ]
       },
       colors: {
@@ -40,7 +37,7 @@ module.exports = {
         },
         "translate-background-tptp": {
           "0%": { backgroundPosition: "0 0" },
-          "100%": { backgroundPosition: "100% 0" },
+          "100%": { backgroundPosition: "100% 0" }
         },
         enter: {
           "0%": { opacity: 0 },

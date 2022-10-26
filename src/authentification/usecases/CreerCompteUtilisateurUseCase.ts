@@ -1,7 +1,7 @@
 import { CompteUtilisateur } from "../domain/CompteUtilisateur"
 import { CompteUtilisateurRepository } from "../domain/ports/CompteUtilisateurRepository"
 
-export interface Dependencies {
+interface Dependencies {
   compteUtilisateurRepository: CompteUtilisateurRepository
 }
 
