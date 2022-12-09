@@ -7,9 +7,9 @@
         @apply outline-2 outline-light outline-dashed outline-offset-4;
     }
     :root {
-        --gap: 4rem;
+        --gap: 2rem;
         --max-column-count: 4;
-        --grid-item--min-width: 200px;
+        --grid-item--min-width: 15rem;
         --main-padding: max(5vw, 2rem);
 
         --max-number-of-gaps-in-row: calc(var(--max-column-count) - 1);

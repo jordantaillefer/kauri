@@ -1,5 +1,5 @@
 import { CompteUtilisateur } from "../domain/CompteUtilisateur"
-import { AuthentificationService } from "../domains/ports/AuthentificationService"
+import { AuthentificationService } from "../domain/ports/AuthentificationService"
 
 interface Dependencies {
   authentificationService: AuthentificationService

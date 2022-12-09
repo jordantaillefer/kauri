@@ -1,4 +1,4 @@
-import { AuthentificationService } from "../domains/ports/AuthentificationService"
+import { AuthentificationService } from "../domain/ports/AuthentificationService"
 
 export class SeDeconnecterUseCase {
   private authentificationService: AuthentificationService

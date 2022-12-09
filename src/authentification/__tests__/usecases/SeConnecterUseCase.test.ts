@@ -2,7 +2,7 @@ import { describe, expect } from "vitest"
 import { mock, MockProxy } from "vitest-mock-extended"
 
 import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
-import { AuthentificationService } from "../../domains/ports/AuthentificationService"
+import { AuthentificationService } from "../../domain/ports/AuthentificationService"
 import { SeConnecterUseCase } from "../../usecases/SeConnecterUseCase"
 
 describe("SeConnecterUseCase", () => {

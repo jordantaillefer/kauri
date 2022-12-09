@@ -4,9 +4,9 @@ import { GoogleProfile, GoogleStrategy } from "remix-auth-socials"
 import config from "../../../../config"
 import { SessionManager, sessionStorage } from "../../../app/session.server"
 import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
+import { LUtilisateurNestPasConnecteError } from "../../domain/errors/LUtilisateurNestPasConnecteError"
+import { AuthentificationService } from "../../domain/ports/AuthentificationService"
 import { CompteUtilisateurRepository } from "../../domain/ports/CompteUtilisateurRepository"
-import { LUtilisateurNestPasConnecteError } from "../../domains/errors/LUtilisateurNestPasConnecteError"
-import { AuthentificationService } from "../../domains/ports/AuthentificationService"
 
 interface Dependencies {
   compteUtilisateurRepository: CompteUtilisateurRepository

@@ -15,7 +15,15 @@ model User {
 }
 
 model Programme {
-  id            String @id
-  nomProgramme  String
-  idUtilisateur String
+  id                  String               @id
+  nomProgramme        String
+  idUtilisateur       String
+  seancesEntrainement SeanceEntrainement[]
+}
+
+model SeanceEntrainement {
+  id          String    @id
+  dateSeance  String
+  programme   Programme @relation(fields: [idProgramme], references: [id])
+  idProgramme String
 }

@@ -1,5 +1,5 @@
 import type { LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { json, redirect } from "@remix-run/node"
+import { json } from "@remix-run/node"
 import {
   Links,
   LiveReload,
@@ -17,7 +17,6 @@ import * as React from "react"
 import styles from "./styles/styles.css"
 import { container } from "api"
 import { RootLayout } from "~/ui/RootLayout"
-import config from "../config"
 
 type ContextType = { authenticated: boolean };
 
@@ -47,7 +46,7 @@ function Document({ children }: DocumentProps) {
       <Meta />
       <Links />
     </head>
-    <body className="bg-gray-100">
+    <body>
     {children}
     <RouteChangeAnnouncement />
     <ScrollRestoration />
@@ -82,7 +81,7 @@ export function useAuthenticated() {
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
-  console.error(error)
+  console.log(error)
 }
 
 const RouteChangeAnnouncement = React.memo(function RouteChangeAnnouncement() {
@@ -107,8 +106,6 @@ const RouteChangeAnnouncement = React.memo(function RouteChangeAnnouncement() {
     setInnerHtml(`Navigated to ${pageTitle}`)
   }, [location.pathname])
 
-  // Render nothing on the server. The live region provides no value unless
-  // scripts are loaded and the browser takes over normal routing.
   if (!hydrated) {
     return null
   }

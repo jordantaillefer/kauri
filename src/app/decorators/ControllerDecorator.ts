@@ -3,9 +3,7 @@ import "reflect-metadata"
 import { DataFunctionArgs } from "@remix-run/node"
 import { ReasonPhrases } from "http-status-codes"
 
-import {
-  LUtilisateurNestPasConnecteError
-} from "../../authentification/domains/errors/LUtilisateurNestPasConnecteError"
+import { LUtilisateurNestPasConnecteError } from "../../authentification/domain/errors/LUtilisateurNestPasConnecteError"
 import { DomainError } from "../errors/DomainError"
 import { container } from "api"
 
@@ -14,8 +12,9 @@ export const Controller = (): ClassDecorator =>
     for (const propertyName of Reflect.ownKeys(target.prototype).filter(prop => prop !== "constructor")) {
       const desc = Object.getOwnPropertyDescriptor(target.prototype, propertyName)!
       const isMethod = desc.value instanceof Function
-      const isProducingApiResponse = Reflect.getMetadata(propertyName, target.prototype, propertyName)
+      const isProducingApiResponse = Reflect.getMetadata("produceServerResponse", target.prototype, propertyName)
       const isAuthentificationRequired = Reflect.getMetadata("doitEtreAuthentifie", target.prototype, propertyName)
+
       if (isMethod && isProducingApiResponse) {
         Object.defineProperty(target.prototype, propertyName, _generateDescriptor(desc, isAuthentificationRequired))
       }
