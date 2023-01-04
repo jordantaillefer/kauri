@@ -22,7 +22,7 @@ describe("PrismaProgrammeRepository", () => {
         .withUserId("idUtilisateur")
         .withNomProgramme("nomProgramme")
         .withSeancesEntrainement(
-          new SeanceEntrainementBuilder().withDateSeance(new Date("1993-06-12").toISOString()).build()
+          new SeanceEntrainementBuilder().build()
         )
         .build()
       // Act
@@ -35,7 +35,6 @@ describe("PrismaProgrammeRepository", () => {
       expect(programmeResult?.nomProgramme).toEqual("nomProgramme")
       expect(programmeResult?.seancesEntrainement).toHaveLength(1)
       expect(programmeResult?.seancesEntrainement.at(0)?.id).toBeDefined()
-      expect(programmeResult?.seancesEntrainement.at(0)?.dateSeance).toEqual("1993-06-12T00:00:00.000Z")
     })
   })
 
@@ -164,7 +163,6 @@ describe("PrismaProgrammeRepository", () => {
             .withNomProgramme("nomProgramme")
             .withSeancesEntrainement(
               new SeanceEntrainementBuilder()
-                .withDateSeance("1993-06-12")
                 .build()
             )
             .build()
@@ -178,7 +176,6 @@ describe("PrismaProgrammeRepository", () => {
           expect(programmeResult?.nomProgramme).toEqual("nomProgramme")
           expect(programmeResult?.seancesEntrainement).toHaveLength(1)
           expect(programmeResult?.seancesEntrainement.at(0)?.id).toBeDefined()
-          expect(programmeResult?.seancesEntrainement.at(0)?.dateSeance).toEqual(new Date("1993-06-12").toISOString())
 
         })
       })

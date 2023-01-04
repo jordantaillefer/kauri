@@ -20,7 +20,6 @@ describe("SeanceEntrainementRepository", () => {
       
       const seanceEntrainement = SeanceEntrainement.creerSeanceEntrainement({
         id: "f81d74a5-e93b-4e4c-8d4d-69b89654ffe1",
-        dateSeance: new Date("1993-06-12")
       })
 
       // Act
@@ -30,7 +29,6 @@ describe("SeanceEntrainementRepository", () => {
       const listeSeanceEntrainementParProgramme = await prismaSeanceEntrainementRepository.recupererToutParIdProgramme(idProgramme)
       expect(listeSeanceEntrainementParProgramme).toHaveLength(1)
       expect(listeSeanceEntrainementParProgramme.at(0)?.id).toEqual("f81d74a5-e93b-4e4c-8d4d-69b89654ffe1")
-      expect(listeSeanceEntrainementParProgramme.at(0)?.dateSeance).toEqual("1993-06-12T00:00:00.000Z")
     })
     it("si le programme possède déjà une séance, doit ajouter la séance à la liste", async () => {
       // Arrange
@@ -44,7 +42,6 @@ describe("SeanceEntrainementRepository", () => {
 
       const nouvelleSeanceEntrainement = SeanceEntrainement.creerSeanceEntrainement({
         id: "f81d74a5-e93b-4e4c-8d4d-69b89654ffe1",
-        dateSeance: new Date("1993-06-12")
       })
 
       // Act
@@ -54,7 +51,6 @@ describe("SeanceEntrainementRepository", () => {
       const listeSeanceEntrainementParProgramme = await prismaSeanceEntrainementRepository.recupererToutParIdProgramme(idProgramme)
       expect(listeSeanceEntrainementParProgramme).toHaveLength(2)
       expect(listeSeanceEntrainementParProgramme.at(1)?.id).toEqual("f81d74a5-e93b-4e4c-8d4d-69b89654ffe1")
-      expect(listeSeanceEntrainementParProgramme.at(1)?.dateSeance).toEqual("1993-06-12T00:00:00.000Z")
     })
   })
 

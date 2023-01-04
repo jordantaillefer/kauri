@@ -57,6 +57,5 @@ export class SeanceEntrainementController {
 function presenterEnSeanceEntrainementContrat(seanceEntrainement: SeanceEntrainement): SeanceEntrainementContrat {
   return {
     id: seanceEntrainement.id,
-    dateSeance: format(new Date(seanceEntrainement.dateSeance))
   }
 }

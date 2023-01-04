@@ -5,7 +5,7 @@ import { creerRequest, creerRequestPourCompteUtilisateur } from "../../../../tes
 import { ProgrammeBuilder } from "../../../../testUtils/builders/ProgrammeBuilder"
 import { SeanceEntrainementBuilder } from "../../../../testUtils/builders/SeanceEntrainementBuilder"
 import { SeanceEntrainement } from "../../../domain/SeanceEntrainement"
-import { container } from "api"
+import { container, SeanceEntrainementContrat } from "api"
 
 describe("SeanceEntrainementController", () => {
   describe("#creerSeanceEntrainement", () => {
@@ -47,11 +47,9 @@ describe("SeanceEntrainementController", () => {
           .withSeancesEntrainement(
             new SeanceEntrainementBuilder()
               .withId("518a5f8a-045f-44bc-a41f-85cfcea227d8")
-              .withDateSeance("1997-03-8")
               .build(),
             new SeanceEntrainementBuilder()
               .withId("4fda6f55-9316-4c41-abca-9f2064f8ea08")
-              .withDateSeance("1993-06-12")
               .build()
           )
           .build()
@@ -69,12 +67,10 @@ describe("SeanceEntrainementController", () => {
         // Assert
         expect(result.reasonPhrase).toEqual(ReasonPhrases.OK)
 
-        const listeSeanceEntrainement = result.data as SeanceEntrainement[]
+        const listeSeanceEntrainement = result.data as SeanceEntrainementContrat[]
         expect(listeSeanceEntrainement).toHaveLength(2)
         expect(listeSeanceEntrainement.at(0)?.id).toEqual("4fda6f55-9316-4c41-abca-9f2064f8ea08")
-        expect(listeSeanceEntrainement.at(0)?.dateSeance).toEqual("12/06/1993")
         expect(listeSeanceEntrainement.at(1)?.id).toEqual("518a5f8a-045f-44bc-a41f-85cfcea227d8")
-        expect(listeSeanceEntrainement.at(1)?.dateSeance).toEqual("08/03/1997")
       })
     })
   })

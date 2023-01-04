@@ -64,11 +64,6 @@ const ConsulterProgramme = () => {
 
   const [selectedItemIndex, setSelectedItemIndex] = useState(0)
 
-  function formatDateSeance(dateSeance: string): string {
-    const data = dateSeance.split("/")
-    return `${data[0]}/${data[1]}`
-  }
-
   return (
     <>
       <div className="container px-4 md:px-8 flex flex-col flex-grow">
@@ -81,7 +76,7 @@ const ConsulterProgramme = () => {
                 key={seanceEntrainement.id}
                 onClick={() => setSelectedItemIndex(index)}
                 className={`w-16 h-16 mr-2 md:mr-4 font-bold bg-primary text-white rounded-md flex justify-center items-center shadow-md ${index === selectedItemIndex ? "bg-red-900" : ""}`}>
-                {formatDateSeance(seanceEntrainement.dateSeance)}
+                J{index + 1}
               </button>
             })
           }

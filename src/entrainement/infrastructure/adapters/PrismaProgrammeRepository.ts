@@ -65,14 +65,12 @@ export class PrismaProgrammeRepository implements ProgrammeRepository {
 function convertirEnSeanceEntrainementModel(seanceEntrainement: SeanceEntrainement): Omit<SeanceEntrainementModel, "idProgramme"> {
   return {
     id: seanceEntrainement.id,
-    dateSeance: seanceEntrainement.dateSeance
   }
 }
 
 function convertirEnSeanceEntrainement(seanceEntrainementModel: SeanceEntrainementModel): SeanceEntrainement {
   return SeanceEntrainement.creerSeanceEntrainement({
     id: seanceEntrainementModel.id,
-    dateSeance: new Date(seanceEntrainementModel.dateSeance)
   })
 }
 

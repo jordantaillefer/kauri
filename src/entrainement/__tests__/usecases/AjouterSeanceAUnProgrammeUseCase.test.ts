@@ -31,7 +31,6 @@ describe("AjouterSeanceAUnProgrammeUseCase", () => {
       expect(programmeRepository.recupererParIdPourLUtilisateur)
       expect(seanceEntrainementRepository.creerSeanceEntrainement).toHaveBeenNthCalledWith(1, idProgramme, seanceEntrainementCaptor)
       expect(seanceEntrainementCaptor.value.id).toBeDefined()
-      expect(seanceEntrainementCaptor.value.dateSeance).toBeDefined()
     })
   })
 })

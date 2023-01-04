@@ -16,9 +16,6 @@ export class PrismaSeanceEntrainementRepository implements SeanceEntrainementRep
     const listeSeanceEntrainement = await prisma.seanceEntrainement.findMany({
       where: {
         idProgramme
-      },
-      orderBy: {
-        dateSeance: "asc"
       }
     })
 
@@ -43,14 +40,12 @@ export class PrismaSeanceEntrainementRepository implements SeanceEntrainementRep
 const convertirEnModel = (idProgramme: string, seanceEntrainement: SeanceEntrainement): SeanceEntrainementModel => {
   return {
     id: seanceEntrainement.id,
-    dateSeance: seanceEntrainement.dateSeance,
     idProgramme: idProgramme
   }
 }
 
 const convertirEnSeanceEntrainement = (seanceEntrainementModel: SeanceEntrainementModel): SeanceEntrainement => {
   return SeanceEntrainement.creerSeanceEntrainement({
-    id: seanceEntrainementModel.id,
-    dateSeance: new Date(seanceEntrainementModel.dateSeance)
+    id: seanceEntrainementModel.id
   })
 }

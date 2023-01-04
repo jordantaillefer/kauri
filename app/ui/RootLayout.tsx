@@ -16,5 +16,6 @@ export function RootLayout({ children, authenticated }: RootLayoutProps) {
         {children}
       </main>
 
-    </div>)
+    </div>
+  )
 }

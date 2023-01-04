@@ -26,6 +26,5 @@ describe("CreerProgrammeUseCase", () => {
     expect(programmeCaptor.value.idUtilisateur).toEqual("idUtilisateur")
     expect(programmeCaptor.value.seancesEntrainement).toHaveLength(1)
     expect(programmeCaptor.value.seancesEntrainement.at(0)?.id).toBeDefined()
-    expect(programmeCaptor.value.seancesEntrainement.at(0)?.dateSeance).toEqual(format(new Date()))
   })
 })

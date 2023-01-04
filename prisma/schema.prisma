@@ -23,7 +23,6 @@ model Programme {
 
 model SeanceEntrainement {
   id          String    @id
-  dateSeance  String
   programme   Programme @relation(fields: [idProgramme], references: [id])
   idProgramme String
 }
