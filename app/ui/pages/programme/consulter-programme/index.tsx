@@ -1,6 +1,6 @@
 import { PlusIcon } from "@heroicons/react/24/solid"
 import { ActionFunction, DataFunctionArgs, LoaderFunction } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { Form, useLoaderData } from "@remix-run/react"
 import { useState } from "react"
 import invariant from "tiny-invariant"
 
@@ -86,14 +86,18 @@ const ConsulterProgramme = () => {
             })
           }
 
-          <SubmitButton value="ajouter-seance">
-            <PlusIcon className="h-10 w-10" />
-          </SubmitButton>
+          <Form method="post">
+            <SubmitButton value="ajouter-seance">
+              <PlusIcon className="h-10 w-10" />
+            </SubmitButton>
+          </Form>
         </div>
         <div className="flex">
-          <SubmitButton value="ajouter-exercice">
-            <PlusIcon className="h-10 w-10" />
-          </SubmitButton>
+          <Form method="post">
+            <SubmitButton value="ajouter-exercice">
+              <PlusIcon className="h-10 w-10" />
+            </SubmitButton>
+          </Form>
         </div>
       </div>
 

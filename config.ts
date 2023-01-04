@@ -1,11 +1,13 @@
 import convict from "convict"
 import dotenv from "dotenv"
+import dotenvExpand from "dotenv-expand"
 import { join } from "path"
 
 const env = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : ""
 const envPath = join(__dirname, `.env${env}`)
 
-dotenv.config({ path: envPath })
+const envVars = dotenv.config({ path: envPath })
+dotenvExpand.expand(envVars)
 
 const config = convict({
   baseUrl: {

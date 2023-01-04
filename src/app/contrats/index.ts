@@ -1,2 +1,2 @@
 export * from "./ProgrammeContrat"
-export { SeanceEntrainementContrat } from "./SeanceEntrainementContrat"
+export * from "./SeanceEntrainementContrat"
