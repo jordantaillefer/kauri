@@ -15,6 +15,7 @@
     "test": "NODE_ENV=test vitest --threads false"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
     "@prisma/client": "4.5.0",
     "@remix-run/node": "^1.7.5",

@@ -9,7 +9,10 @@
     :root {
         --gap: 2rem;
         --max-column-count: 4;
-        --grid-item--min-width: 15rem;
+        --grid-item--min-width--sm: 4rem;
+        --grid-item--min-width--md: 8rem;
+        --grid-item--min-width--xl: 12rem;
+        --grid-item--min-width: 16rem;
         --main-padding: max(5vw, 2rem);
 
         --max-number-of-gaps-in-row: calc(var(--max-column-count) - 1);

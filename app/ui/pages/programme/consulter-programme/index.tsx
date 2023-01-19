@@ -6,8 +6,10 @@ import invariant from "tiny-invariant"
 
 import { container, ProgrammeContrat, SeanceEntrainementContrat } from "api"
 import { H2Title } from "~/ui/molecules/H2Title"
+import { PrimaryButton } from "~/ui/molecules/PrimaryButton"
 import { SubmitButton } from "~/ui/molecules/SubmitButton"
 import { FooterProgramme } from "~/ui/organisms/FooterProgramme"
+import { AjouterExerciceModal } from "~/ui/pages/programme/consulter-programme/AjouterExerciceModal"
 
 const loaderFn: LoaderFunction = async ({ request, params }: DataFunctionArgs) => {
   invariant(params.programmeId, "expected params.programmeId")
@@ -64,6 +66,16 @@ const ConsulterProgramme = () => {
 
   const [selectedItemIndex, setSelectedItemIndex] = useState(0)
 
+  let [isOpen, setIsOpen] = useState(false)
+
+  function closeModal() {
+    setIsOpen(false)
+  }
+
+  function openModal() {
+    setIsOpen(true)
+  }
+
   return (
     <>
       <div className="container px-4 md:px-8 flex flex-col flex-grow">
@@ -88,13 +100,13 @@ const ConsulterProgramme = () => {
           </Form>
         </div>
         <div className="flex">
-          <Form method="post">
-            <SubmitButton value="ajouter-exercice">
-              <PlusIcon className="h-10 w-10" />
-            </SubmitButton>
-          </Form>
+          <PrimaryButton onClick={openModal}>
+            Ajouter un exercice
+          </PrimaryButton>
         </div>
       </div>
+
+      <AjouterExerciceModal show={isOpen} onClose={closeModal} />
 
       <FooterProgramme selectedItemId={listeSeanceEntrainement[selectedItemIndex]?.id || ""} />
     </>

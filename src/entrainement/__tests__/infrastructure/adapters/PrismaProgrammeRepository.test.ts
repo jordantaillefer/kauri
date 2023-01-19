@@ -162,8 +162,7 @@ describe("PrismaProgrammeRepository", () => {
             .withUserId("idUtilisateur")
             .withNomProgramme("nomProgramme")
             .withSeancesEntrainement(
-              new SeanceEntrainementBuilder()
-                .build()
+              new SeanceEntrainementBuilder().build()
             )
             .build()
           await prismaProgrammeRepository.creerProgramme(programme)
