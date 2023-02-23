@@ -37,7 +37,7 @@ export const AjouterExerciceModal = (props: { show: boolean, onClose: () => void
                 Ajouter un exercice
               </Dialog.Title>
               <div className="mt-2">
-                <div className="grid gap-[var(--gap)] grid-cols-responsive-sm py-[max(5vw,_2rem)]">
+                <div className="grid gap-[var(--gap)] grid-cols-responsive-sm">
                   <Link to="/programme/creer-programme"
                         className="grid place-items-center h-20 p-2 rounded-md bg-teal-700 bg-gradient-to-tr from-primary-lighter to-primary shadow-lg shadow-primary/50">
                     ICONE1

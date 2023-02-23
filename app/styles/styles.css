@@ -1147,6 +1147,11 @@ body {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-primary-darker {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity));
+}
+
 .text-primary {
   --tw-text-opacity: 1;
   color: rgb(16 185 129 / var(--tw-text-opacity));
@@ -1159,11 +1164,6 @@ body {
 
 .text-transparent {
   color: transparent;
-}
-
-.text-primary-darker {
-  --tw-text-opacity: 1;
-  color: rgb(4 120 87 / var(--tw-text-opacity));
 }
 
 .text-gray-900 {

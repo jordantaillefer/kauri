@@ -5,6 +5,6 @@ interface H2TitleProps {
 }
 export function H2Title({ children }: H2TitleProps) {
   return (
-    <h2 className="text-2xl text-primary mb-8">{children}</h2>
+    <h2 className="text-2xl text-primary-darker font-bold mb-8">{children}</h2>
   )
 }
