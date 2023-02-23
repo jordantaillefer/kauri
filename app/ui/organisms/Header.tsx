@@ -4,7 +4,7 @@ import { AccueilButton } from "~/ui/organisms/AccueilButton"
 
 export function Header(props: { authenticated: boolean }) {
   return (
-    <header className="container p-0">
+    <header className="container">
       <div
         className="flex items-center justify-between h-20 md:justify-start md:space-x-6 mb-4 md:mb-10">
         <AccueilButton />
