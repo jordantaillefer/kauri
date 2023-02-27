@@ -57,26 +57,12 @@ describe("PrismaProgrammeRepository", () => {
     })
     it("S'il n'existe pas, doit renvoyer une erreur", async () => {
       // Arrange
+      expect.assertions(2)
       const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("idUtilisateur").withNomProgramme("nomProgramme").build()
       await prismaProgrammeRepository.creerProgramme(programme)
       try {
         // Act
         await prismaProgrammeRepository.recupererParId("5a46ae9c-b075-4665-9dc5-8d2793871a1e")
-        throw new TestFailedError()
-      } catch (error: unknown) {
-        // Assert
-        expect(error).toBeInstanceOf(ProgrammeNotFoundError)
-        expect((error as ProgrammeNotFoundError).reasonPhrase).toEqual(ReasonPhrases.NOT_FOUND)
-      }
-    })
-    it("S'il n'appartient pas à l'utilisateur, doit renvoyer une erreur", async () => {
-      // Arrange
-      const programme: Programme = new ProgrammeBuilder().withId("54d9eb29-5410-4428-936f-9d252799e4ce").withUserId("idUtilisateur").withNomProgramme("nomProgramme").build()
-      await prismaProgrammeRepository.creerProgramme(programme)
-      try {
-        // Act
-        await prismaProgrammeRepository.recupererParId("5a46ae9c-b075-4665-9dc5-8d2793871a1e")
-        throw new TestFailedError()
       } catch (error: unknown) {
         // Assert
         expect(error).toBeInstanceOf(ProgrammeNotFoundError)

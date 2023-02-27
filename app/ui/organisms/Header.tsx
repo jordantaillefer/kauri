@@ -1,6 +1,6 @@
 import { SeConnecterButton } from "~/ui/molecules/SeConnecterButton"
 import { SeDeconnecterButton } from "~/ui/molecules/SeDeconnecterButton"
-import { AccueilButton } from "~/ui/organisms/AccueilButton"
+import { AccueilButton } from "~/ui/molecules/AccueilButton"
 
 export function Header(props: { authenticated: boolean }) {
   return (

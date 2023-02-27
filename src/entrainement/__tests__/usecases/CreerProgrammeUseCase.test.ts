@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { captor, CaptorMatcher, mock, MockProxy } from "vitest-mock-extended"
 
-import { format } from "../../../app/DateFormatter"
 import { Programme } from "../../domain/Programme"
 import { ProgrammeRepository } from "../../domain/ports/ProgrammeRepository"
 import { CreerProgrammeUseCase } from "../../usecases/CreerProgrammeUseCase"

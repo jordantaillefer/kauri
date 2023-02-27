@@ -13,7 +13,7 @@ datasource db {
 model User {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Programme {
@@ -21,6 +21,12 @@ model Programme {
   nomProgramme        String
   idUtilisateur       String
   seancesEntrainement SeanceEntrainement[]
+}
+
+model Seance {
+  id            String @id
+  nomSeance     String
+  idUtilisateur String
 }
 
 model SeanceEntrainement {
