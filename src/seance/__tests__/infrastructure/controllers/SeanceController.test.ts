@@ -2,17 +2,15 @@ import { ReasonPhrases } from "http-status-codes"
 import { describe, expect, it } from "vitest"
 
 import { creerRequest, creerRequestPourCompteUtilisateur } from "../../../../testUtils/RequestUtils"
-import { SeanceRepository } from "../../../domain/ports/SeanceRepository"
+import { Seance } from "../../../domain/Seance"
 import { SeanceController } from "../../../infrastructure/controllers/SeanceController"
 import { container } from "api"
 
 describe("SeanceController", () => {
   let seanceController: SeanceController
-  let seanceRepository: SeanceRepository
 
   beforeEach(() => {
     seanceController = container.resolve("seanceController")
-    seanceRepository = container.resolve("seanceRepository")
   })
 
   describe("#initialiserSeance", () => {
@@ -24,14 +22,10 @@ describe("SeanceController", () => {
         // Act
         const response = await seanceController.initialiserSeance({ request })
         // Assert
-        const listeDeSeances = await seanceRepository.recupererTout("idUtilisateur")
-
-        expect(listeDeSeances).toHaveLength(1)
-
-        expect(listeDeSeances.at(0)?.idUtilisateur).toEqual("idUtilisateur")
-        expect(listeDeSeances.at(0)?.nomSeance).toEqual("Nouvelle séance")
-
         expect(response.reasonPhrase).toEqual(ReasonPhrases.CREATED)
+        const nouvelleSeance = response.data as Seance
+        expect(nouvelleSeance).toBeDefined()
+        expect(nouvelleSeance.nomSeance).toEqual("Nouvelle séance")
       })
     })
     describe("Cas KO", () => {

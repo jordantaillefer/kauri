@@ -15,22 +15,6 @@ import {
 import { RecupererCompteUtilisateurUseCase } from "./authentification/usecases/RecupererCompteUtilisateurUseCase"
 import { SeConnecterUseCase } from "./authentification/usecases/SeConnecterUseCase"
 import { SeDeconnecterUseCase } from "./authentification/usecases/SeDeconnecterUseCase"
-import { ProgrammeRepository } from "./entrainement/domain/ports/ProgrammeRepository"
-import { SeanceEntrainementRepository } from "./entrainement/domain/ports/SeanceEntrainementRepository"
-import { PrismaProgrammeRepository } from "./entrainement/infrastructure/adapters/PrismaProgrammeRepository"
-import {
-  PrismaSeanceEntrainementRepository
-} from "./entrainement/infrastructure/adapters/PrismaSeanceEntrainementRepository"
-import { ProgrammeController } from "./entrainement/infrastructure/controllers/ProgrammeController"
-import { SeanceEntrainementController } from "./entrainement/infrastructure/controllers/SeanceEntrainementController"
-import { AjouterSeanceAUnProgrammeUseCase } from "./entrainement/usecases/AjouterSeanceAUnProgrammeUseCase"
-import { CreerProgrammeUseCase } from "./entrainement/usecases/CreerProgrammeUseCase"
-import { ListerProgrammesUseCase } from "./entrainement/usecases/ListerProgrammesUseCase"
-import {
-  ListerSeanceEntrainementPourUnProgrammeUseCase
-} from "./entrainement/usecases/ListerSeanceEntrainementPourUnProgrammeUseCase"
-import { RecupererDetailProgrammeUseCase } from "./entrainement/usecases/RecupererDetailProgrammeUseCase"
-import { SupprimerSeanceEntrainementUseCase } from "./entrainement/usecases/SupprimerSeanceEntrainementUseCase"
 import { SeanceRepository } from "./seance/domain/ports/SeanceRepository"
 import { PrismaSeanceRepository } from "./seance/infrastructure/adapters/PrismaSeanceRepository"
 import { SeanceController } from "./seance/infrastructure/controllers/SeanceController"
@@ -51,33 +35,15 @@ type CompteUtilisateurDependencies = {
   compteUtilisateurController: CompteUtilisateurController,
 }
 
-type ProgrammeDependencies = {
-  creerProgrammeUseCase: CreerProgrammeUseCase
-  listerProgrammeUseCase: ListerProgrammesUseCase
-  recupererDetailProgrammeUseCase: RecupererDetailProgrammeUseCase
-  programmeController: ProgrammeController
-  programmeRepository: ProgrammeRepository
-}
-
 type SeanceDependencies = {
   initialiserSeanceUseCase: InitialiserSeanceUseCase
   seanceController: SeanceController
   seanceRepository: SeanceRepository
 }
 
-type SeanceEntrainementDependencies = {
-  listerSeanceEntrainementPourUnProgrammeUseCase: ListerSeanceEntrainementPourUnProgrammeUseCase
-  ajouterSeanceAUnProgrammeUseCase: AjouterSeanceAUnProgrammeUseCase
-  supprimerSeanceEntrainementUseCase: SupprimerSeanceEntrainementUseCase
-  seanceEntrainementController: SeanceEntrainementController
-  seanceEntrainementRepository: SeanceEntrainementRepository
-}
-
 export type ContainerDependencies = ApplicationDependencies
   & CompteUtilisateurDependencies
-  & ProgrammeDependencies
   & SeanceDependencies
-  & SeanceEntrainementDependencies
 
 let container: AwilixContainer<ContainerDependencies>
 
@@ -111,23 +77,9 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
     compteUtilisateurController: asClass(CompteUtilisateurController)
   })
   container.register({
-    creerProgrammeUseCase: asClass(CreerProgrammeUseCase),
-    listerProgrammeUseCase: asClass(ListerProgrammesUseCase),
-    recupererDetailProgrammeUseCase: asClass(RecupererDetailProgrammeUseCase),
-    programmeController: asClass(ProgrammeController),
-    programmeRepository: asClass(PrismaProgrammeRepository)
-  })
-  container.register({
     initialiserSeanceUseCase: asClass(InitialiserSeanceUseCase),
     seanceRepository: asClass(PrismaSeanceRepository),
     seanceController: asClass(SeanceController)
-  })
-  container.register({
-    listerSeanceEntrainementPourUnProgrammeUseCase: asClass(ListerSeanceEntrainementPourUnProgrammeUseCase),
-    ajouterSeanceAUnProgrammeUseCase: asClass(AjouterSeanceAUnProgrammeUseCase),
-    supprimerSeanceEntrainementUseCase: asClass(SupprimerSeanceEntrainementUseCase),
-    seanceEntrainementController: asClass(SeanceEntrainementController),
-    seanceEntrainementRepository: asClass(PrismaSeanceEntrainementRepository)
   })
 }
 

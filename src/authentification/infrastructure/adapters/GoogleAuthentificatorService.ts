@@ -28,7 +28,7 @@ export class GoogleAuthentificatorService implements AuthentificationService {
           clientID: config.google.clientId,
           clientSecret: config.google.clientSecret,
           scope: ["openid", "email", "profile"],
-          callbackURL: `${config.baseUrl}/auth/${config.authenticatorStrategy}/callback`,
+          callbackURL: `${config.baseUrl}/authentication/${config.authenticatorStrategy}/callback`,
           prompt: "select_account"
         },
         this.handleSocialAuthCallback
@@ -39,7 +39,7 @@ export class GoogleAuthentificatorService implements AuthentificationService {
   async seConnecter(request: Request): Promise<CompteUtilisateur> {
     const callbackProfile = await this.authenticator.authenticate(config.authenticatorStrategy, request,
       {
-        successRedirect: "/auth/new",
+        successRedirect: "/authentication/new",
         failureRedirect: "/"
       })
 
