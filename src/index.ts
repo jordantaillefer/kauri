@@ -31,6 +31,10 @@ import {
 } from "./entrainement/usecases/ListerSeanceEntrainementPourUnProgrammeUseCase"
 import { RecupererDetailProgrammeUseCase } from "./entrainement/usecases/RecupererDetailProgrammeUseCase"
 import { SupprimerSeanceEntrainementUseCase } from "./entrainement/usecases/SupprimerSeanceEntrainementUseCase"
+import { SeanceRepository } from "./seance/domain/ports/SeanceRepository"
+import { PrismaSeanceRepository } from "./seance/infrastructure/adapters/PrismaSeanceRepository"
+import { SeanceController } from "./seance/infrastructure/controllers/SeanceController"
+import { InitialiserSeanceUseCase } from "./seance/usecases/InitialiserSeanceUseCase"
 
 type ApplicationDependencies = {
   sessionManager: SessionManager
@@ -55,6 +59,12 @@ type ProgrammeDependencies = {
   programmeRepository: ProgrammeRepository
 }
 
+type SeanceDependencies = {
+  initialiserSeanceUseCase: InitialiserSeanceUseCase
+  seanceController: SeanceController
+  seanceRepository: SeanceRepository
+}
+
 type SeanceEntrainementDependencies = {
   listerSeanceEntrainementPourUnProgrammeUseCase: ListerSeanceEntrainementPourUnProgrammeUseCase
   ajouterSeanceAUnProgrammeUseCase: AjouterSeanceAUnProgrammeUseCase
@@ -63,10 +73,11 @@ type SeanceEntrainementDependencies = {
   seanceEntrainementRepository: SeanceEntrainementRepository
 }
 
-export type ContainerDependencies = ApplicationDependencies 
+export type ContainerDependencies = ApplicationDependencies
   & CompteUtilisateurDependencies
-  & ProgrammeDependencies 
-  & SeanceEntrainementDependencies 
+  & ProgrammeDependencies
+  & SeanceDependencies
+  & SeanceEntrainementDependencies
 
 let container: AwilixContainer<ContainerDependencies>
 
@@ -105,6 +116,11 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
     recupererDetailProgrammeUseCase: asClass(RecupererDetailProgrammeUseCase),
     programmeController: asClass(ProgrammeController),
     programmeRepository: asClass(PrismaProgrammeRepository)
+  })
+  container.register({
+    initialiserSeanceUseCase: asClass(InitialiserSeanceUseCase),
+    seanceRepository: asClass(PrismaSeanceRepository),
+    seanceController: asClass(SeanceController)
   })
   container.register({
     listerSeanceEntrainementPourUnProgrammeUseCase: asClass(ListerSeanceEntrainementPourUnProgrammeUseCase),

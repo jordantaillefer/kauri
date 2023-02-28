@@ -1,7 +1,9 @@
-import { Seance } from "../../domain/Seance"
-import { prisma } from "../../../db/prisma"
 import { Seance as SeanceModel } from "@prisma/client"
+
+import { prisma } from "../../../db/prisma"
+import { IdUtilisateur, Seance } from "../../domain/Seance"
 import { SeanceNotFoundError } from "../../domain/errors/SeanceNotFoundError"
+import { SeanceRepository } from "../../domain/ports/SeanceRepository"
 
 function convertirEnModel(seance: Seance): SeanceModel {
   return {
@@ -19,7 +21,7 @@ function convertirEnSeance(seanceModel: SeanceModel): Seance {
   })
 }
 
-export class PrismaSeanceRepository {
+export class PrismaSeanceRepository implements SeanceRepository {
   async creerSeance(seance: Seance) {
     const seanceModel = convertirEnModel(seance)
     await prisma.seance.create({
@@ -38,7 +40,13 @@ export class PrismaSeanceRepository {
     if (seanceModel === null) {
       throw new SeanceNotFoundError()
     }
-    const seance = convertirEnSeance(seanceModel)
-    return seance
+    return convertirEnSeance(seanceModel)
+  }
+
+  async recupererTout(idUtilisateur: IdUtilisateur): Promise<Seance[]> {
+    const listeDeProgrammesModels = await prisma.seance.findMany({
+      where: { idUtilisateur }
+    })
+    return listeDeProgrammesModels.map(convertirEnSeance)
   }
 }

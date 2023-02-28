@@ -2,25 +2,25 @@ import { describe, expect, it } from "vitest"
 import { captor, CaptorMatcher, mock, MockProxy } from "vitest-mock-extended"
 
 import { Seance } from "../../domain/Seance"
-import { CreerSeanceRepository, CreerSeanceUseCase } from "../../usecases/CreerSeanceUseCase"
+import { InitialiserSeanceRepository, InitialiserSeanceUseCase } from "../../usecases/InitialiserSeanceUseCase"
 
-describe("CreerSeanceUseCase", () => {
-  let creerSeanceRepository: MockProxy<CreerSeanceRepository>
-  let creerSeanceUseCase: CreerSeanceUseCase
+describe("InitialiserSeanceUseCase", () => {
+  let initialiserSeanceRepository: MockProxy<InitialiserSeanceRepository>
+  let initialiserSeanceUseCase: InitialiserSeanceUseCase
 
   beforeEach(() => {
-    creerSeanceRepository = mock<CreerSeanceRepository>()
-    creerSeanceUseCase = new CreerSeanceUseCase({ creerSeanceRepository })
+    initialiserSeanceRepository = mock<InitialiserSeanceRepository>()
+    initialiserSeanceUseCase = new InitialiserSeanceUseCase({ initialiserSeanceRepository })
   })
-  it("doit créer le creerSeance pour un utilisateur", async () => {
+  it("doit créer la séance", async () => {
     // Arrange
     const creerSeanceCaptor: CaptorMatcher<Seance> = captor()
     // Act
-    await creerSeanceUseCase.execute("idUtilisateur", "nomSeance")
+    await initialiserSeanceUseCase.execute("idUtilisateur")
     // Assert
-    expect(creerSeanceRepository.creerSeance).toHaveBeenNthCalledWith(1, creerSeanceCaptor)
+    expect(initialiserSeanceRepository.creerSeance).toHaveBeenNthCalledWith(1, creerSeanceCaptor)
     expect(creerSeanceCaptor.value.id).toBeDefined()
-    expect(creerSeanceCaptor.value.nomSeance).toEqual("nomSeance")
+    expect(creerSeanceCaptor.value.nomSeance).toEqual("Nouvelle séance")
     expect(creerSeanceCaptor.value.idUtilisateur).toEqual("idUtilisateur")
   })
 })

@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest"
 
 import { creerRequest, creerRequestPourCompteUtilisateur } from "../../../../testUtils/RequestUtils"
 import { ProgrammeBuilder } from "../../../../testUtils/builders/ProgrammeBuilder"
-import { SeanceEntrainementBuilder } from "../../../../testUtils/builders/SeanceEntrainementBuilder"
 import { Programme } from "../../../domain/Programme"
 import { ProgrammeRepository } from "../../../domain/ports/ProgrammeRepository"
 import { ProgrammeController } from "../../../infrastructure/controllers/ProgrammeController"

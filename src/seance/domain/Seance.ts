@@ -1,11 +1,11 @@
 import { v4 as uuid } from "uuid"
 
-type SeanceId = string
-type IdUtilisateur = string
-type NomSeance = string
+export type IdSeance = string
+export type IdUtilisateur = string
+export type NomSeance = string
 
 export class Seance {
-  _id: SeanceId
+  _id: IdSeance
   _idUtilisateur: IdUtilisateur
   _nomSeance: NomSeance
 
@@ -13,7 +13,7 @@ export class Seance {
                         id,
                         idUtilisateur,
                         nomSeance
-                      }: { id: SeanceId, idUtilisateur: IdUtilisateur, nomSeance: NomSeance }) {
+                      }: { id: IdSeance, idUtilisateur: IdUtilisateur, nomSeance: NomSeance }) {
     this._id = id
     this._idUtilisateur = idUtilisateur
     this._nomSeance = nomSeance
@@ -31,7 +31,7 @@ export class Seance {
     return this._nomSeance
   }
 
-  static creerSeance({ id, idUtilisateur, nomSeance }: { id?: SeanceId, idUtilisateur: IdUtilisateur, nomSeance: NomSeance }) {
+  static creerSeance({ id, idUtilisateur, nomSeance }: { id?: IdSeance, idUtilisateur: IdUtilisateur, nomSeance: NomSeance }) {
     return new Seance({ id: id || uuid(), idUtilisateur, nomSeance })
   }
 }
