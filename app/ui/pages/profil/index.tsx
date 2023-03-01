@@ -1,13 +1,15 @@
 import type { ActionFunction, LoaderFunction, TypedResponse } from "@remix-run/node"
 import { json, redirect } from "@remix-run/node"
+import { Link, useLoaderData } from "@remix-run/react"
 
-import { SeanceContrat } from "../../../../src/app/contrats/SeanceContrat"
-import { container } from "api"
+import { container, SeanceContrat } from "api"
 import { H2Title } from "~/ui/atoms/H2Title"
 import { CreerSeanceButton } from "~/ui/molecules/CreerSeanceButton"
 
-export const loader: LoaderFunction = async ({ request }): Promise<TypedResponse<any[]>> => {
-  return json([])
+export const loader: LoaderFunction = async ({ request }): Promise<TypedResponse<{ listeSeance: SeanceContrat[] }>> => {
+  const result = await container.resolve("seanceController").listerSeance({ request })
+  const listeSeance = result.data as SeanceContrat[]
+  return json({ listeSeance })
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -17,10 +19,22 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export default function Profil() {
+  const { listeSeance } = useLoaderData<{ listeSeance: SeanceContrat[] }>()
   return (
     <div className="container">
       <H2Title>Liste des séances</H2Title>
       <div>
+        <ul>
+          {
+            listeSeance.map(seance => (
+                <li key={seance.id}>
+                  <Link to={`/seance/${seance.id}`}>{seance.nomSeance}</Link>
+                </li>
+              )
+            )
+          }
+        </ul>
+
         <CreerSeanceButton />
       </div>
     </div>

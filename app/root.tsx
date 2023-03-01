@@ -13,7 +13,7 @@ import {
 import { ReasonPhrases } from "http-status-codes"
 import { ReactNode } from "react"
 
-import styles from "./styles/styles.css"
+import styles from "./styles/tailwind.css"
 import { container } from "api"
 import { RootLayout } from "~/ui/RootLayout"
 
@@ -21,7 +21,7 @@ type ContextType = { authenticated: boolean };
 
 export const links: LinksFunction = () => {
   return [
-    { rel: "stylesheet", href: styles }
+    { rel: "stylesheet", href: styles },
   ]
 }
 

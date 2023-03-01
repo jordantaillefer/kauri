@@ -19,6 +19,7 @@ import { SeanceRepository } from "./seance/domain/ports/SeanceRepository"
 import { PrismaSeanceRepository } from "./seance/infrastructure/adapters/PrismaSeanceRepository"
 import { SeanceController } from "./seance/infrastructure/controllers/SeanceController"
 import { InitialiserSeanceUseCase } from "./seance/usecases/InitialiserSeanceUseCase"
+import { ListerSeanceUseCase } from "./seance/usecases/ListerSeanceUseCase"
 
 type ApplicationDependencies = {
   sessionManager: SessionManager
@@ -36,6 +37,7 @@ type CompteUtilisateurDependencies = {
 }
 
 type SeanceDependencies = {
+  listerSeanceUseCase: ListerSeanceUseCase
   initialiserSeanceUseCase: InitialiserSeanceUseCase
   seanceController: SeanceController
   seanceRepository: SeanceRepository
@@ -78,6 +80,7 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
   })
   container.register({
     initialiserSeanceUseCase: asClass(InitialiserSeanceUseCase),
+    listerSeanceUseCase: asClass(ListerSeanceUseCase),
     seanceRepository: asClass(PrismaSeanceRepository),
     seanceController: asClass(SeanceController)
   })

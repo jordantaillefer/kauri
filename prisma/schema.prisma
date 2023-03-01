@@ -16,21 +16,14 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
-model Programme {
-  id                  String               @id
-  nomProgramme        String
-  idUtilisateur       String
-  seancesEntrainement SeanceEntrainement[]
-}
-
 model Seance {
   id            String @id
   nomSeance     String
   idUtilisateur String
 }
 
-model SeanceEntrainement {
-  id          String    @id
-  programme   Programme @relation(fields: [idProgramme], references: [id])
-  idProgramme String
+model Exercice {
+  id            String @id
+  nomExercice     String
+  categorie     String
 }

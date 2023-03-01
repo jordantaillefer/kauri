@@ -1,2 +1,2 @@
-export * from "./ProgrammeContrat"
+export * from "./SeanceContrat"
 export * from "./SeanceEntrainementContrat"
