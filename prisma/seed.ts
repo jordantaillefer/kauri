@@ -1,22 +1,7 @@
 import { PrismaClient } from "@prisma/client"
+import { CATEGORIE } from "../src/exercice/domain/categorie"
 
 const prisma = new PrismaClient()
-
-enum CATEGORIE {
-  PECTORAUX = "Pectoraux",
-  DELTOIDE = "Deltoïde",
-  TRAPÈZES = "Trapeze",
-  DORSAUX = "Dorsaux",
-  TRICEPS = "Triceps",
-  BICEPS = "Biceps",
-  AVANTBRAS = "Avant-bras",
-  ABDOMINAUX = "Abdominaux",
-  FESSIERS = "Fessiers",
-  QUADRICEPS = "Quadriceps",
-  ISCHIOJAMBIERS = "Ischio-jambiers",
-  MOLLETS = "Mollets",
-  LOMBAIRES = "Lombaires",
-}
 
 export const seedExercice = async () => {
   await Promise.all(

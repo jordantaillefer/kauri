@@ -15,11 +15,22 @@ import {
 import { RecupererCompteUtilisateurUseCase } from "./authentification/usecases/RecupererCompteUtilisateurUseCase"
 import { SeConnecterUseCase } from "./authentification/usecases/SeConnecterUseCase"
 import { SeDeconnecterUseCase } from "./authentification/usecases/SeDeconnecterUseCase"
+import { ExerciceRepository } from "./exercice/domain/ports/ExerciceRepository"
+import { PrismaExerciceRepository } from "./exercice/infrastructure/adapters/PrismaExerciceRepository"
+import { ExerciceController } from "./exercice/infrastructure/controllers/ExerciceController"
+import { ListerExerciceUseCase } from "./exercice/usecases/ListerExerciceUseCase"
+import { ExerciceSeanceRepository } from "./seance/domain/ports/ExerciceSeanceRepository"
+import { SeanceExerciceRepository } from "./seance/domain/ports/SeanceExerciceRepository"
 import { SeanceRepository } from "./seance/domain/ports/SeanceRepository"
+import { PrismaExerciceSeanceRepository } from "./seance/infrastructure/adapters/PrismaExerciceSeanceRepository"
+import { PrismaSeanceExerciceRepository } from "./seance/infrastructure/adapters/PrismaSeanceExerciceRepository"
 import { PrismaSeanceRepository } from "./seance/infrastructure/adapters/PrismaSeanceRepository"
+import { ExerciceSeanceController } from "./seance/infrastructure/controllers/ExerciceSeanceController"
 import { SeanceController } from "./seance/infrastructure/controllers/SeanceController"
+import { InitialiserExerciceSeanceUseCase } from "./seance/usecases/InitialiserExerciceSeanceUseCase"
 import { InitialiserSeanceUseCase } from "./seance/usecases/InitialiserSeanceUseCase"
 import { ListerSeanceUseCase } from "./seance/usecases/ListerSeanceUseCase"
+import { RecupererSeanceUseCase } from "./seance/usecases/RecupererSeanceUseCase"
 
 type ApplicationDependencies = {
   sessionManager: SessionManager
@@ -38,14 +49,26 @@ type CompteUtilisateurDependencies = {
 
 type SeanceDependencies = {
   listerSeanceUseCase: ListerSeanceUseCase
+  recupererSeanceUseCase: RecupererSeanceUseCase
   initialiserSeanceUseCase: InitialiserSeanceUseCase
   seanceController: SeanceController
   seanceRepository: SeanceRepository
+  initialiserExerciceSeanceUseCase: InitialiserExerciceSeanceUseCase
+  exerciceSeanceController: ExerciceSeanceController
+  exerciceSeanceRepository: ExerciceSeanceRepository
+  seanceExerciceRepository: SeanceExerciceRepository
+}
+
+type ExerciceDependencies = {
+  listerExerciceUseCase: ListerExerciceUseCase
+  exerciceRepository: ExerciceRepository
+  exerciceController: ExerciceController
 }
 
 export type ContainerDependencies = ApplicationDependencies
   & CompteUtilisateurDependencies
   & SeanceDependencies
+  & ExerciceDependencies
 
 let container: AwilixContainer<ContainerDependencies>
 
@@ -80,9 +103,19 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
   })
   container.register({
     initialiserSeanceUseCase: asClass(InitialiserSeanceUseCase),
+    recupererSeanceUseCase: asClass(RecupererSeanceUseCase),
     listerSeanceUseCase: asClass(ListerSeanceUseCase),
     seanceRepository: asClass(PrismaSeanceRepository),
-    seanceController: asClass(SeanceController)
+    seanceController: asClass(SeanceController),
+    exerciceSeanceController: asClass(ExerciceSeanceController),
+    exerciceSeanceRepository: asClass(PrismaExerciceSeanceRepository),
+    initialiserExerciceSeanceUseCase: asClass(InitialiserExerciceSeanceUseCase),
+    seanceExerciceRepository: asClass(PrismaSeanceExerciceRepository)
+  })
+  container.register({
+    listerExerciceUseCase: asClass(ListerExerciceUseCase),
+    exerciceRepository: asClass(PrismaExerciceRepository),
+    exerciceController: asClass(ExerciceController)
   })
 }
 

@@ -11,19 +11,29 @@ datasource db {
 }
 
 model User {
-  id        String   @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  id        String    @id
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now()) @updatedAt
 }
 
 model Seance {
-  id            String @id
-  nomSeance     String
-  idUtilisateur String
+  id              String           @id
+  nomSeance       String
+  idUtilisateur   String
+  exerciceSeances ExerciceSeance[]
 }
 
 model Exercice {
-  id            String @id
-  nomExercice     String
-  categorie     String
+  id          String @id
+  nomExercice String
+  categorie   String
+}
+
+model ExerciceSeance {
+  id          String @id
+  seance      Seance @relation(fields: [idSeance], references: [id])
+  idSeance    String
+  idExercice  String
+  nomExercice String
+  categorie   String
 }

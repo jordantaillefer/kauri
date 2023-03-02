@@ -6,7 +6,7 @@ import { join } from "path"
 const env = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : ""
 const envPath = join(__dirname, `.env${env}`)
 
-const envVars = dotenv.config({ path: envPath })
+const envVars = dotenv.config({ path: envPath, override: true })
 dotenvExpand.expand(envVars)
 
 const config = convict({

@@ -5,6 +5,8 @@ interface Dependencies {
   seanceRepository: ListerSeanceRepository
 }
 
+export interface ListerSeanceRepository extends Pick<SeanceRepository, "recupererTout"> {}
+
 export class ListerSeanceUseCase {
   private seanceRepository: ListerSeanceRepository
 
@@ -16,7 +18,4 @@ export class ListerSeanceUseCase {
   async execute(idUtilisateur: IdUtilisateur): Promise<Seance[]> {
     return this.seanceRepository.recupererTout(idUtilisateur)
   }
-}
-
-export interface ListerSeanceRepository extends Pick<SeanceRepository, "recupererTout"> {
 }

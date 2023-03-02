@@ -16,7 +16,7 @@ export class InitialiserSeanceUseCase {
 
   async execute(idUtilisateur: string): Promise<Seance> {
     const nomInitialSeance = "Nouvelle séance"
-    const seance = Seance.creerSeance({ idUtilisateur, nomSeance: nomInitialSeance })
+    const seance = Seance.creerSeance({ idUtilisateur, nomSeance: nomInitialSeance, exerciceSeances: [] })
     await this.initialiserSeanceRepository.creerSeance(seance)
     return seance
   }

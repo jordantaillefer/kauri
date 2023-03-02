@@ -22,7 +22,7 @@ export class PrismaCompteUtilisateurRepository implements CompteUtilisateurRepos
 }
 
 function convertirEnCompteUtilisateurModel(compteUtilisateur: CompteUtilisateur): UserModel {
-  return { id: compteUtilisateur.id }
+  return { id: compteUtilisateur.id, createdAt: null, updatedAt: null } // move this to domain
 }
 
 function convertirEnCompteUtilisateur(compteUtilisateurModel: UserModel) {
