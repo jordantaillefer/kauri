@@ -1,5 +1,5 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
-import { Form, useLoaderData } from "@remix-run/react"
+import { Form, Link, useLoaderData } from "@remix-run/react"
 import { FunctionComponent } from "react"
 import invariant from "tiny-invariant"
 
@@ -45,7 +45,9 @@ export const ModifierSeance: FunctionComponent = () => {
             {
               seance.exerciceSeances.map(exercice => {
                 return (
-                  <li key={exercice.id}>{exercice.nomExercice}</li>
+                  <li key={exercice.id}>
+                    <Link to={`${exercice.id}`}>{exercice.nomExercice}</Link>
+                  </li>
                 )
               })
             }

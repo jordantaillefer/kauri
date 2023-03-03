@@ -6,23 +6,35 @@ import { Controller } from "../../../app/decorators/ControllerDecorator"
 import { DoitEtreAuthentifie } from "../../../app/decorators/DoitEtreAuthentifieDecorator"
 import { ProduceServerResponse } from "../../../app/decorators/ProduceServerResponseDecorator"
 import { ExerciceSeance } from "../../domain/ExerciceSeance"
+import {
+  DefinirSerieExerciceSeanceUseCase,
+  SerieExerciceSeancePayload
+} from "../../usecases/DefinirSerieExerciceSeanceUseCase"
 import { InitialiserExerciceSeanceUseCase } from "../../usecases/InitialiserExerciceSeanceUseCase"
 import { RecupererExerciceSeanceUseCase } from "../../usecases/RecupererExerciceSeanceUseCase"
-import { ExerciceSeanceContrat } from "api"
+import { ExerciceSeanceContrat, SerieExerciceSeanceContrat } from "api"
+import { SerieExerciceSeance } from "../../domain/SerieExerciceSeance"
 
 interface Dependencies {
   initialiserExerciceSeanceUseCase: InitialiserExerciceSeanceUseCase
   recupererExerciceSeanceUseCase: RecupererExerciceSeanceUseCase
+  definirSerieExerciceSeanceUseCase: DefinirSerieExerciceSeanceUseCase
 }
 
 @Controller()
 export class ExerciceSeanceController {
   private initialiserExerciceSeanceUseCase: InitialiserExerciceSeanceUseCase
   private recupererExerciceSeanceUseCase: RecupererExerciceSeanceUseCase
+  private definirSerieExerciceSeanceUseCase: DefinirSerieExerciceSeanceUseCase
 
-  constructor({ initialiserExerciceSeanceUseCase, recupererExerciceSeanceUseCase }: Dependencies) {
+  constructor({
+                initialiserExerciceSeanceUseCase,
+                recupererExerciceSeanceUseCase,
+                definirSerieExerciceSeanceUseCase
+              }: Dependencies) {
     this.initialiserExerciceSeanceUseCase = initialiserExerciceSeanceUseCase
     this.recupererExerciceSeanceUseCase = recupererExerciceSeanceUseCase
+    this.definirSerieExerciceSeanceUseCase = definirSerieExerciceSeanceUseCase
   }
 
   @DoitEtreAuthentifie()
@@ -42,6 +54,21 @@ export class ExerciceSeanceController {
     const exerciceSeance = await this.recupererExerciceSeanceUseCase.execute(idSeance, idExerciceSeance)
     return success(presenterEnExerciceSeanceContrat(exerciceSeance))
   }
+
+  @DoitEtreAuthentifie()
+  @ProduceServerResponse()
+  async definirSerieExerciceSeance(serverRequest: ServerRequest<{ idSeance: string, idExerciceSeance: string, listeSerieExerciceSeance: SerieExerciceSeancePayload[] }>): Promise<ServerResponse<void>> {
+    invariant(serverRequest.compteUtilisateurConnecte)
+    const { idSeance, idExerciceSeance, listeSerieExerciceSeance } = serverRequest.payload
+    await this.definirSerieExerciceSeanceUseCase.execute(idSeance, idExerciceSeance, listeSerieExerciceSeance)
+    return success()
+  }
+}
+
+function presenterEnSerieExerciceSeanceContrat(serieExerciceSeance: SerieExerciceSeance): SerieExerciceSeanceContrat {
+  return {
+    repetitions: serieExerciceSeance.repetitions
+  }
 }
 
 function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): ExerciceSeanceContrat {
@@ -49,6 +76,7 @@ function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): Exerc
     id: exerciceSeance.id,
     nomExercice: exerciceSeance.nomExercice,
     categorie: exerciceSeance.categorie,
-    idExercice: exerciceSeance.idExercice
+    idExercice: exerciceSeance.idExercice,
+    listeSerieExerciceSeance: exerciceSeance.listeSerieExerciceSeance.map(presenterEnSerieExerciceSeanceContrat)
   }
 }

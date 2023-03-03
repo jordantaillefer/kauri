@@ -16,6 +16,7 @@ installGlobals()
 
 afterEach(async () => {
   await prisma.user.deleteMany()
+  await prisma.serieExerciceSeance.deleteMany()
   await prisma.exerciceSeance.deleteMany()
   await prisma.seance.deleteMany()
   await prisma.exercice.deleteMany()

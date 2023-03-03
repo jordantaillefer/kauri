@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest"
 import { CATEGORIE } from "../../../../exercice/domain/categorie"
 import { SeanceBuilder } from "../../../../testUtils/builders/SeanceBuilder"
 import { ExerciceSeanceBuilder } from "../../../application/builders/ExerciceSeanceBuilder"
+import { SerieExerciceSeanceBuilder } from "../../../application/builders/SerieExerciceSeanceBuilder"
 import { ExerciceSeance } from "../../../domain/ExerciceSeance"
 import { Seance } from "../../../domain/Seance"
 import { ExerciceSeanceNotFoundError } from "../../../domain/errors/ExerciceSeanceNotFoundError"
@@ -115,6 +116,64 @@ describe("PrismaExerciceSeanceRepository", () => {
         expect(error).toBeInstanceOf(ExerciceSeanceNotFoundError)
         expect((error as ExerciceSeanceNotFoundError).reasonPhrase).toEqual(ReasonPhrases.NOT_FOUND)
       }
+    })
+  })
+
+  describe("#ajouterSerieExerciceSeance", () => {
+    it("doit ajouter les series à un exercice de séance", async () => {
+      // Arrange
+      const serieExerciceSeance1 = new SerieExerciceSeanceBuilder()
+        .withId("64c21170-565a-4ad0-a8d1-e8756f02aafb")
+        .withRepetitions(10)
+        .build()
+      const serieExerciceSeance2 = new SerieExerciceSeanceBuilder()
+        .withId("58a7a312-74d6-4da0-bbd0-9bfe7a00ebf0")
+        .withRepetitions(12)
+        .build()
+      const seance = new SeanceBuilder()
+        .withId("6bc42156-b946-4128-b605-3b180765738f")
+        .build()
+      const exerciceSeance = new ExerciceSeanceBuilder()
+        .withId("0e2947f4-960d-4fa2-b3f4-3c1f63447527")
+        .withIdSeance("6bc42156-b946-4128-b605-3b180765738f")
+        .build()
+      await prismaSeanceRepository.creerSeance(seance)
+      await prismaExerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
+      exerciceSeance.definirSerie([serieExerciceSeance1, serieExerciceSeance2])
+      // Act
+      await prismaExerciceSeanceRepository.ajouterSerieExerciceSeance(exerciceSeance)
+      // Assert
+      const exerciceSeanceResult = await prismaExerciceSeanceRepository.recupererParIdSeanceEtParId("6bc42156-b946-4128-b605-3b180765738f", "0e2947f4-960d-4fa2-b3f4-3c1f63447527")
+      expect(exerciceSeanceResult.listeSerieExerciceSeance).toHaveLength(2)
+    })
+  })
+  describe("#supprimerSerieExerciceSeance", () => {
+    it("doit ajouter les series à un exercice de séance", async () => {
+      // Arrange
+      const serieExerciceSeance1 = new SerieExerciceSeanceBuilder()
+        .withId("64c21170-565a-4ad0-a8d1-e8756f02aafb")
+        .withRepetitions(10)
+        .build()
+      const serieExerciceSeance2 = new SerieExerciceSeanceBuilder()
+        .withId("58a7a312-74d6-4da0-bbd0-9bfe7a00ebf0")
+        .withRepetitions(12)
+        .build()
+      const seance = new SeanceBuilder()
+        .withId("6bc42156-b946-4128-b605-3b180765738f")
+        .build()
+      const exerciceSeance = new ExerciceSeanceBuilder()
+        .withId("0e2947f4-960d-4fa2-b3f4-3c1f63447527")
+        .withIdSeance("6bc42156-b946-4128-b605-3b180765738f")
+        .build()
+      await prismaSeanceRepository.creerSeance(seance)
+      await prismaExerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
+      exerciceSeance.definirSerie([serieExerciceSeance1, serieExerciceSeance2])
+      await prismaExerciceSeanceRepository.ajouterSerieExerciceSeance(exerciceSeance)
+      // Act
+      await prismaExerciceSeanceRepository.supprimerSerieExerciceSeance("0e2947f4-960d-4fa2-b3f4-3c1f63447527")
+      // Assert
+      const exerciceSeanceResult = await prismaExerciceSeanceRepository.recupererParIdSeanceEtParId("6bc42156-b946-4128-b605-3b180765738f", "0e2947f4-960d-4fa2-b3f4-3c1f63447527")
+      expect(exerciceSeanceResult.listeSerieExerciceSeance).toHaveLength(0)
     })
   })
 })

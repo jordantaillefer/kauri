@@ -30,10 +30,18 @@ model Exercice {
 }
 
 model ExerciceSeance {
-  id          String @id
-  seance      Seance @relation(fields: [idSeance], references: [id])
-  idSeance    String
-  idExercice  String
-  nomExercice String
-  categorie   String
+  id                   String                @id
+  seance               Seance                @relation(fields: [idSeance], references: [id])
+  serieExerciceSeances SerieExerciceSeance[]
+  idSeance             String
+  idExercice           String
+  nomExercice          String
+  categorie            String
+}
+
+model SerieExerciceSeance {
+  id               String         @id
+  exerciceSeance   ExerciceSeance @relation(fields: [idExerciceSeance], references: [id])
+  idExerciceSeance String
+  repetitions      Int
 }

@@ -1,5 +1,6 @@
 import { CATEGORIE } from "../../../exercice/domain/categorie"
 import { ExerciceSeance } from "../../domain/ExerciceSeance"
+import { SerieExerciceSeance } from "../../domain/SerieExerciceSeance"
 
 export class ExerciceSeanceBuilder {
   private id: string = "idExerciceSeance"
@@ -7,6 +8,7 @@ export class ExerciceSeanceBuilder {
   private idExercice: string = "idExercice"
   private nomExercice: string = "nomExercice"
   private categorie: CATEGORIE = CATEGORIE.ABDOMINAUX
+  private listeSerieExerciceSeance: SerieExerciceSeance[] = []
 
   withId(id: string): ExerciceSeanceBuilder {
     this.id = id
@@ -33,13 +35,20 @@ export class ExerciceSeanceBuilder {
     return this
   }
 
+  withListeSerieExerciceSeance(...listeSerieExerciceSeance: SerieExerciceSeance[]): ExerciceSeanceBuilder {
+    this.listeSerieExerciceSeance = listeSerieExerciceSeance
+    return this
+    
+  }
+
   build(): ExerciceSeance {
     return ExerciceSeance.creerExerciceSeance({
       id: this.id,
       idSeance: this.idSeance,
       idExercice: this.idExercice,
       nomExercice: this.nomExercice,
-      categorie: this.categorie
+      categorie: this.categorie,
+      listeSerieExerciceSeance: this.listeSerieExerciceSeance
     })
   }
 }
