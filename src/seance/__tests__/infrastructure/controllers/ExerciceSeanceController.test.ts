@@ -5,11 +5,12 @@ import { CATEGORIE } from "../../../../exercice/domain/categorie"
 import { creerRequest, creerRequestPourCompteUtilisateur } from "../../../../testUtils/RequestUtils"
 import { SeanceBuilder } from "../../../../testUtils/builders/SeanceBuilder"
 import { ExerciceBuilder } from "../../../application/builders/ExerciceBuilder"
+import { ExerciceSeanceBuilder } from "../../../application/builders/ExerciceSeanceBuilder"
 import { ExerciceSeanceRepository } from "../../../domain/ports/ExerciceSeanceRepository"
 import { SeanceExerciceRepository } from "../../../domain/ports/SeanceExerciceRepository"
 import { SeanceRepository } from "../../../domain/ports/SeanceRepository"
 import { ExerciceSeanceController } from "../../../infrastructure/controllers/ExerciceSeanceController"
-import { container } from "api"
+import { container, ExerciceSeanceContrat } from "api"
 
 describe("ExerciceSeanceController", () => {
   let exerciceSeanceController: ExerciceSeanceController
@@ -50,6 +51,9 @@ describe("ExerciceSeanceController", () => {
         expect(listeExerciceSeances.at(0)?.idExercice).toEqual("c73434ce-9cbe-4890-b7ed-56704485c356")
         expect(listeExerciceSeances.at(0)?.nomExercice).toEqual("nomExercice")
         expect(listeExerciceSeances.at(0)?.categorie).toEqual(CATEGORIE.ABDOMINAUX)
+        const nouveauExerciceSeance = response.data as ExerciceSeanceContrat
+        expect(nouveauExerciceSeance).toBeDefined()
+        expect(nouveauExerciceSeance.nomExercice).toEqual("nomExercice")
       })
     })
     describe("Cas KO", () => {
@@ -61,6 +65,38 @@ describe("ExerciceSeanceController", () => {
         const response = await exerciceSeanceController.initialiserExerciceSeance({ request, payload })
         // Assert
         expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
+      })
+    })
+  })
+
+  describe("#recupererExerciceSeance", () => {
+    describe("Cas OK", () => {
+      it("quand l'exercice existe, doit récupérer l'exercice appartenant à la seance", async () => {
+        const request = await creerRequestPourCompteUtilisateur("idUtilisateur")
+        const seance = new SeanceBuilder().withId("081904a6-aaac-4e55-aab6-2652b099bce4").build()
+        const exerciceSeance = new ExerciceSeanceBuilder()
+          .withId("2289cca2-a211-43e1-805c-97c5dc97fc2a")
+          .withIdSeance("081904a6-aaac-4e55-aab6-2652b099bce4")
+          .withIdExercice("330a330b-e66e-447d-9166-2173562e2cbb")
+          .withNomExercice("nomExercice")
+          .withCategorie(CATEGORIE.ABDOMINAUX)
+          .build()
+        await seanceRepository.creerSeance(seance)
+
+        await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
+        const payload = {
+          idSeance: "081904a6-aaac-4e55-aab6-2652b099bce4",
+          idExerciceSeance: "2289cca2-a211-43e1-805c-97c5dc97fc2a"
+        }
+        // Act
+        // Assert
+        const response = await exerciceSeanceController.recupererExerciceSeance({ request, payload })
+        expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
+        const exerciceSeanceResult = response.data as ExerciceSeanceContrat
+        expect(exerciceSeanceResult.id).toEqual("2289cca2-a211-43e1-805c-97c5dc97fc2a")
+        expect(exerciceSeanceResult.idExercice).toEqual("330a330b-e66e-447d-9166-2173562e2cbb")
+        expect(exerciceSeanceResult.nomExercice).toEqual("nomExercice")
+        expect(exerciceSeanceResult.categorie).toEqual(CATEGORIE.ABDOMINAUX)
       })
     })
   })

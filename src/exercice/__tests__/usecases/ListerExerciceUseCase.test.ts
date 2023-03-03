@@ -10,7 +10,7 @@ describe("ListerExerciceUseCase", () => {
 
   beforeEach(() => {
     exerciceRepository = mock<ListerExerciceRepository>()
-    listerExerciceUseCase = new ListerExerciceUseCase({ seanceExerciceRepository: exerciceRepository })
+    listerExerciceUseCase = new ListerExerciceUseCase({ exerciceRepository })
   })
   it("doit lister les exercices", async () => {
     // Arrange

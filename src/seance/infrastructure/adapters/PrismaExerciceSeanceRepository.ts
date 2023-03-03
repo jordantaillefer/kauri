@@ -3,6 +3,7 @@ import { ExerciceSeance as ExerciceSeanceModel } from "@prisma/client"
 import { CATEGORIE } from "../../../exercice/domain/categorie"
 import { ExerciceSeanceRepository } from "../../domain/ports/ExerciceSeanceRepository"
 import { prisma } from "../../../db/prisma"
+import { ExerciceSeanceNotFoundError } from "../../domain/errors/ExerciceSeanceNotFoundError"
 
 function convertirEnModel(exerciceSeance: ExerciceSeance): ExerciceSeanceModel {
   return {
@@ -36,5 +37,15 @@ export class PrismaExerciceSeanceRepository implements ExerciceSeanceRepository 
     const listeExerciceSeanceModels = await prisma.exerciceSeance.findMany()
     return listeExerciceSeanceModels.map(convertirEnExerciceSeance)
 
+  }
+
+  async recupererParIdSeanceEtParId(idSeance: string, idExerciceSeance: string): Promise<ExerciceSeance> {
+    const exerciceSeanceModel = await prisma.exerciceSeance.findUnique({
+      where: {id: idExerciceSeance }
+    })
+    if (exerciceSeanceModel === null || exerciceSeanceModel.idSeance !== idSeance) {
+      throw new ExerciceSeanceNotFoundError()
+    }
+    return convertirEnExerciceSeance(exerciceSeanceModel)
   }
 }

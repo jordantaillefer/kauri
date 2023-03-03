@@ -1,24 +1,28 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
 import { Form, useLoaderData } from "@remix-run/react"
+import { FunctionComponent } from "react"
 import invariant from "tiny-invariant"
 
-import { container, ExerciceContrat, ListeExerciceContrat, SeanceContrat } from "api"
+import { container, ExerciceContrat, ExerciceSeanceContrat, ListeExerciceContrat, SeanceContrat } from "api"
 import { H2Title } from "~/ui/atoms/H2Title"
 
 export const action: ActionFunction = async ({ request, params }) => {
   invariant(params.idSeance, "expected params.idSeance")
   const formData = await request.formData()
   const { _exercice: idExercice } = Object.fromEntries(formData)
-  const payload = { idSeance: params.idSeance, idExercice: idExercice.toString()}
-  await container.resolve("exerciceSeanceController").initialiserExerciceSeance({ request, payload })
-
-  return redirect(`exercice-seance/${}`)
+  const payload = { idSeance: params.idSeance, idExercice: idExercice.toString() }
+  const initialiserExerciceSeanceResult = await container.resolve("exerciceSeanceController").initialiserExerciceSeance({
+    request,
+    payload
+  })
+  const nouveauExerciceSeance = initialiserExerciceSeanceResult.data as ExerciceSeanceContrat
+  return redirect(nouveauExerciceSeance.id)
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.idSeance, "expected params.idSeance")
   const exerciceResult = await container.resolve("exerciceController").listerExercice({ request })
-  const payload = { idSeance: params.idSeance}
+  const payload = { idSeance: params.idSeance }
   const seanceResult = await container.resolve("seanceController").recupererSeanceParId({ request, payload })
 
   const listeExercice = Array.from((exerciceResult.data as ListeExerciceContrat).entries())
@@ -26,8 +30,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   return json({ listeExercice, seance })
 }
-export const ModifierSeance = () => {
-  const { listeExercice, seance } = useLoaderData<{ listeExercice: [string, ExerciceContrat[]][], seance: SeanceContrat }>()
+export const ModifierSeance: FunctionComponent = () => {
+  const {
+    listeExercice,
+    seance
+  } = useLoaderData<{ listeExercice: [string, ExerciceContrat[]][], seance: SeanceContrat }>()
   return (
     <div className="container flex w-full">
       <div className="w-2/4">

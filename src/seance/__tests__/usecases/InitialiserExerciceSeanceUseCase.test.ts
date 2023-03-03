@@ -1,9 +1,8 @@
 import { describe, expect, it } from "vitest"
-import { captor, CaptorMatcher, mock, MockProxy } from "vitest-mock-extended"
+import { mock, MockProxy } from "vitest-mock-extended"
 
 import { CATEGORIE } from "../../../exercice/domain/categorie"
 import { ExerciceBuilder } from "../../application/builders/ExerciceBuilder"
-import { ExerciceSeance } from "../../domain/ExerciceSeance"
 import {
   InitialiserExerciceSeanceRepository,
   InitialiserExerciceSeanceUseCase,
@@ -26,7 +25,6 @@ describe("InitialiserExerciceSeanceUseCase", () => {
 
   it("doit créer l'exercice pour une séance", async () => {
     // Arrange
-    const initialiserExerciceSeanceCaptor: CaptorMatcher<ExerciceSeance> = captor()
     const exercice = new ExerciceBuilder()
       .withId("idExercice")
       .withNomExercice("nomExercice")
@@ -34,13 +32,12 @@ describe("InitialiserExerciceSeanceUseCase", () => {
       .build()
     exerciceRepository.recupererParId.mockResolvedValue(exercice)
     // Act
-    await initialiserExerciceSeanceUseCase.execute("idSeance", "idExercice")
+    const exerciceSeance = await initialiserExerciceSeanceUseCase.execute("idSeance", "idExercice")
     // Assert
-    expect(exerciceSeanceRepository.creerExerciceSeance).toHaveBeenNthCalledWith(1, initialiserExerciceSeanceCaptor)
-    expect(initialiserExerciceSeanceCaptor.value.id).toBeDefined()
-    expect(initialiserExerciceSeanceCaptor.value.idSeance).toEqual("idSeance")
-    expect(initialiserExerciceSeanceCaptor.value.idExercice).toEqual("idExercice")
-    expect(initialiserExerciceSeanceCaptor.value.nomExercice).toEqual("nomExercice")
-    expect(initialiserExerciceSeanceCaptor.value.categorie).toEqual(CATEGORIE.ABDOMINAUX)
+    expect(exerciceSeance.id).toBeDefined()
+    expect(exerciceSeance.idSeance).toEqual("idSeance")
+    expect(exerciceSeance.idExercice).toEqual("idExercice")
+    expect(exerciceSeance.nomExercice).toEqual("nomExercice")
+    expect(exerciceSeance.categorie).toEqual(CATEGORIE.ABDOMINAUX)
   })
 })

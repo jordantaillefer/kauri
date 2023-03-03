@@ -1,10 +1,8 @@
-
 import { describe, expect, it } from "vitest"
 import { captor, CaptorMatcher, mock, MockProxy } from "vitest-mock-extended"
 
 import { SeanceBuilder } from "../../../testUtils/builders/SeanceBuilder"
 import { RecupererSeanceRepository, RecupererSeanceUseCase } from "../../usecases/RecupererSeanceUseCase"
-import { Seance } from "../../domain/Seance"
 
 describe("RecupererSeanceUseCase", () => {
   let seanceRepository: MockProxy<RecupererSeanceRepository>

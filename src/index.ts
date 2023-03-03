@@ -31,6 +31,7 @@ import { InitialiserExerciceSeanceUseCase } from "./seance/usecases/InitialiserE
 import { InitialiserSeanceUseCase } from "./seance/usecases/InitialiserSeanceUseCase"
 import { ListerSeanceUseCase } from "./seance/usecases/ListerSeanceUseCase"
 import { RecupererSeanceUseCase } from "./seance/usecases/RecupererSeanceUseCase"
+import { RecupererExerciceSeanceUseCase } from "./seance/usecases/RecupererExerciceSeanceUseCase"
 
 type ApplicationDependencies = {
   sessionManager: SessionManager
@@ -54,6 +55,7 @@ type SeanceDependencies = {
   seanceController: SeanceController
   seanceRepository: SeanceRepository
   initialiserExerciceSeanceUseCase: InitialiserExerciceSeanceUseCase
+  recupererExerciceSeanceUseCase: RecupererExerciceSeanceUseCase
   exerciceSeanceController: ExerciceSeanceController
   exerciceSeanceRepository: ExerciceSeanceRepository
   seanceExerciceRepository: SeanceExerciceRepository
@@ -110,6 +112,7 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
     exerciceSeanceController: asClass(ExerciceSeanceController),
     exerciceSeanceRepository: asClass(PrismaExerciceSeanceRepository),
     initialiserExerciceSeanceUseCase: asClass(InitialiserExerciceSeanceUseCase),
+    recupererExerciceSeanceUseCase: asClass(RecupererExerciceSeanceUseCase),
     seanceExerciceRepository: asClass(PrismaSeanceExerciceRepository)
   })
   container.register({

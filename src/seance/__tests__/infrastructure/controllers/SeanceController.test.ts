@@ -214,7 +214,8 @@ describe("SeanceController", () => {
         // Arrange
         const request = creerRequest()
         // Act
-        const response = await seanceController.recupererSeanceParId({ request })
+        const payload = { idSeance: "Peu importe l'id" }
+        const response = await seanceController.recupererSeanceParId({ request, payload })
         // Assert
         expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
       })

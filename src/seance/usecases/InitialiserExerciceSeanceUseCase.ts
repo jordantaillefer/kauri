@@ -25,7 +25,7 @@ export class InitialiserExerciceSeanceUseCase {
     this.exerciceSeanceRepository = exerciceSeanceRepository
   }
 
-  async execute(idSeance: string, idExercice: string): Promise<void> {
+  async execute(idSeance: string, idExercice: string): Promise<ExerciceSeance> {
     const exercice = await this.seanceExerciceRepository.recupererParId(idExercice)
     const exerciceSeance = ExerciceSeance.creerExerciceSeance({
       idSeance,
@@ -34,5 +34,6 @@ export class InitialiserExerciceSeanceUseCase {
       categorie: exercice.categorie
     })
     await this.exerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
+    return exerciceSeance
   }
 }
