@@ -7,7 +7,7 @@ import { Exercice } from "../../../domain/Exercice"
 import { CATEGORIE } from "../../../domain/categorie"
 import { ExerciceRepository } from "../../../domain/ports/ExerciceRepository"
 import { ExerciceController } from "../../../infrastructure/controllers/ExerciceController"
-import { container, ExerciceContrat, ListeExerciceContrat } from "api"
+import { container, ListeExerciceContrat } from "api"
 
 describe("ExerciceController", () => {
   let exerciceController: ExerciceController

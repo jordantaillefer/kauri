@@ -5,7 +5,7 @@ import { RoundedButton } from "~/ui/atoms/RoundedButton"
 
 export const SeDeconnecterButton: FunctionComponent = () => {
   return (
-    <Form className="inline-flex justify-center" method="post" action={`/authentication/logout`}>
+    <Form className="inline-flex justify-center" method="post" action={"/authentication/logout"}>
       <RoundedButton>
         <img className="md:hidden w-4" src="/assets/icons/account.png" alt="Se connecter" />
         <span className="hidden md:block">Se déconnecter</span>

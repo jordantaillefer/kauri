@@ -5,7 +5,8 @@ interface Dependencies {
   seanceRepository: ListerSeanceRepository
 }
 
-export interface ListerSeanceRepository extends Pick<SeanceRepository, "recupererTout"> {}
+export interface ListerSeanceRepository extends Pick<SeanceRepository, "recupererTout"> {
+}
 
 export class ListerSeanceUseCase {
   private seanceRepository: ListerSeanceRepository

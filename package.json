@@ -5,6 +5,7 @@
     "build": "remix build",
     "deploy": "fly deploy --remote-only",
     "dev": "remix dev",
+    "lint": "eslint .",
     "migrate": "prisma migrate deploy",
     "migrate:test": "dotenv -e .env.test prisma migrate deploy",
     "prestart": "yarn migrate",

@@ -1,9 +1,10 @@
-import { ExerciceSeance } from "../../domain/ExerciceSeance"
 import { ExerciceSeance as ExerciceSeanceModel } from "@prisma/client"
-import { CATEGORIE } from "../../../exercice/domain/categorie"
-import { ExerciceSeanceRepository } from "../../domain/ports/ExerciceSeanceRepository"
+
 import { prisma } from "../../../db/prisma"
+import { CATEGORIE } from "../../../exercice/domain/categorie"
+import { ExerciceSeance } from "../../domain/ExerciceSeance"
 import { ExerciceSeanceNotFoundError } from "../../domain/errors/ExerciceSeanceNotFoundError"
+import { ExerciceSeanceRepository } from "../../domain/ports/ExerciceSeanceRepository"
 
 function convertirEnModel(exerciceSeance: ExerciceSeance): ExerciceSeanceModel {
   return {
@@ -41,7 +42,7 @@ export class PrismaExerciceSeanceRepository implements ExerciceSeanceRepository 
 
   async recupererParIdSeanceEtParId(idSeance: string, idExerciceSeance: string): Promise<ExerciceSeance> {
     const exerciceSeanceModel = await prisma.exerciceSeance.findUnique({
-      where: {id: idExerciceSeance }
+      where: { id: idExerciceSeance }
     })
     if (exerciceSeanceModel === null || exerciceSeanceModel.idSeance !== idSeance) {
       throw new ExerciceSeanceNotFoundError()

@@ -30,8 +30,8 @@ import { SeanceController } from "./seance/infrastructure/controllers/SeanceCont
 import { InitialiserExerciceSeanceUseCase } from "./seance/usecases/InitialiserExerciceSeanceUseCase"
 import { InitialiserSeanceUseCase } from "./seance/usecases/InitialiserSeanceUseCase"
 import { ListerSeanceUseCase } from "./seance/usecases/ListerSeanceUseCase"
-import { RecupererSeanceUseCase } from "./seance/usecases/RecupererSeanceUseCase"
 import { RecupererExerciceSeanceUseCase } from "./seance/usecases/RecupererExerciceSeanceUseCase"
+import { RecupererSeanceUseCase } from "./seance/usecases/RecupererSeanceUseCase"
 
 type ApplicationDependencies = {
   sessionManager: SessionManager
