@@ -1,6 +1,7 @@
 import type { ActionFunction, LoaderFunction, TypedResponse } from "@remix-run/node"
 import { json, redirect } from "@remix-run/node"
 import { Link, useLoaderData } from "@remix-run/react"
+import { useState } from "react"
 
 import { container, SeanceContrat } from "api"
 import { H2Title } from "~/ui/atoms/H2Title"
@@ -28,7 +29,9 @@ export default function Profil() {
           {
             listeSeance.map(seance => (
                 <li key={seance.id}>
-                  <Link to={`/seance/${seance.id}`}>{seance.nomSeance}</Link>
+                  <Link to={`/entrainement/${seance.id}`}>{seance.nomSeance}</Link>
+                  <Link to={`/seance/${seance.id}`}>[[icon__modifier]]</Link>
+                  <button>[[icon__supprimer]]</button>
                 </li>
               )
             )

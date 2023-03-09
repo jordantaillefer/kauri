@@ -15,7 +15,7 @@ import { ReactNode } from "react"
 
 import styles from "./styles/tailwind.css"
 import { container } from "api"
-import { RootLayout } from "~/ui/RootLayout"
+import { DefaultLayout } from "~/ui/layouts/DefaultLayout"
 
 type ContextType = { authenticated: boolean };
 
@@ -55,7 +55,7 @@ function Document({ children }: DocumentProps) {
   )
 }
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, params, context }) => {
   let response = await container.resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
   return json({
     authenticated: response.reasonPhrase === ReasonPhrases.OK
@@ -67,9 +67,7 @@ export default function App(): ReactNode {
 
   return (
     <Document>
-      <RootLayout authenticated={authenticated}>
-        <Outlet context={{ authenticated }} />
-      </RootLayout>
+      <Outlet context={{ authenticated }} />
     </Document>
   )
 }

@@ -117,10 +117,10 @@ describe("ExerciceSeanceController", () => {
           .build()
         await seanceRepository.creerSeance(seance)
         await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
-        const payload: { idSeance: string, idExerciceSeance: string, serieExerciceSeance: SerieExerciceSeancePayload[] } = {
+        const payload: { idSeance: string, idExerciceSeance: string, listeSerieExerciceSeance: SerieExerciceSeancePayload[] } = {
           idSeance: "6bc42156-b946-4128-b605-3b180765738f",
           idExerciceSeance: "0e2947f4-960d-4fa2-b3f4-3c1f63447527",
-          serieExerciceSeance: [
+          listeSerieExerciceSeance: [
             { repetitions: 10 },
             { repetitions: 12 }
           ]
@@ -154,10 +154,10 @@ describe("ExerciceSeanceController", () => {
           .build()
         await seanceRepository.creerSeance(seance)
         await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
-        const payload: { idSeance: string, idExerciceSeance: string, serieExerciceSeance: SerieExerciceSeancePayload[] } = {
+        const payload: { idSeance: string, idExerciceSeance: string, listeSerieExerciceSeance: SerieExerciceSeancePayload[] } = {
           idSeance: "6bc42156-b946-4128-b605-3b180765738f",
           idExerciceSeance: "0e2947f4-960d-4fa2-b3f4-3c1f63447527",
-          serieExerciceSeance: [
+          listeSerieExerciceSeance: [
             { repetitions: 8 },
             { repetitions: 7 }
           ]
