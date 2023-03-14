@@ -6,6 +6,7 @@ import { Controller } from "../../../app/decorators/ControllerDecorator"
 import { DoitEtreAuthentifie } from "../../../app/decorators/DoitEtreAuthentifieDecorator"
 import { ProduceServerResponse } from "../../../app/decorators/ProduceServerResponseDecorator"
 import { ExerciceSeance } from "../../domain/ExerciceSeance"
+import { SerieExerciceSeance } from "../../domain/SerieExerciceSeance"
 import {
   DefinirSerieExerciceSeanceUseCase,
   SerieExerciceSeancePayload
@@ -13,7 +14,6 @@ import {
 import { InitialiserExerciceSeanceUseCase } from "../../usecases/InitialiserExerciceSeanceUseCase"
 import { RecupererExerciceSeanceUseCase } from "../../usecases/RecupererExerciceSeanceUseCase"
 import { ExerciceSeanceContrat, SerieExerciceSeanceContrat } from "api"
-import { SerieExerciceSeance } from "../../domain/SerieExerciceSeance"
 
 interface Dependencies {
   initialiserExerciceSeanceUseCase: InitialiserExerciceSeanceUseCase

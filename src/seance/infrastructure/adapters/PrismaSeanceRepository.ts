@@ -1,7 +1,14 @@
-import { ExerciceSeance as ExerciceSeanceModel, Seance as SeanceModel } from "@prisma/client"
+import {
+  ExerciceSeance as ExerciceSeanceModel,
+  Seance as SeanceModel,
+  SerieExerciceSeance as SerieExerciceSeanceModel
+} from "@prisma/client"
 
 import { prisma } from "../../../db/prisma"
 import { CATEGORIE } from "../../../exercice/domain/categorie"
+import { DetailExercice } from "../../domain/DetailExercice"
+import { DetailSeance } from "../../domain/DetailSeance"
+import { DetailSerie } from "../../domain/DetailSerie"
 import { ExerciceSeance } from "../../domain/ExerciceSeance"
 import { IdUtilisateur, Seance } from "../../domain/Seance"
 import { SeanceNotFoundError } from "../../domain/errors/SeanceNotFoundError"
@@ -34,6 +41,36 @@ function convertirEnExerciceSeance(exerciceSeanceModel: ExerciceSeanceModel): Ex
   })
 }
 
+type DetailSeanceModel =
+  SeanceModel
+  & { exerciceSeances: (ExerciceSeanceModel & { serieExerciceSeances: SerieExerciceSeanceModel[] })[] }
+type DetailExerciceModel = ExerciceSeanceModel & { serieExerciceSeances: SerieExerciceSeanceModel[] }
+
+function convertirEnDetailSerie(serieExerciceSeanceModel: SerieExerciceSeanceModel): DetailSerie {
+  return DetailSerie.creerDetailSerie({
+    id: serieExerciceSeanceModel.id,
+    nombreRepetition: serieExerciceSeanceModel.repetitions
+  })
+}
+
+function convertirEnDetailExerciceSeance(detailExerciceModel: DetailExerciceModel): DetailExercice {
+  return DetailExercice.creerDetailExercice({
+    id: detailExerciceModel.id,
+    nomExercice: detailExerciceModel.nomExercice,
+    categorie: detailExerciceModel.categorie as CATEGORIE,
+    listeDetailSerie: detailExerciceModel.serieExerciceSeances.map(convertirEnDetailSerie)
+  })
+
+}
+
+function convertirEnDetailSeance(detailSeanceModel: DetailSeanceModel): DetailSeance {
+  return DetailSeance.creerDetailSeance({
+    id: detailSeanceModel.id,
+    nomSeance: detailSeanceModel.nomSeance,
+    listeDetailExercice: detailSeanceModel.exerciceSeances.map(convertirEnDetailExerciceSeance)
+  })
+}
+
 export class PrismaSeanceRepository implements SeanceRepository {
   async creerSeance(seance: Seance) {
     const seanceModel = convertirEnModel(seance)
@@ -63,5 +100,25 @@ export class PrismaSeanceRepository implements SeanceRepository {
       include: { exerciceSeances: true }
     })
     return listeDeProgrammesModels.map(convertirEnSeance)
+  }
+
+  async recupererDetailParId(idUtilisateur: string, idSeance: string): Promise<DetailSeance> {
+    // TODO Utiliser idUtilisateur pour sécu
+
+    const detailSeanceModel = await prisma.seance.findUnique({
+      where: { id: idSeance },
+      include: {
+        exerciceSeances: {
+          include: {
+            serieExerciceSeances: true
+          }
+        }
+      }
+    })
+    if (detailSeanceModel === null) {
+      throw new SeanceNotFoundError()
+    }
+
+    return convertirEnDetailSeance(detailSeanceModel)
   }
 }

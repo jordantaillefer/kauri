@@ -44,7 +44,6 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
   const handleChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newFormValues = [...formValues]
     newFormValues[index].repetitions = Number(event.target.value)
-    console.log(newFormValues)
     setFormValues(newFormValues)
   }
 

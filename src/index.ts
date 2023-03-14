@@ -31,6 +31,7 @@ import { DefinirSerieExerciceSeanceUseCase } from "./seance/usecases/DefinirSeri
 import { InitialiserExerciceSeanceUseCase } from "./seance/usecases/InitialiserExerciceSeanceUseCase"
 import { InitialiserSeanceUseCase } from "./seance/usecases/InitialiserSeanceUseCase"
 import { ListerSeanceUseCase } from "./seance/usecases/ListerSeanceUseCase"
+import { RecupererDetailSeanceUseCase } from "./seance/usecases/RecupererDetailSeanceUseCase"
 import { RecupererExerciceSeanceUseCase } from "./seance/usecases/RecupererExerciceSeanceUseCase"
 import { RecupererSeanceUseCase } from "./seance/usecases/RecupererSeanceUseCase"
 
@@ -52,6 +53,7 @@ type CompteUtilisateurDependencies = {
 type SeanceDependencies = {
   listerSeanceUseCase: ListerSeanceUseCase
   recupererSeanceUseCase: RecupererSeanceUseCase
+  recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
   initialiserSeanceUseCase: InitialiserSeanceUseCase
   seanceController: SeanceController
   seanceRepository: SeanceRepository
@@ -108,6 +110,7 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
   container.register({
     initialiserSeanceUseCase: asClass(InitialiserSeanceUseCase),
     recupererSeanceUseCase: asClass(RecupererSeanceUseCase),
+    recupererDetailSeanceUseCase: asClass(RecupererDetailSeanceUseCase),
     listerSeanceUseCase: asClass(ListerSeanceUseCase),
     seanceRepository: asClass(PrismaSeanceRepository),
     seanceController: asClass(SeanceController),
