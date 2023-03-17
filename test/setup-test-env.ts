@@ -20,5 +20,8 @@ afterEach(async () => {
   await prisma.exerciceSeance.deleteMany()
   await prisma.seance.deleteMany()
   await prisma.exercice.deleteMany()
+  await prisma.serieEntrainement.deleteMany()
+  await prisma.exerciceEntrainement.deleteMany()
+  await prisma.entrainement.deleteMany()
   vi.restoreAllMocks()
 })

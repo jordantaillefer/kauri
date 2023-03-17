@@ -7,17 +7,27 @@ import {
   DetailSeanceContrat,
   DetailSerieContrat
 } from "../../../app/contrats/DetailSeanceContrat"
+import {
+  EntrainementContrat,
+  ExerciceEntrainementContrat,
+  SerieEntrainementContrat
+} from "../../../app/contrats/EntrainementContrat"
 import { Controller } from "../../../app/decorators/ControllerDecorator"
 import { DoitEtreAuthentifie } from "../../../app/decorators/DoitEtreAuthentifieDecorator"
 import { ProduceServerResponse } from "../../../app/decorators/ProduceServerResponseDecorator"
 import { DetailExercice } from "../../domain/DetailExercice"
 import { DetailSeance } from "../../domain/DetailSeance"
 import { DetailSerie } from "../../domain/DetailSerie"
+import { Entrainement } from "../../domain/Entrainement"
+import { ExerciceEntrainement } from "../../domain/ExerciceEntrainement"
 import { ExerciceSeance } from "../../domain/ExerciceSeance"
 import { Seance } from "../../domain/Seance"
+import { SerieEntrainement } from "../../domain/SerieEntrainement"
+import { DemarrerEntrainementUseCase } from "../../usecases/DemarrerEntrainementUseCase"
 import { InitialiserSeanceUseCase } from "../../usecases/InitialiserSeanceUseCase"
 import { ListerSeanceUseCase } from "../../usecases/ListerSeanceUseCase"
 import { RecupererDetailSeanceUseCase } from "../../usecases/RecupererDetailSeanceUseCase"
+import { RecupererEntrainementUseCase } from "../../usecases/RecupererEntrainementUseCase"
 import { RecupererSeanceUseCase } from "../../usecases/RecupererSeanceUseCase"
 import { ExerciceSeanceContrat, SeanceContrat } from "api"
 
@@ -26,6 +36,8 @@ interface Dependencies {
   listerSeanceUseCase: ListerSeanceUseCase
   recupererSeanceUseCase: RecupererSeanceUseCase
   recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
+  demarrerEntrainementUseCase: DemarrerEntrainementUseCase
+  recupererEntrainementUseCase: RecupererEntrainementUseCase
 }
 
 @Controller()
@@ -34,17 +46,23 @@ export class SeanceController {
   private listerSeanceUseCase: ListerSeanceUseCase
   private recupererSeanceUseCase: RecupererSeanceUseCase
   private recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
+  private demarrerEntrainementUseCase: DemarrerEntrainementUseCase
+  private recupererEntrainementUseCase: RecupererEntrainementUseCase
 
   constructor({
                 initialiserSeanceUseCase,
                 listerSeanceUseCase,
                 recupererSeanceUseCase,
-                recupererDetailSeanceUseCase
+                recupererDetailSeanceUseCase,
+                demarrerEntrainementUseCase,
+                recupererEntrainementUseCase
               }: Dependencies) {
     this.initialiserSeanceUseCase = initialiserSeanceUseCase
     this.listerSeanceUseCase = listerSeanceUseCase
     this.recupererSeanceUseCase = recupererSeanceUseCase
     this.recupererDetailSeanceUseCase = recupererDetailSeanceUseCase
+    this.demarrerEntrainementUseCase = demarrerEntrainementUseCase
+    this.recupererEntrainementUseCase = recupererEntrainementUseCase
   }
 
   @DoitEtreAuthentifie()
@@ -82,6 +100,30 @@ export class SeanceController {
       idSeance
     })
     return success(presenterEnDetailSeanceContrat(seanceResult))
+  }
+
+  @DoitEtreAuthentifie()
+  @ProduceServerResponse()
+  async demarrerEntrainement(serverRequest: ServerRequest<{ idSeance: string }>): Promise<ServerResponse<void>> {
+    invariant(serverRequest.compteUtilisateurConnecte)
+    const { idSeance } = serverRequest.payload
+    await this.demarrerEntrainementUseCase.execute({
+      idUtilisateur: serverRequest.compteUtilisateurConnecte.id,
+      idSeance
+    })
+    return created()
+  }
+
+  @DoitEtreAuthentifie()
+  @ProduceServerResponse()
+  async recupererEntrainementParId(serverRequest: ServerRequest<{ idEntrainement: string }>): Promise<ServerResponse<EntrainementContrat>> {
+    invariant(serverRequest.compteUtilisateurConnecte)
+    const { idEntrainement } = serverRequest.payload
+    const entrainementResult = await this.recupererEntrainementUseCase.execute({
+      idUtilisateur: serverRequest.compteUtilisateurConnecte.id,
+      idEntrainement
+    })
+    return success(presenterEnEntrainementContrat(entrainementResult))
   }
 }
 
@@ -122,5 +164,31 @@ function presenterEnDetailSeanceContrat(detailSeance: DetailSeance): DetailSeanc
     id: detailSeance.id,
     nomSeance: detailSeance.nomSeance,
     exerciceSeances: detailSeance.listeDetailExercice.map(presenterEnDetailExerciceSeanceContrat)
+  }
+}
+
+function presenterEnEntrainementContrat(entrainement: Entrainement): EntrainementContrat {
+  return {
+    id: entrainement.id,
+    nomSeance: entrainement.nomSeance,
+    listeExerciceEntrainement: entrainement.listeExerciceEntrainement.map(presenterEnExerciceEntrainementContrat)
+  }
+}
+
+function presenterEnExerciceEntrainementContrat(exerciceEntrainement: ExerciceEntrainement): ExerciceEntrainementContrat {
+  return {
+    id: exerciceEntrainement.id,
+    nomExercice: exerciceEntrainement.nomExercice,
+    categorie: exerciceEntrainement.categorie,
+    estRealise: exerciceEntrainement.estRealise,
+    tempsRepos: exerciceEntrainement.tempsRepos,
+    listeSerieEntrainement: exerciceEntrainement.listeSerieEntrainement.map(presenterEnSerieEntrainement)
+  }
+}
+
+function presenterEnSerieEntrainement(serieEntrainement: SerieEntrainement): SerieEntrainementContrat {
+  return {
+    id: serieEntrainement.id,
+    nombreRepetition: serieEntrainement.nombreRepetition
   }
 }

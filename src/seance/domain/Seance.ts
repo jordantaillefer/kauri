@@ -7,10 +7,10 @@ export type IdUtilisateur = string
 export type NomSeance = string
 
 export class Seance {
-  _id: IdSeance
-  _idUtilisateur: IdUtilisateur
-  _nomSeance: NomSeance
-  private _exerciceSeances: ExerciceSeance[]
+  private readonly _id: IdSeance
+  private readonly _idUtilisateur: IdUtilisateur
+  private readonly _nomSeance: NomSeance
+  private readonly _exerciceSeances: ExerciceSeance[]
 
   private constructor({
                         id,

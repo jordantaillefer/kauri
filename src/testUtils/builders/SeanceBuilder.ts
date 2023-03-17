@@ -26,7 +26,13 @@ export class SeanceBuilder {
     this.exerciceSeances = exerciceSeances
     return this
   }
+
   build(): Seance {
-    return Seance.creerSeance({ id: this.id, idUtilisateur: this.idUtilisateur, nomSeance: this.nomSeance })
+    return Seance.creerSeance({
+      id: this.id,
+      idUtilisateur: this.idUtilisateur,
+      nomSeance: this.nomSeance,
+      exerciceSeances: this.exerciceSeances
+    })
   }
 }

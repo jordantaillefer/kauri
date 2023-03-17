@@ -45,3 +45,27 @@ model SerieExerciceSeance {
   idExerciceSeance String
   repetitions      Int
 }
+
+model Entrainement {
+  id                    String                 @id
+  nomSeance             String
+  exerciceEntrainements ExerciceEntrainement[]
+}
+
+model ExerciceEntrainement {
+  id                 String              @id
+  entrainement       Entrainement        @relation(fields: [idEntrainement], references: [id])
+  idEntrainement     String
+  estRealise         Boolean
+  tempsRepos         Int
+  nomExercice        String
+  categorie          String
+  serieEntrainements SerieEntrainement[]
+}
+
+model SerieEntrainement {
+  id                     String               @id
+  exerciceEntrainement   ExerciceEntrainement @relation(fields: [idExerciceEntrainement], references: [id])
+  idExerciceEntrainement String
+  nombreRepetition       Int
+}
