@@ -65,6 +65,14 @@ function convertirEnSerieEntrainement(serieEntrainementModel: SerieEntrainementM
 }
 
 export class PrismaEntrainementRepository implements EntrainementRepository {
+  async mettreAJourSerieEstRealise(idSerie: string, estRealise: boolean): Promise<void> {
+    await prisma.serieEntrainement.update({
+      where: { id: idSerie },
+      data: {
+        estRealise
+      }
+    })
+  }
   async creerEntrainement(entrainement: Entrainement): Promise<void> {
     const entrainementModel = convertirEnModel(entrainement)
     await prisma.entrainement.create({
@@ -82,7 +90,6 @@ export class PrismaEntrainementRepository implements EntrainementRepository {
         }
       }
     })
-
   }
 
   async recupererParId(id: string): Promise<Entrainement> {

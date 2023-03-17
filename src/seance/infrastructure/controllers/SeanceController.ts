@@ -1,7 +1,7 @@
 import invariant from "tiny-invariant"
 
 import { ServerRequest, ServerRequestWithoutPayload } from "../../../app/ServerRequest"
-import { created, ServerResponse, success } from "../../../app/ServerResponse"
+import { created, ServerResponse, success, updated } from "../../../app/ServerResponse"
 import {
   DetailExerciceContrat,
   DetailSeanceContrat,
@@ -26,6 +26,7 @@ import { SerieEntrainement } from "../../domain/SerieEntrainement"
 import { DemarrerEntrainementUseCase } from "../../usecases/DemarrerEntrainementUseCase"
 import { InitialiserSeanceUseCase } from "../../usecases/InitialiserSeanceUseCase"
 import { ListerSeanceUseCase } from "../../usecases/ListerSeanceUseCase"
+import { RealiserSerieUseCase } from "../../usecases/RealiserSerieUseCase"
 import { RecupererDetailSeanceUseCase } from "../../usecases/RecupererDetailSeanceUseCase"
 import { RecupererEntrainementUseCase } from "../../usecases/RecupererEntrainementUseCase"
 import { RecupererSeanceUseCase } from "../../usecases/RecupererSeanceUseCase"
@@ -37,6 +38,7 @@ interface Dependencies {
   recupererSeanceUseCase: RecupererSeanceUseCase
   recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
   demarrerEntrainementUseCase: DemarrerEntrainementUseCase
+  realiserSerieUseCase: RealiserSerieUseCase
   recupererEntrainementUseCase: RecupererEntrainementUseCase
 }
 
@@ -47,6 +49,7 @@ export class SeanceController {
   private recupererSeanceUseCase: RecupererSeanceUseCase
   private recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
   private demarrerEntrainementUseCase: DemarrerEntrainementUseCase
+  private realiserSerieUseCase: RealiserSerieUseCase
   private recupererEntrainementUseCase: RecupererEntrainementUseCase
 
   constructor({
@@ -55,6 +58,7 @@ export class SeanceController {
                 recupererSeanceUseCase,
                 recupererDetailSeanceUseCase,
                 demarrerEntrainementUseCase,
+                realiserSerieUseCase,
                 recupererEntrainementUseCase
               }: Dependencies) {
     this.initialiserSeanceUseCase = initialiserSeanceUseCase
@@ -62,6 +66,7 @@ export class SeanceController {
     this.recupererSeanceUseCase = recupererSeanceUseCase
     this.recupererDetailSeanceUseCase = recupererDetailSeanceUseCase
     this.demarrerEntrainementUseCase = demarrerEntrainementUseCase
+    this.realiserSerieUseCase = realiserSerieUseCase
     this.recupererEntrainementUseCase = recupererEntrainementUseCase
   }
 
@@ -124,6 +129,18 @@ export class SeanceController {
       idEntrainement
     })
     return success(presenterEnEntrainementContrat(entrainementResult))
+  }
+
+  @DoitEtreAuthentifie()
+  @ProduceServerResponse()
+  async realiserSerie(serverRequest: ServerRequest<{ idSerie: string }>): Promise<ServerResponse<void>> {
+    invariant(serverRequest.compteUtilisateurConnecte)
+    const { idSerie } = serverRequest.payload
+    await this.realiserSerieUseCase.execute({
+      idUtilisateur: serverRequest.compteUtilisateurConnecte.id,
+      idSerie
+    })
+    return updated()
   }
 }
 
