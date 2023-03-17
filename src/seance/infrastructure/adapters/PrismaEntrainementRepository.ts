@@ -3,13 +3,14 @@ import {
   ExerciceEntrainement as ExerciceEntrainementModel,
   SerieEntrainement as SerieEntrainementModel
 } from "@prisma/client"
-import { SerieEntrainement } from "../../domain/SerieEntrainement"
-import { Entrainement } from "../../domain/Entrainement"
-import { EntrainementRepository } from "../../domain/ports/EntrainementRepository"
+
 import { prisma } from "../../../db/prisma"
-import { EntrainementNotFoundError } from "../../domain/errors/EntrainementNotFoundError"
-import { ExerciceEntrainement } from "../../domain/ExerciceEntrainement"
 import { CATEGORIE } from "../../../exercice/domain/categorie"
+import { Entrainement } from "../../domain/Entrainement"
+import { ExerciceEntrainement } from "../../domain/ExerciceEntrainement"
+import { SerieEntrainement } from "../../domain/SerieEntrainement"
+import { EntrainementNotFoundError } from "../../domain/errors/EntrainementNotFoundError"
+import { EntrainementRepository } from "../../domain/ports/EntrainementRepository"
 
 function convertirEnModel(entrainement: Entrainement): EntrainementModel {
   return {
@@ -31,7 +32,8 @@ function convertirExerciceEntrainementEnModel(exerciceEntrainement: ExerciceEntr
 function convertirSerieEntrainementEnModel(serieEntrainement: SerieEntrainement): Omit<SerieEntrainementModel, "idExerciceEntrainement"> {
   return {
     id: serieEntrainement.id,
-    nombreRepetition: serieEntrainement.nombreRepetition
+    nombreRepetition: serieEntrainement.nombreRepetition,
+    estRealise: serieEntrainement.estRealise
   }
 }
 
@@ -57,7 +59,8 @@ function convertirEnExerciceEntrainement(exerciceEntrainementModel: ExerciceEntr
 function convertirEnSerieEntrainement(serieEntrainementModel: SerieEntrainementModel): SerieEntrainement {
   return SerieEntrainement.creerSerieEntrainement({
     id: serieEntrainementModel.id,
-    nombreRepetition: serieEntrainementModel.nombreRepetition
+    nombreRepetition: serieEntrainementModel.nombreRepetition,
+    estRealise: serieEntrainementModel.estRealise
   })
 }
 

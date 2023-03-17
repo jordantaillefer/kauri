@@ -29,7 +29,8 @@ export class DemarrerEntrainementUseCase {
     const listeExerciceEntrainement = detailSeance.listeDetailExercice.map(detailExercice => {
       const listeSerieEntrainement = detailExercice.listeDetailSerie.map(serie => {
         return SerieEntrainement.creerSerieEntrainement({
-          nombreRepetition: serie.nombreRepetition
+          nombreRepetition: serie.nombreRepetition,
+          estRealise: false
         })
       })
 

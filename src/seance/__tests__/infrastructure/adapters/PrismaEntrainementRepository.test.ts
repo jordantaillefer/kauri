@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest"
+
 import { CATEGORIE } from "../../../../exercice/domain/categorie"
 import { EntrainementBuilder } from "../../../application/EntrainementBuilder"
 import { ExerciceEntrainementBuilder } from "../../../application/builders/ExerciceEntrainementBuilder"
@@ -18,14 +19,17 @@ describe("PrismaEntrainementRepository", () => {
       const serieEntrainement1 = new SerieEntrainementBuilder()
         .withId("c812e04e-f6c7-478d-bc37-19b7a5894de2")
         .withNombreRepetition(8)
+        .withEstRealise(false)
         .build()
       const serieEntrainement2 = new SerieEntrainementBuilder()
         .withId("38e5ae21-7fee-427a-97b7-1f2ee7a02ef2")
         .withNombreRepetition(10)
+        .withEstRealise(true)
         .build()
       const serieEntrainement3 = new SerieEntrainementBuilder()
         .withId("2d9cee66-ddd3-4cb1-94d9-b9bbea290032")
         .withNombreRepetition(12)
+        .withEstRealise(false)
         .build()
       const exerciceSeance1 = new ExerciceEntrainementBuilder()
         .withId("2c9d1005-19ce-4289-95b1-e11d41cab187")
@@ -64,6 +68,7 @@ describe("PrismaEntrainementRepository", () => {
       expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement).toHaveLength(1)
       expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.id).toBeDefined()
       expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.nombreRepetition).toEqual(8)
+      expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.estRealise).toEqual(false)
       expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.id).toEqual("79dd6cc5-d54a-4821-ac9a-709f42e87875")
       expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.estRealise).toEqual(true)
       expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.tempsRepos).toEqual(55)
@@ -72,8 +77,10 @@ describe("PrismaEntrainementRepository", () => {
       expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement).toHaveLength(2)
       expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(0)?.id).toBeDefined()
       expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(0)?.nombreRepetition).toEqual(10)
+      expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(0)?.estRealise).toEqual(true)
       expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(1)?.id).toBeDefined()
       expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(1)?.nombreRepetition).toEqual(12)
+      expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(1)?.estRealise).toEqual(false)
     })
   })
 })

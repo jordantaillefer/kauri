@@ -1,5 +1,5 @@
-import { EntrainementRepository } from "../domain/ports/EntrainementRepository"
 import { Entrainement } from "../domain/Entrainement"
+import { EntrainementRepository } from "../domain/ports/EntrainementRepository"
 
 export interface RecupererParIdEntrainementRepository extends Pick<EntrainementRepository, "recupererParId"> {
 }
@@ -15,7 +15,10 @@ export class RecupererEntrainementUseCase {
     this.entrainementRepository = entrainementRepository
   }
 
-  async execute({ idEntrainement, idUtilisateur }: { idEntrainement: string; idUtilisateur: string }): Promise<Entrainement> {
+  async execute({
+                  idEntrainement,
+                  idUtilisateur
+                }: { idEntrainement: string; idUtilisateur: string }): Promise<Entrainement> {
     return this.entrainementRepository.recupererParId(idEntrainement)
   }
 }

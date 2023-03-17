@@ -189,6 +189,7 @@ function presenterEnExerciceEntrainementContrat(exerciceEntrainement: ExerciceEn
 function presenterEnSerieEntrainement(serieEntrainement: SerieEntrainement): SerieEntrainementContrat {
   return {
     id: serieEntrainement.id,
-    nombreRepetition: serieEntrainement.nombreRepetition
+    nombreRepetition: serieEntrainement.nombreRepetition,
+    estRealise: serieEntrainement.estRealise
   }
 }

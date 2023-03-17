@@ -1,6 +1,7 @@
 export interface SerieEntrainementContrat {
   id: string
   nombreRepetition: number
+  estRealise: boolean
 }
 
 export interface ExerciceEntrainementContrat {
