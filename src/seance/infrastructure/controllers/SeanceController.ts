@@ -233,6 +233,7 @@ function presenterEnExerciceEntrainementContrat(exerciceEntrainement: ExerciceEn
     categorie: exerciceEntrainement.categorie,
     estRealise: exerciceEntrainement.estRealise,
     tempsRepos: exerciceEntrainement.tempsRepos,
+    ordre: exerciceEntrainement.ordre,
     listeSerieEntrainement: exerciceEntrainement.listeSerieEntrainement.map(presenterEnSerieEntrainement)
   }
 }
@@ -241,6 +242,7 @@ function presenterEnSerieEntrainement(serieEntrainement: SerieEntrainement): Ser
   return {
     id: serieEntrainement.id,
     nombreRepetition: serieEntrainement.nombreRepetition,
+    ordre: serieEntrainement.ordre,
     estRealise: serieEntrainement.estRealise
   }
 }

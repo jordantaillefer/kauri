@@ -7,6 +7,7 @@ export class DetailExerciceBuilder {
   private nomExercice: string = "nomExercice"
   private listeDetailSerie: DetailSerie[] = []
   private categorie: CATEGORIE = CATEGORIE.ABDOMINAUX
+  private ordre: number = 1
 
   withId(id: string): DetailExerciceBuilder {
     this.id = id
@@ -28,11 +29,17 @@ export class DetailExerciceBuilder {
     return this
   }
 
+  withOrdre(ordre: number) {
+    this.ordre = ordre
+    return this
+  }
+
   build() {
     return DetailExercice.creerDetailExercice({
       id: this.id,
       nomExercice: this.nomExercice,
       categorie: this.categorie,
+      ordre: this.ordre,
       listeDetailSerie: this.listeDetailSerie
     })
   }

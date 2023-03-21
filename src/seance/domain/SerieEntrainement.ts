@@ -4,10 +4,12 @@ export class SerieEntrainement {
   private readonly _id: string
   private readonly _nombreRepetition: number
   private readonly _estRealise: boolean
+  private readonly _ordre: number
 
-  constructor({ id, nombreRepetition, estRealise }: { id: string, nombreRepetition: number, estRealise: boolean }) {
+  constructor({ id, nombreRepetition, ordre, estRealise }: { id: string, nombreRepetition: number, ordre: number, estRealise: boolean }) {
     this._id = id
     this._nombreRepetition = nombreRepetition
+    this._ordre = ordre
     this._estRealise = estRealise
   }
 
@@ -19,6 +21,10 @@ export class SerieEntrainement {
     return this._nombreRepetition
   }
 
+  get ordre(): number {
+    return this._ordre
+  }
+
   get estRealise(): boolean {
     return this._estRealise
   }
@@ -26,8 +32,9 @@ export class SerieEntrainement {
   static creerSerieEntrainement({
                                   id,
                                   nombreRepetition,
+                                  ordre,
                                   estRealise
-                                }: { id?: string, nombreRepetition: number, estRealise: boolean }) {
-    return new SerieEntrainement({ id: id || uuid(), nombreRepetition, estRealise })
+                                }: { id?: string, nombreRepetition: number, ordre: number, estRealise: boolean }) {
+    return new SerieEntrainement({ id: id || uuid(), nombreRepetition, ordre, estRealise })
   }
 }

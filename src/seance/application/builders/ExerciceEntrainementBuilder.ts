@@ -9,6 +9,7 @@ export class ExerciceEntrainementBuilder {
   private nomExercice: string = "nomExercice"
   private categorie: CATEGORIE = CATEGORIE.ISCHIOJAMBIERS
   private listeSerieEntrainement: SerieEntrainement[] = []
+  private ordre: number = 1
 
   withId(id: string) {
     this.id = id
@@ -40,6 +41,11 @@ export class ExerciceEntrainementBuilder {
     return this
   }
 
+  withOrdre(ordre: number) {
+    this.ordre = ordre
+    return this
+  }
+
   build(): ExerciceEntrainement {
     return ExerciceEntrainement.creerExerciceEntrainement({
       id: this.id,
@@ -47,6 +53,7 @@ export class ExerciceEntrainementBuilder {
       tempsRepos: this.tempsRepos,
       nomExercice: this.nomExercice,
       categorie: this.categorie,
+      ordre: this.ordre,
       listeSerieEntrainement: this.listeSerieEntrainement
     })
   }

@@ -25,6 +25,7 @@ function convertirExerciceEntrainementEnModel(exerciceEntrainement: ExerciceEntr
     nomExercice: exerciceEntrainement.nomExercice,
     categorie: exerciceEntrainement.categorie,
     tempsRepos: exerciceEntrainement.tempsRepos,
+    ordre: exerciceEntrainement.ordre,
     estRealise: exerciceEntrainement.estRealise
   }
 }
@@ -33,6 +34,7 @@ function convertirSerieEntrainementEnModel(serieEntrainement: SerieEntrainement)
   return {
     id: serieEntrainement.id,
     nombreRepetition: serieEntrainement.nombreRepetition,
+    ordre: serieEntrainement.ordre,
     estRealise: serieEntrainement.estRealise
   }
 }
@@ -59,6 +61,7 @@ function convertirEnExerciceEntrainement(exerciceEntrainementModel: ExerciceEntr
     categorie: exerciceEntrainementModel.categorie as CATEGORIE,
     tempsRepos: exerciceEntrainementModel.tempsRepos,
     estRealise: exerciceEntrainementModel.estRealise,
+    ordre: exerciceEntrainementModel.ordre,
     listeSerieEntrainement: exerciceEntrainementModel.serieEntrainements.map(convertirEnSerieEntrainement)
   })
 }
@@ -67,6 +70,7 @@ function convertirEnSerieEntrainement(serieEntrainementModel: SerieEntrainementM
   return SerieEntrainement.creerSerieEntrainement({
     id: serieEntrainementModel.id,
     nombreRepetition: serieEntrainementModel.nombreRepetition,
+    ordre: serieEntrainementModel.ordre,
     estRealise: serieEntrainementModel.estRealise
   })
 }
@@ -120,8 +124,9 @@ export class PrismaEntrainementRepository implements EntrainementRepository {
       where: { id },
       include: {
         exerciceEntrainements: {
+          orderBy: { ordre: "asc" },
           include: {
-            serieEntrainements: true
+            serieEntrainements: { orderBy: { ordre: "asc"} }
           }
         }
       }

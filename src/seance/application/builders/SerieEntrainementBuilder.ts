@@ -4,6 +4,7 @@ export class SerieEntrainementBuilder {
   private id: string = "idSerieEntrainement"
   private nombreRepetition: number = 12
   private estRealise: boolean = false
+  private ordre: number = 1
 
   withId(id: string) {
     this.id = id
@@ -20,10 +21,16 @@ export class SerieEntrainementBuilder {
     return this
   }
 
+  withOrdre(ordre: number) {
+    this.ordre = ordre
+    return this
+  }
+
   build(): SerieEntrainement {
     return SerieEntrainement.creerSerieEntrainement({
       id: this.id,
       nombreRepetition: this.nombreRepetition,
+      ordre: this.ordre,
       estRealise: this.estRealise
     })
   }
