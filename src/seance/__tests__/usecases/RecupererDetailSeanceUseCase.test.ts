@@ -20,6 +20,7 @@ describe("RecupererDetailSeanceUseCase", () => {
     recupererDetailSeanceUseCase = new RecupererDetailSeanceUseCase({ seanceRepository })
 
   })
+
   it("doit récupérer le détail d'une séance pour un utilisateur", async () => {
     // Arrange
     const idUtilisateur = "idUtilisateur"
@@ -28,14 +29,17 @@ describe("RecupererDetailSeanceUseCase", () => {
     const detailSerie1 = new DetailSerieBuilder()
       .withId("idSerie 1")
       .withNombreRepetition(8)
+      .withOrdre(1)
       .build()
     const detailSerie2 = new DetailSerieBuilder()
       .withId("idSerie 2")
       .withNombreRepetition(10)
+      .withOrdre(2)
       .build()
     const detailSerie3 = new DetailSerieBuilder()
       .withId("idSerie 3")
       .withNombreRepetition(12)
+      .withOrdre(1)
       .build()
 
     const detailExercice1 = new DetailExerciceBuilder()
@@ -73,13 +77,16 @@ describe("RecupererDetailSeanceUseCase", () => {
     expect(resultDetailSeance.listeDetailExercice.at(0)?.listeDetailSerie).toHaveLength(1)
     expect(resultDetailSeance.listeDetailExercice.at(0)?.listeDetailSerie.at(0)?.id).toEqual("idSerie 1")
     expect(resultDetailSeance.listeDetailExercice.at(0)?.listeDetailSerie.at(0)?.nombreRepetition).toEqual(8)
+    expect(resultDetailSeance.listeDetailExercice.at(0)?.listeDetailSerie.at(0)?.ordre).toEqual(1)
     expect(resultDetailSeance.listeDetailExercice.at(1)?.id).toEqual("idExercice 2")
     expect(resultDetailSeance.listeDetailExercice.at(1)?.categorie).toEqual("Pectoraux")
     expect(resultDetailSeance.listeDetailExercice.at(1)?.nomExercice).toEqual("nomExercice 2")
     expect(resultDetailSeance.listeDetailExercice.at(1)?.listeDetailSerie).toHaveLength(2)
     expect(resultDetailSeance.listeDetailExercice.at(1)?.listeDetailSerie.at(0)?.id).toEqual("idSerie 2")
     expect(resultDetailSeance.listeDetailExercice.at(1)?.listeDetailSerie.at(0)?.nombreRepetition).toEqual(10)
+    expect(resultDetailSeance.listeDetailExercice.at(1)?.listeDetailSerie.at(0)?.ordre).toEqual(2)
     expect(resultDetailSeance.listeDetailExercice.at(1)?.listeDetailSerie.at(1)?.id).toEqual("idSerie 3")
     expect(resultDetailSeance.listeDetailExercice.at(1)?.listeDetailSerie.at(1)?.nombreRepetition).toEqual(12)
+    expect(resultDetailSeance.listeDetailExercice.at(1)?.listeDetailSerie.at(1)?.ordre).toEqual(1)
   })
 })

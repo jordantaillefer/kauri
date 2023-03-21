@@ -45,7 +45,7 @@ export const ResumeSeanceEntrainement: FunctionComponent = () => {
                     exercice.series.map((serie, indexSerie) => {
                       return (
                         <li key={`${indexExercice}-${exercice.nomExercice}-${indexSerie}`}>
-                          nombre répétitions : {serie.repetitions}
+                          { serie.ordre } / nombre répétitions : {serie.repetitions}
                         </li>
                       )
                     })

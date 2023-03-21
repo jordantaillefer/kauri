@@ -14,6 +14,7 @@ import { PrismaSeanceRepository } from "../../../infrastructure/adapters/PrismaS
 describe("PrismaExerciceSeanceRepository", () => {
   let prismaExerciceSeanceRepository: PrismaExerciceSeanceRepository
   let prismaSeanceRepository: PrismaSeanceRepository
+
   beforeEach(() => {
     prismaExerciceSeanceRepository = new PrismaExerciceSeanceRepository()
     prismaSeanceRepository = new PrismaSeanceRepository()
@@ -125,10 +126,12 @@ describe("PrismaExerciceSeanceRepository", () => {
       const serieExerciceSeance1 = new SerieExerciceSeanceBuilder()
         .withId("64c21170-565a-4ad0-a8d1-e8756f02aafb")
         .withRepetitions(10)
+        .withOrdre(1)
         .build()
       const serieExerciceSeance2 = new SerieExerciceSeanceBuilder()
         .withId("58a7a312-74d6-4da0-bbd0-9bfe7a00ebf0")
         .withRepetitions(12)
+        .withOrdre(2)
         .build()
       const seance = new SeanceBuilder()
         .withId("6bc42156-b946-4128-b605-3b180765738f")
@@ -145,6 +148,10 @@ describe("PrismaExerciceSeanceRepository", () => {
       // Assert
       const exerciceSeanceResult = await prismaExerciceSeanceRepository.recupererParIdSeanceEtParId("6bc42156-b946-4128-b605-3b180765738f", "0e2947f4-960d-4fa2-b3f4-3c1f63447527")
       expect(exerciceSeanceResult.listeSerieExerciceSeance).toHaveLength(2)
+      expect(exerciceSeanceResult.listeSerieExerciceSeance.at(0)?.repetitions).toEqual(10)
+      expect(exerciceSeanceResult.listeSerieExerciceSeance.at(0)?.ordre).toEqual(1)
+      expect(exerciceSeanceResult.listeSerieExerciceSeance.at(1)?.repetitions).toEqual(12)
+      expect(exerciceSeanceResult.listeSerieExerciceSeance.at(1)?.ordre).toEqual(2)
     })
   })
 

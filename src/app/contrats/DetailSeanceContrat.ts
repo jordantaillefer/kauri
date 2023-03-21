@@ -1,5 +1,6 @@
 export interface DetailSerieContrat {
   repetitions: number
+  ordre: number
 }
 
 export interface DetailExerciceContrat {

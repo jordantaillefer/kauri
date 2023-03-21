@@ -196,7 +196,8 @@ function presenterEnSeanceContrat(seance: Seance): SeanceContrat {
 
 function presenterEnDetailSerieSeanceContrat(detailSerie: DetailSerie): DetailSerieContrat {
   return {
-    repetitions: detailSerie.nombreRepetition
+    repetitions: detailSerie.nombreRepetition,
+    ordre: detailSerie.ordre
   }
 }
 

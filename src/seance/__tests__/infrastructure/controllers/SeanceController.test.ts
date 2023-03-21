@@ -252,14 +252,17 @@ describe("SeanceController", () => {
         // Arrange
         const serieExerciceSeance1 = new SerieExerciceSeanceBuilder()
           .withId("4e583c9f-8d58-4b36-8853-66ee2eb307d2")
+          .withOrdre(1)
           .withRepetitions(8)
           .build()
         const serieExerciceSeance2 = new SerieExerciceSeanceBuilder()
           .withId("c5a667c2-64fc-4d97-84d8-f5b3bd6569d4")
+          .withOrdre(1)
           .withRepetitions(10)
           .build()
         const serieExerciceSeance3 = new SerieExerciceSeanceBuilder()
           .withId("0dea312f-4b60-4a8f-9d63-5818705f2b6d")
+          .withOrdre(2)
           .withRepetitions(12)
           .build()
         const exerciceSeance1 = new ExerciceSeanceBuilder()
@@ -310,14 +313,18 @@ describe("SeanceController", () => {
         expect(seanceResult.exerciceSeances.at(0)?.ordre).toEqual(1)
         expect(seanceResult.exerciceSeances.at(0)?.nomExercice).toEqual("nomExercice 1")
         expect(seanceResult.exerciceSeances.at(0)?.series.at(0)?.repetitions).toEqual(8)
+        expect(seanceResult.exerciceSeances.at(0)?.series.at(0)?.ordre).toEqual(1)
         expect(seanceResult.exerciceSeances.at(1)?.categorie).toEqual("Biceps")
         expect(seanceResult.exerciceSeances.at(1)?.ordre).toEqual(2)
         expect(seanceResult.exerciceSeances.at(1)?.nomExercice).toEqual("nomExercice 2")
         expect(seanceResult.exerciceSeances.at(1)?.series.at(0)?.repetitions).toEqual(10)
+        expect(seanceResult.exerciceSeances.at(1)?.series.at(0)?.ordre).toEqual(1)
         expect(seanceResult.exerciceSeances.at(1)?.series.at(1)?.repetitions).toEqual(12)
+        expect(seanceResult.exerciceSeances.at(1)?.series.at(1)?.ordre).toEqual(2)
 
       })
     })
+
     describe("Cas KO", () => {
       it("Quand l'utilisateur n'est pas connecté, erreur Unauthorized", async () => {
         // Arrange

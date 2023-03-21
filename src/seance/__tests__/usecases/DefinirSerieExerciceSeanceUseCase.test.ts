@@ -38,7 +38,9 @@ describe("DefinirSerieExerciceSeanceUseCase", () => {
       expect(exerciceSeanceRepository.ajouterSerieExerciceSeance).toHaveBeenNthCalledWith(1, exerciceSeanceCaptor)
       expect(exerciceSeanceCaptor.value.id).toEqual("idExerciceSeance")
       expect(exerciceSeanceCaptor.value.listeSerieExerciceSeance.at(0)?.repetitions).toEqual(10)
+      expect(exerciceSeanceCaptor.value.listeSerieExerciceSeance.at(0)?.ordre).toEqual(1)
       expect(exerciceSeanceCaptor.value.listeSerieExerciceSeance.at(1)?.repetitions).toEqual(12)
+      expect(exerciceSeanceCaptor.value.listeSerieExerciceSeance.at(1)?.ordre).toEqual(2)
     })
   })
   describe("quand l'exercice de la séance possède des série", () => {
@@ -47,10 +49,11 @@ describe("DefinirSerieExerciceSeanceUseCase", () => {
       const exerciceSeanceCaptor = new CaptorMatcher<ExerciceSeance>()
       const idSeance = "idSeance"
       const idExerciceSeance = "idExerciceSeance"
-      const listeSerie: SerieExerciceSeancePayload[] = [{ repetitions: 10 }]
+      const listeSerie: SerieExerciceSeancePayload[] = [{ repetitions: 10 }, { repetitions: 12 }]
       const serieExerciceSeance = new SerieExerciceSeanceBuilder()
         .withId("idExerciceSeance")
-        .withRepetitions(12)
+        .withRepetitions(14)
+        .withOrdre(1)
         .build()
       const exerciceSeance = new ExerciceSeanceBuilder()
         .withId("idExerciceSeance")
@@ -67,6 +70,9 @@ describe("DefinirSerieExerciceSeanceUseCase", () => {
       expect(exerciceSeanceRepository.ajouterSerieExerciceSeance).toHaveBeenNthCalledWith(1, exerciceSeanceCaptor)
       expect(exerciceSeanceCaptor.value.id).toEqual("idExerciceSeance")
       expect(exerciceSeanceCaptor.value.listeSerieExerciceSeance.at(0)?.repetitions).toEqual(10)
+      expect(exerciceSeanceCaptor.value.listeSerieExerciceSeance.at(0)?.ordre).toEqual(1)
+      expect(exerciceSeanceCaptor.value.listeSerieExerciceSeance.at(1)?.repetitions).toEqual(12)
+      expect(exerciceSeanceCaptor.value.listeSerieExerciceSeance.at(1)?.ordre).toEqual(2)
     })
   })
 })

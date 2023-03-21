@@ -45,6 +45,7 @@ model SerieExerciceSeance {
   exerciceSeance   ExerciceSeance @relation(fields: [idExerciceSeance], references: [id])
   idExerciceSeance String
   repetitions      Int
+  ordre            Int
 }
 
 model Entrainement {

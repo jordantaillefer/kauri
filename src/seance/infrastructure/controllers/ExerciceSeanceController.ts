@@ -77,6 +77,7 @@ function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): Exerc
     nomExercice: exerciceSeance.nomExercice,
     categorie: exerciceSeance.categorie,
     idExercice: exerciceSeance.idExercice,
+    ordre: exerciceSeance.ordre,
     listeSerieExerciceSeance: exerciceSeance.listeSerieExerciceSeance.map(presenterEnSerieExerciceSeanceContrat)
   }
 }

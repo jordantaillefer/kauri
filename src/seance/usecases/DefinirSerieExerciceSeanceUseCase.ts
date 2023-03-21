@@ -22,8 +22,8 @@ export class DefinirSerieExerciceSeanceUseCase {
     if (exerciceSeance.listeSerieExerciceSeance.length) {
       await this.exerciceSeanceRepository.supprimerSerieExerciceSeance(idExerciceSeance)
     }
-    const listeSerieExerciceSeance = listeSerie.map(serie => {
-      return SerieExerciceSeance.creerSerieExerciceSeance({ repetitions: serie.repetitions })
+    const listeSerieExerciceSeance = listeSerie.map((serie, index) => {
+      return SerieExerciceSeance.creerSerieExerciceSeance({ repetitions: serie.repetitions, ordre: index + 1 })
     })
     exerciceSeance.definirSerie(listeSerieExerciceSeance)
     await this.exerciceSeanceRepository.ajouterSerieExerciceSeance(exerciceSeance)

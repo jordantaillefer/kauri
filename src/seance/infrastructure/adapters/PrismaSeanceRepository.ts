@@ -50,7 +50,8 @@ type DetailExerciceModel = ExerciceSeanceModel & { serieExerciceSeances: SerieEx
 function convertirEnDetailSerie(serieExerciceSeanceModel: SerieExerciceSeanceModel): DetailSerie {
   return DetailSerie.creerDetailSerie({
     id: serieExerciceSeanceModel.id,
-    nombreRepetition: serieExerciceSeanceModel.repetitions
+    nombreRepetition: serieExerciceSeanceModel.repetitions,
+    ordre: serieExerciceSeanceModel.ordre
   })
 }
 
@@ -123,7 +124,7 @@ export class PrismaSeanceRepository implements SeanceRepository {
         exerciceSeances: {
           orderBy: { ordre: "asc" },
           include: {
-            serieExerciceSeances: true
+            serieExerciceSeances: { orderBy: { ordre: "asc" } }
           }
         }
       }

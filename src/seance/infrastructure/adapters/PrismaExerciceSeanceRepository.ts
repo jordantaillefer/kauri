@@ -11,6 +11,7 @@ function convertirSerieExerciceSeanceEnModel(serieExerciceSeance: SerieExerciceS
   return {
     id: serieExerciceSeance.id,
     repetitions: serieExerciceSeance.repetitions,
+    ordre: serieExerciceSeance.ordre
   }
 }
 
@@ -28,7 +29,8 @@ function convertirEnModel(exerciceSeance: ExerciceSeance): ExerciceSeanceModel {
 const convertirEnSerieExerciceSeance = (serieExerciceSeanceModel: SerieExerciceSeanceModel): SerieExerciceSeance => {
   return SerieExerciceSeance.creerSerieExerciceSeance({
     id: serieExerciceSeanceModel.id,
-    repetitions: serieExerciceSeanceModel.repetitions
+    repetitions: serieExerciceSeanceModel.repetitions,
+    ordre: serieExerciceSeanceModel.ordre
   })
 }
 

@@ -19,8 +19,14 @@ export const action: ActionFunction = async ({ request, params }) => {
   return redirect(nouveauExerciceSeance.id)
 }
 
+interface LoaderData {
+  listeExercice: [string, ExerciceContrat[]][]
+  seance: SeanceContrat
+}
+
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.idSeance, "expected params.idSeance")
+
   const exerciceResult = await container.resolve("exerciceController").listerExercice({ request })
   const payload = { idSeance: params.idSeance }
   const seanceResult = await container.resolve("seanceController").recupererSeanceParId({ request, payload })
@@ -28,13 +34,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const listeExercice = Array.from((exerciceResult.data as ListeExerciceContrat).entries())
   const seance = seanceResult.data as SeanceContrat
 
-  return json({ listeExercice, seance })
+  return json<LoaderData>({ listeExercice, seance })
 }
+
 export const ModifierSeance: FunctionComponent = () => {
   const {
     listeExercice,
     seance
-  } = useLoaderData<{ listeExercice: [string, ExerciceContrat[]][], seance: SeanceContrat }>()
+  } = useLoaderData<LoaderData>()
   return (
     <div className="container flex w-full">
       <div className="w-2/4">
@@ -46,7 +53,7 @@ export const ModifierSeance: FunctionComponent = () => {
               seance.exerciceSeances.map(exercice => {
                 return (
                   <li key={exercice.id}>
-                    <Link to={`${exercice.id}`}>{exercice.nomExercice}</Link>
+                    <Link to={`${exercice.id}`}>{ exercice.ordre} / {exercice.nomExercice}</Link>
                   </li>
                 )
               })
