@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid"
+
 import { DetailExercice } from "./DetailExercice"
 
 export class DetailSeance {

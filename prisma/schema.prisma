@@ -37,6 +37,7 @@ model ExerciceSeance {
   idExercice           String
   nomExercice          String
   categorie            String
+  ordre                Int
 }
 
 model SerieExerciceSeance {

@@ -25,7 +25,9 @@ import { Seance } from "../../domain/Seance"
 import { SerieEntrainement } from "../../domain/SerieEntrainement"
 import { DemarrerEntrainementUseCase } from "../../usecases/DemarrerEntrainementUseCase"
 import { InitialiserSeanceUseCase } from "../../usecases/InitialiserSeanceUseCase"
+import { ListerEntrainementUseCase } from "../../usecases/ListerEntrainementUseCase"
 import { ListerSeanceUseCase } from "../../usecases/ListerSeanceUseCase"
+import { RealiserEntrainementUseCase } from "../../usecases/RealiserEntrainementUseCase"
 import { RealiserSerieUseCase } from "../../usecases/RealiserSerieUseCase"
 import { RecupererDetailSeanceUseCase } from "../../usecases/RecupererDetailSeanceUseCase"
 import { RecupererEntrainementUseCase } from "../../usecases/RecupererEntrainementUseCase"
@@ -35,10 +37,12 @@ import { ExerciceSeanceContrat, SeanceContrat } from "api"
 interface Dependencies {
   initialiserSeanceUseCase: InitialiserSeanceUseCase
   listerSeanceUseCase: ListerSeanceUseCase
+  listerEntrainementUseCase: ListerEntrainementUseCase
   recupererSeanceUseCase: RecupererSeanceUseCase
   recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
   demarrerEntrainementUseCase: DemarrerEntrainementUseCase
   realiserSerieUseCase: RealiserSerieUseCase
+  realiserEntrainementUseCase: RealiserEntrainementUseCase
   recupererEntrainementUseCase: RecupererEntrainementUseCase
 }
 
@@ -46,10 +50,12 @@ interface Dependencies {
 export class SeanceController {
   private initialiserSeanceUseCase: InitialiserSeanceUseCase
   private listerSeanceUseCase: ListerSeanceUseCase
+  private listerEntrainementUseCase: ListerEntrainementUseCase
   private recupererSeanceUseCase: RecupererSeanceUseCase
   private recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
   private demarrerEntrainementUseCase: DemarrerEntrainementUseCase
   private realiserSerieUseCase: RealiserSerieUseCase
+  private realiserEntrainementUseCase: RealiserEntrainementUseCase
   private recupererEntrainementUseCase: RecupererEntrainementUseCase
 
   constructor({
@@ -59,14 +65,18 @@ export class SeanceController {
                 recupererDetailSeanceUseCase,
                 demarrerEntrainementUseCase,
                 realiserSerieUseCase,
-                recupererEntrainementUseCase
+                realiserEntrainementUseCase,
+                recupererEntrainementUseCase,
+                listerEntrainementUseCase
               }: Dependencies) {
     this.initialiserSeanceUseCase = initialiserSeanceUseCase
     this.listerSeanceUseCase = listerSeanceUseCase
+    this.listerEntrainementUseCase = listerEntrainementUseCase
     this.recupererSeanceUseCase = recupererSeanceUseCase
     this.recupererDetailSeanceUseCase = recupererDetailSeanceUseCase
     this.demarrerEntrainementUseCase = demarrerEntrainementUseCase
     this.realiserSerieUseCase = realiserSerieUseCase
+    this.realiserEntrainementUseCase = realiserEntrainementUseCase
     this.recupererEntrainementUseCase = recupererEntrainementUseCase
   }
 
@@ -109,14 +119,14 @@ export class SeanceController {
 
   @DoitEtreAuthentifie()
   @ProduceServerResponse()
-  async demarrerEntrainement(serverRequest: ServerRequest<{ idSeance: string }>): Promise<ServerResponse<void>> {
+  async demarrerEntrainement(serverRequest: ServerRequest<{ idSeance: string }>): Promise<ServerResponse<EntrainementContrat>> {
     invariant(serverRequest.compteUtilisateurConnecte)
     const { idSeance } = serverRequest.payload
-    await this.demarrerEntrainementUseCase.execute({
+    const nouvelEntrainement = await this.demarrerEntrainementUseCase.execute({
       idUtilisateur: serverRequest.compteUtilisateurConnecte.id,
       idSeance
     })
-    return created()
+    return created(presenterEnEntrainementContrat(nouvelEntrainement))
   }
 
   @DoitEtreAuthentifie()
@@ -142,6 +152,27 @@ export class SeanceController {
     })
     return updated()
   }
+
+  @DoitEtreAuthentifie()
+  @ProduceServerResponse()
+  async realiserEntrainement(serverRequest: ServerRequest<{ idEntrainement: string }>): Promise<ServerResponse<void>> {
+    invariant(serverRequest.compteUtilisateurConnecte)
+
+    const { idEntrainement } = serverRequest.payload
+    await this.realiserEntrainementUseCase.execute({
+      idUtilisateur: serverRequest.compteUtilisateurConnecte.id,
+      idEntrainement
+    })
+    return updated()
+  }
+
+  @DoitEtreAuthentifie()
+  @ProduceServerResponse()
+  async listerEntrainement(serverRequest: ServerRequestWithoutPayload): Promise<ServerResponse<EntrainementContrat[]>> {
+    invariant(serverRequest.compteUtilisateurConnecte)
+    const listeSeance = await this.listerEntrainementUseCase.execute(serverRequest.compteUtilisateurConnecte.id)
+    return success(listeSeance.map(presenterEnEntrainementContrat))
+  }
 }
 
 function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): ExerciceSeanceContrat {
@@ -150,6 +181,7 @@ function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): Exerc
     nomExercice: exerciceSeance.nomExercice,
     categorie: exerciceSeance.categorie,
     idExercice: exerciceSeance.idExercice,
+    ordre: exerciceSeance.ordre,
     listeSerieExerciceSeance: []
   }
 }
@@ -172,6 +204,7 @@ function presenterEnDetailExerciceSeanceContrat(detailExerciceSeance: DetailExer
   return {
     nomExercice: detailExerciceSeance.nomExercice,
     categorie: detailExerciceSeance.categorie,
+    ordre: detailExerciceSeance.ordre,
     series: detailExerciceSeance.listeDetailSerie.map(presenterEnDetailSerieSeanceContrat)
   }
 }

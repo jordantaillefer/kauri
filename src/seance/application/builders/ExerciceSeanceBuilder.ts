@@ -9,6 +9,7 @@ export class ExerciceSeanceBuilder {
   private nomExercice: string = "nomExercice"
   private categorie: CATEGORIE = CATEGORIE.ABDOMINAUX
   private listeSerieExerciceSeance: SerieExerciceSeance[] = []
+  private ordre: number = 0
 
   withId(id: string): ExerciceSeanceBuilder {
     this.id = id
@@ -41,6 +42,11 @@ export class ExerciceSeanceBuilder {
     
   }
 
+  withOrdre(ordre: number) {
+    this.ordre = ordre
+    return this
+  }
+
   build(): ExerciceSeance {
     return ExerciceSeance.creerExerciceSeance({
       id: this.id,
@@ -48,6 +54,7 @@ export class ExerciceSeanceBuilder {
       idExercice: this.idExercice,
       nomExercice: this.nomExercice,
       categorie: this.categorie,
+      ordre: this.ordre,
       listeSerieExerciceSeance: this.listeSerieExerciceSeance
     })
   }

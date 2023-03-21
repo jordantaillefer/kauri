@@ -1,5 +1,5 @@
-import { DetailSeance } from "../../domain/DetailSeance"
 import { DetailExercice } from "../../domain/DetailExercice"
+import { DetailSeance } from "../../domain/DetailSeance"
 
 export class DetailSeanceBuilder {
   private id: string = "idSeance"

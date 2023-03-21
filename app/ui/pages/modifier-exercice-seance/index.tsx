@@ -52,7 +52,7 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
   }
 
   const removeFormFields = (index: number) => {
-    let newFormValues = [...formValues]
+    const newFormValues = [...formValues]
     newFormValues.splice(index, 1)
     setFormValues(newFormValues)
   }

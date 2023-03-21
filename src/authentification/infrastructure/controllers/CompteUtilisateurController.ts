@@ -64,7 +64,7 @@ export class CompteUtilisateurController {
 
   @ProduceServerResponse()
   async recupererCompteUtilisateurConnecte(request: Request): Promise<ServerResponse<CompteUtilisateur>> {
-    let compteUtilisateur = await this.recupererCompteUtilisateurConnecteUseCase.execute(request)
+    const compteUtilisateur = await this.recupererCompteUtilisateurConnecteUseCase.execute(request)
     return success(compteUtilisateur)
   }
 

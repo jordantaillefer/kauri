@@ -1,16 +1,23 @@
-import type { ActionFunction, LoaderFunction, TypedResponse } from "@remix-run/node"
+import type { ActionFunction, LoaderFunction } from "@remix-run/node"
 import { json, redirect } from "@remix-run/node"
 import { Link, useLoaderData } from "@remix-run/react"
-import { useState } from "react"
 
+import { EntrainementContrat } from "../../../../src/app/contrats/EntrainementContrat"
 import { container, SeanceContrat } from "api"
 import { H2Title } from "~/ui/atoms/H2Title"
 import { CreerSeanceButton } from "~/ui/molecules/CreerSeanceButton"
 
-export const loader: LoaderFunction = async ({ request }): Promise<TypedResponse<{ listeSeance: SeanceContrat[] }>> => {
-  const result = await container.resolve("seanceController").listerSeance({ request })
-  const listeSeance = result.data as SeanceContrat[]
-  return json({ listeSeance })
+type LoaderData = {
+  listeSeance: SeanceContrat[]
+  listeEntrainement: EntrainementContrat[]
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const resultListerSeance = await container.resolve("seanceController").listerSeance({ request })
+  const resultListerEntrainement = await container.resolve("seanceController").listerEntrainement({ request })
+  const listeSeance = resultListerSeance.data as SeanceContrat[]
+  const listeEntrainement = resultListerEntrainement.data as EntrainementContrat[]
+  return json<LoaderData>({ listeSeance, listeEntrainement })
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -20,7 +27,7 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export default function Profil() {
-  const { listeSeance } = useLoaderData<{ listeSeance: SeanceContrat[] }>()
+  const { listeSeance, listeEntrainement } = useLoaderData<LoaderData>()
   return (
     <div className="container">
       <H2Title>Liste des séances</H2Title>
@@ -29,7 +36,7 @@ export default function Profil() {
           {
             listeSeance.map(seance => (
                 <li key={seance.id}>
-                  <Link to={`/entrainement/${seance.id}`}>{seance.nomSeance}</Link>
+                  <Link to={`/seance/${seance.id}/resume`}>{seance.nomSeance}</Link>
                   <Link to={`/seance/${seance.id}`}>[[icon__modifier]]</Link>
                   <button>[[icon__supprimer]]</button>
                 </li>
@@ -39,6 +46,20 @@ export default function Profil() {
         </ul>
 
         <CreerSeanceButton />
+      </div>
+
+      <H2Title>Reprendre un entrainement</H2Title>
+      <div>
+        <ul>
+          {
+            listeEntrainement.map(entrainement => (
+                <li key={entrainement.id}>
+                  <Link to={`/entrainement/${entrainement.id}`}>{entrainement.nomSeance}</Link>
+                </li>
+              )
+            )
+          }
+        </ul>
       </div>
     </div>
   )

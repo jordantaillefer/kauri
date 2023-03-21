@@ -15,13 +15,12 @@ import { ReactNode } from "react"
 
 import styles from "./styles/tailwind.css"
 import { container } from "api"
-import { DefaultLayout } from "~/ui/layouts/DefaultLayout"
 
 type ContextType = { authenticated: boolean };
 
 export const links: LinksFunction = () => {
   return [
-    { rel: "stylesheet", href: styles },
+    { rel: "stylesheet", href: styles }
   ]
 }
 
@@ -56,7 +55,7 @@ function Document({ children }: DocumentProps) {
 }
 
 export const loader: LoaderFunction = async ({ request, params, context }) => {
-  let response = await container.resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
+  const response = await container.resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
   return json({
     authenticated: response.reasonPhrase === ReasonPhrases.OK
   })

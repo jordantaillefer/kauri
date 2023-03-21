@@ -5,6 +5,7 @@ export interface DetailSerieContrat {
 export interface DetailExerciceContrat {
   nomExercice: string,
   categorie: string
+  ordre: number
   series: DetailSerieContrat[]
 
 }

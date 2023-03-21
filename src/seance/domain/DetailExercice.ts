@@ -6,18 +6,21 @@ import { DetailSerie } from "./DetailSerie"
 export class DetailExercice {
   private readonly _id: string
   private readonly _nomExercice: string
-  private readonly _listeDetailSerie: DetailSerie[]
   private readonly _categorie: CATEGORIE
+  private readonly _ordre: number
+  private readonly _listeDetailSerie: DetailSerie[]
 
   constructor({
                 id,
                 nomExercice,
                 categorie,
+                ordre,
                 listeDetailSerie
-              }: { id: string, nomExercice: string, categorie: CATEGORIE, listeDetailSerie: DetailSerie[] }) {
+              }: { id: string, nomExercice: string, categorie: CATEGORIE, ordre: number, listeDetailSerie: DetailSerie[] }) {
     this._id = id
     this._nomExercice = nomExercice
     this._categorie = categorie
+    this._ordre = ordre
     this._listeDetailSerie = listeDetailSerie
   }
 
@@ -29,20 +32,25 @@ export class DetailExercice {
     return this._nomExercice
   }
 
-  get listeDetailSerie(): DetailSerie[] {
-    return this._listeDetailSerie
-  }
-
   get categorie(): CATEGORIE {
     return this._categorie
+  }
+
+  get ordre(): number {
+    return this._ordre
+  }
+
+  get listeDetailSerie(): DetailSerie[] {
+    return this._listeDetailSerie
   }
 
   static creerDetailExercice({
                                id,
                                nomExercice,
                                categorie,
+                               ordre,
                                listeDetailSerie
-                             }: { id?: string, nomExercice: string, categorie: CATEGORIE, listeDetailSerie: DetailSerie[] }) {
-    return new DetailExercice({ id: id || uuid(), nomExercice, categorie, listeDetailSerie })
+                             }: { id?: string, nomExercice: string, categorie: CATEGORIE, ordre: number, listeDetailSerie: DetailSerie[] }) {
+    return new DetailExercice({ id: id || uuid(), nomExercice, categorie, ordre, listeDetailSerie })
   }
 }

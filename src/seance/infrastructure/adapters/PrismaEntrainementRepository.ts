@@ -37,7 +37,14 @@ function convertirSerieEntrainementEnModel(serieEntrainement: SerieEntrainement)
   }
 }
 
-function convertirEnEntrainement(entrainementModel: EntrainementModel & { exerciceEntrainements: (ExerciceEntrainementModel & { serieEntrainements: SerieEntrainementModel [] })[] }): Entrainement {
+function convertirEnEntrainement(entrainementModel: EntrainementModel): Entrainement {
+  return Entrainement.creerEntrainement({
+    id: entrainementModel.id,
+    nomSeance: entrainementModel.nomSeance,
+    listeExerciceEntrainement: []
+  })
+}
+function convertirEnDetailEntrainement(entrainementModel: EntrainementModel & { exerciceEntrainements: (ExerciceEntrainementModel & { serieEntrainements: SerieEntrainementModel [] })[] }): Entrainement {
   return Entrainement.creerEntrainement({
     id: entrainementModel.id,
     nomSeance: entrainementModel.nomSeance,
@@ -65,6 +72,21 @@ function convertirEnSerieEntrainement(serieEntrainementModel: SerieEntrainementM
 }
 
 export class PrismaEntrainementRepository implements EntrainementRepository {
+
+  async recupererTout(idUtilisateur: string): Promise<Entrainement[]> {
+    const listeDEntrainementModels = await prisma.entrainement.findMany()
+    return listeDEntrainementModels.map(convertirEnEntrainement)
+  }
+
+  async mettreAJourEntrainementEstRealise(idEntrainement: string, estRealise: boolean): Promise<void> {
+    await prisma.exerciceEntrainement.update({
+      where: { id: idEntrainement },
+      data: {
+        estRealise
+      }
+    })
+  }
+
   async mettreAJourSerieEstRealise(idSerie: string, estRealise: boolean): Promise<void> {
     await prisma.serieEntrainement.update({
       where: { id: idSerie },
@@ -73,6 +95,7 @@ export class PrismaEntrainementRepository implements EntrainementRepository {
       }
     })
   }
+
   async creerEntrainement(entrainement: Entrainement): Promise<void> {
     const entrainementModel = convertirEnModel(entrainement)
     await prisma.entrainement.create({
@@ -108,6 +131,6 @@ export class PrismaEntrainementRepository implements EntrainementRepository {
       throw new EntrainementNotFoundError()
     }
 
-    return convertirEnEntrainement(entrainementModel)
+    return convertirEnDetailEntrainement(entrainementModel)
   }
 }

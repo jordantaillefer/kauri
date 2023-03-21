@@ -21,10 +21,10 @@ describe("DefinirSerieExerciceSeanceUseCase", () => {
   describe("quand l'exercice de la séance ne possède pas de série", () => {
     it("doit créer les séries", async () => {
       // Arrange
-      let exerciceSeanceCaptor = new CaptorMatcher<ExerciceSeance>()
+      const exerciceSeanceCaptor = new CaptorMatcher<ExerciceSeance>()
       const idSeance = "idSeance"
       const idExerciceSeance = "idExerciceSeance"
-      const listeSerie: SerieExerciceSeancePayload[] = [{ repetitions: 10 }]
+      const listeSerie: SerieExerciceSeancePayload[] = [{ repetitions: 10 }, { repetitions: 12 }]
       const exerciceSeance = new ExerciceSeanceBuilder()
         .withId("idExerciceSeance")
         .withIdSeance("idSeance")
@@ -38,12 +38,13 @@ describe("DefinirSerieExerciceSeanceUseCase", () => {
       expect(exerciceSeanceRepository.ajouterSerieExerciceSeance).toHaveBeenNthCalledWith(1, exerciceSeanceCaptor)
       expect(exerciceSeanceCaptor.value.id).toEqual("idExerciceSeance")
       expect(exerciceSeanceCaptor.value.listeSerieExerciceSeance.at(0)?.repetitions).toEqual(10)
+      expect(exerciceSeanceCaptor.value.listeSerieExerciceSeance.at(1)?.repetitions).toEqual(12)
     })
   })
   describe("quand l'exercice de la séance possède des série", () => {
     it("doit supprimer d'abord les séries existante avant de créer les nouvelles", async () => {
       // Arrange
-      let exerciceSeanceCaptor = new CaptorMatcher<ExerciceSeance>()
+      const exerciceSeanceCaptor = new CaptorMatcher<ExerciceSeance>()
       const idSeance = "idSeance"
       const idExerciceSeance = "idExerciceSeance"
       const listeSerie: SerieExerciceSeancePayload[] = [{ repetitions: 10 }]

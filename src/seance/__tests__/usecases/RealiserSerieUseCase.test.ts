@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { mock, MockProxy } from "vitest-mock-extended"
+
 import { RealiserSerieRepository, RealiserSerieUseCase } from "../../usecases/RealiserSerieUseCase"
 
 describe("RealiserSerieUseCase", () => {

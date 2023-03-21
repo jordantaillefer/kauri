@@ -9,6 +9,7 @@ export interface ExerciceSeanceContrat {
   idExercice: string
   nomExercice: string
   categorie: CATEGORIE
+  ordre: number
   listeSerieExerciceSeance: SerieExerciceSeanceContrat[]
 }
 

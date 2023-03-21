@@ -1,4 +1,5 @@
 import { DetailSeance } from "../DetailSeance"
+import { ExerciceSeance } from "../ExerciceSeance"
 import { IdSeance, IdUtilisateur, Seance } from "../Seance"
 
 export interface SeanceRepository {
@@ -9,4 +10,6 @@ export interface SeanceRepository {
   recupererParId(idSeance: IdSeance): Promise<Seance>
 
   recupererTout(idUtilisateur: IdUtilisateur): Promise<Seance[]>
+
+  ajouterExerciceSeanceASeance(idSeance: string, exerciceAAjouter: ExerciceSeance): Promise<void>
 }

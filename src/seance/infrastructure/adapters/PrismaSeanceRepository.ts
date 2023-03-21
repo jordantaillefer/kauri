@@ -37,6 +37,7 @@ function convertirEnExerciceSeance(exerciceSeanceModel: ExerciceSeanceModel): Ex
     idSeance: exerciceSeanceModel.idSeance,
     idExercice: exerciceSeanceModel.idExercice,
     nomExercice: exerciceSeanceModel.nomExercice,
+    ordre: exerciceSeanceModel.ordre,
     categorie: exerciceSeanceModel.categorie as CATEGORIE
   })
 }
@@ -58,6 +59,7 @@ function convertirEnDetailExerciceSeance(detailExerciceModel: DetailExerciceMode
     id: detailExerciceModel.id,
     nomExercice: detailExerciceModel.nomExercice,
     categorie: detailExerciceModel.categorie as CATEGORIE,
+    ordre: detailExerciceModel.ordre,
     listeDetailSerie: detailExerciceModel.serieExerciceSeances.map(convertirEnDetailSerie)
   })
 
@@ -69,6 +71,16 @@ function convertirEnDetailSeance(detailSeanceModel: DetailSeanceModel): DetailSe
     nomSeance: detailSeanceModel.nomSeance,
     listeDetailExercice: detailSeanceModel.exerciceSeances.map(convertirEnDetailExerciceSeance)
   })
+}
+
+function convertirEnExerciceSeanceModel(exerciceSeance: ExerciceSeance): Omit<ExerciceSeanceModel, "idSeance"> {
+  return {
+    id: exerciceSeance.id,
+    idExercice: exerciceSeance.idExercice,
+    nomExercice: exerciceSeance.nomExercice,
+    categorie: exerciceSeance.categorie,
+    ordre: exerciceSeance.ordre
+  }
 }
 
 export class PrismaSeanceRepository implements SeanceRepository {
@@ -109,6 +121,7 @@ export class PrismaSeanceRepository implements SeanceRepository {
       where: { id: idSeance },
       include: {
         exerciceSeances: {
+          orderBy: { ordre: "asc" },
           include: {
             serieExerciceSeances: true
           }
@@ -120,5 +133,17 @@ export class PrismaSeanceRepository implements SeanceRepository {
     }
 
     return convertirEnDetailSeance(detailSeanceModel)
+  }
+
+  async ajouterExerciceSeanceASeance(idSeance: string, exerciceSeanceAAjouter: ExerciceSeance): Promise<void> {
+    const exerciceSeanceModel = convertirEnExerciceSeanceModel(exerciceSeanceAAjouter)
+    await prisma.seance.update({
+      where: { id: idSeance },
+      data: {
+        exerciceSeances: {
+          create: exerciceSeanceModel
+        }
+      }
+    })
   }
 }

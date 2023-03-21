@@ -20,7 +20,8 @@ function convertirEnModel(exerciceSeance: ExerciceSeance): ExerciceSeanceModel {
     idSeance: exerciceSeance.idSeance,
     idExercice: exerciceSeance.idExercice,
     nomExercice: exerciceSeance.nomExercice,
-    categorie: exerciceSeance.categorie
+    categorie: exerciceSeance.categorie,
+    ordre: exerciceSeance.ordre
   }
 }
 
@@ -38,6 +39,7 @@ function convertirEnExerciceSeance(exerciceSeanceModel: ExerciceSeanceModel & { 
     idExercice: exerciceSeanceModel.idExercice,
     nomExercice: exerciceSeanceModel.nomExercice,
     categorie: exerciceSeanceModel.categorie as CATEGORIE,
+    ordre: exerciceSeanceModel.ordre,
     listeSerieExerciceSeance: exerciceSeanceModel.serieExerciceSeances.map(convertirEnSerieExerciceSeance)
   })
 }

@@ -147,6 +147,7 @@ describe("PrismaExerciceSeanceRepository", () => {
       expect(exerciceSeanceResult.listeSerieExerciceSeance).toHaveLength(2)
     })
   })
+
   describe("#supprimerSerieExerciceSeance", () => {
     it("doit ajouter les series à un exercice de séance", async () => {
       // Arrange

@@ -33,7 +33,9 @@ import { DefinirSerieExerciceSeanceUseCase } from "./seance/usecases/DefinirSeri
 import { DemarrerEntrainementUseCase } from "./seance/usecases/DemarrerEntrainementUseCase"
 import { InitialiserExerciceSeanceUseCase } from "./seance/usecases/InitialiserExerciceSeanceUseCase"
 import { InitialiserSeanceUseCase } from "./seance/usecases/InitialiserSeanceUseCase"
+import { ListerEntrainementUseCase } from "./seance/usecases/ListerEntrainementUseCase"
 import { ListerSeanceUseCase } from "./seance/usecases/ListerSeanceUseCase"
+import { RealiserEntrainementUseCase } from "./seance/usecases/RealiserEntrainementUseCase"
 import { RealiserSerieUseCase } from "./seance/usecases/RealiserSerieUseCase"
 import { RecupererDetailSeanceUseCase } from "./seance/usecases/RecupererDetailSeanceUseCase"
 import { RecupererEntrainementUseCase } from "./seance/usecases/RecupererEntrainementUseCase"
@@ -57,6 +59,7 @@ type CompteUtilisateurDependencies = {
 
 type SeanceDependencies = {
   listerSeanceUseCase: ListerSeanceUseCase
+  listerEntrainementUseCase: ListerEntrainementUseCase
   recupererSeanceUseCase: RecupererSeanceUseCase
   recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
   initialiserSeanceUseCase: InitialiserSeanceUseCase
@@ -70,6 +73,7 @@ type SeanceDependencies = {
   seanceExerciceRepository: SeanceExerciceRepository
   demarrerEntrainementUseCase: DemarrerEntrainementUseCase
   realiserSerieUseCase: RealiserSerieUseCase
+  realiserEntrainementUseCase: RealiserEntrainementUseCase
   recupererEntrainementUseCase: RecupererEntrainementUseCase
   entrainementRepository: EntrainementRepository
 }
@@ -131,7 +135,9 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
     seanceExerciceRepository: asClass(PrismaSeanceExerciceRepository),
     demarrerEntrainementUseCase: asClass(DemarrerEntrainementUseCase),
     realiserSerieUseCase: asClass(RealiserSerieUseCase),
+    realiserEntrainementUseCase: asClass(RealiserEntrainementUseCase),
     recupererEntrainementUseCase: asClass(RecupererEntrainementUseCase),
+    listerEntrainementUseCase: asClass(ListerEntrainementUseCase),
     entrainementRepository: asClass(PrismaEntrainementRepository)
   })
   container.register({

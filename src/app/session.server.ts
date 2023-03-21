@@ -2,7 +2,7 @@ import { createCookieSessionStorage, Session } from "@remix-run/node"
 
 import config from "../../config"
 
-export let sessionStorage = createCookieSessionStorage({
+export const sessionStorage = createCookieSessionStorage({
   cookie: {
     name: "_session", // use any name you want here
     sameSite: "lax", // this helps with CSRF
@@ -23,7 +23,7 @@ export class SessionManager {
   }
 
   async destroySession(request: Request) {
-    let session = await sessionStorage.getSession(request.headers.get("Cookie"))
+    const session = await sessionStorage.getSession(request.headers.get("Cookie"))
     return sessionStorage.destroySession(session)
   }
 }

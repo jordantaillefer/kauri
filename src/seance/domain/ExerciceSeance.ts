@@ -9,6 +9,7 @@ export class ExerciceSeance {
   private readonly _idExercice: string
   private readonly _nomExercice: string
   private readonly _categorie: CATEGORIE
+  private readonly _ordre: number
   private _listeSerieExerciceSeance: SerieExerciceSeance[]
 
   private constructor({
@@ -17,13 +18,15 @@ export class ExerciceSeance {
                         idExercice,
                         nomExercice,
                         categorie,
+                        ordre,
                         listeSerieExerciceSeance
-                      }: { id: string, idSeance: string, idExercice: string, nomExercice: string, categorie: CATEGORIE, listeSerieExerciceSeance: SerieExerciceSeance[] }) {
+                      }: { id: string, idSeance: string, idExercice: string, nomExercice: string, categorie: CATEGORIE, ordre: number, listeSerieExerciceSeance: SerieExerciceSeance[] }) {
     this._id = id
     this._idSeance = idSeance
     this._idExercice = idExercice
     this._nomExercice = nomExercice
     this._categorie = categorie
+    this._ordre = ordre
     this._listeSerieExerciceSeance = listeSerieExerciceSeance
   }
 
@@ -51,6 +54,10 @@ export class ExerciceSeance {
     return this._listeSerieExerciceSeance
   }
 
+  get ordre(): number {
+    return this._ordre
+  }
+
   definirSerie(listeSerieExerciceSeance: SerieExerciceSeance[]) {
     this._listeSerieExerciceSeance = listeSerieExerciceSeance
   }
@@ -61,14 +68,16 @@ export class ExerciceSeance {
                                idExercice,
                                nomExercice,
                                categorie,
+                               ordre,
                                listeSerieExerciceSeance
-                             }: { id?: string, idSeance: string, idExercice: string, nomExercice: string, categorie: CATEGORIE, listeSerieExerciceSeance?: SerieExerciceSeance[] }) {
+                             }: { id?: string, idSeance: string, idExercice: string, nomExercice: string, categorie: CATEGORIE, ordre: number, listeSerieExerciceSeance?: SerieExerciceSeance[] }) {
     return new ExerciceSeance({
       id: id || uuid(),
       idSeance,
       idExercice,
       nomExercice,
       categorie,
+      ordre,
       listeSerieExerciceSeance: listeSerieExerciceSeance || []
     })
   }
