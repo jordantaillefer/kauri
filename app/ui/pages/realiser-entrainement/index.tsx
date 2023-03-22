@@ -1,6 +1,6 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
-import { Form, useLoaderData } from "@remix-run/react"
-import { FunctionComponent } from "react"
+import { useLoaderData, useSubmit } from "@remix-run/react"
+import { FunctionComponent, useEffect, useState } from "react"
 import invariant from "tiny-invariant"
 
 import {
@@ -10,7 +10,7 @@ import {
 } from "../../../../src/app/contrats/EntrainementContrat"
 import { container } from "api"
 import { H2Title } from "~/ui/atoms/H2Title"
-import { SubmitButton } from "~/ui/molecules/SubmitButton"
+import { PrimaryButton } from "~/ui/atoms/PrimaryButton"
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
@@ -35,7 +35,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   let prochainExercice = entrainement.listeExerciceEntrainement.filter(exercice => !exercice.estRealise).at(0)
   let prochaineSerie = prochainExercice?.listeSerieEntrainement.filter(serie => !serie.estRealise).at(0)
 
-
   // TODO do this on the backend
   if (!prochaineSerie) {
     const payloadRealiserExercice = { idEntrainement: prochainExercice?.id as string } // TODO change from entrainement to exercice
@@ -48,7 +47,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     prochaineSerie = prochainExercice?.listeSerieEntrainement.filter(serie => !serie.estRealise).at(0)
   }
 
-
   return json({
     entrainement,
     prochainExercice,
@@ -58,21 +56,69 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export const RealiserEntrainement: FunctionComponent = () => {
-  const { entrainement, prochainExercice, prochaineSerie } = useLoaderData<{ entrainement: EntrainementContrat, prochainExercice: ExerciceEntrainementContrat, prochaineSerie: SerieEntrainementContrat }>()
+  const {
+    entrainement,
+    prochainExercice,
+    prochaineSerie
+  } = useLoaderData<{ entrainement: EntrainementContrat, prochainExercice: ExerciceEntrainementContrat, prochaineSerie: SerieEntrainementContrat }>()
+
+  const [time, setTime] = useState<number>(0)
+  const [isTimerActive, setIsTimerActive] = useState<boolean>(false)
+
+  const submit = useSubmit()
+
+  const demarrerRepos = async () => {
+    await setTime(prochainExercice.tempsRepos)
+    setIsTimerActive(true)
+  }
+
+  const nextExercice = () => {
+    setIsTimerActive(false)
+    setTime(0)
+    const formData = new FormData()
+    formData.set("_action", prochaineSerie.id)
+    submit(formData, {
+      method: "post"
+    })
+  }
+
+  useEffect(() => {
+    if (isTimerActive) {
+      const interval = setInterval(() => {
+        if (time === 0) {
+          clearInterval(interval)
+          nextExercice()
+        } else {
+          setTime(time - 1)
+        }
+      }, 1000)
+      return () => clearInterval(interval)
+    }
+  }, [isTimerActive, time, nextExercice, prochainExercice.tempsRepos])
 
   return (
     <div className="container">
       <H2Title>Entrainement : {entrainement.nomSeance}</H2Title>
-      <ul>
-        <li>Prochain exercice : { prochainExercice.nomExercice } { prochainExercice.id }</li>
-        <li>Prochaine serie : { prochaineSerie.nombreRepetition } { prochaineSerie.id }</li>
+      {
+        isTimerActive ?
+          <>
+            <p>
+              Temps de repos {time} secondes
+            </p>
+          </>
+          :
+          <>
+            <ul>
+              <li>Exercice à réaliser :
+                N°{prochainExercice.ordre} / {prochainExercice.nomExercice}</li>
+              <li>Série n°{prochaineSerie.ordre} : {prochaineSerie.nombreRepetition} répétitions</li>
 
-        <li>Temps Repos : { prochainExercice.tempsRepos }</li>
-      </ul>
+              <li>Temps Repos : {prochainExercice.tempsRepos}</li>
+            </ul>
 
-      <Form method="post">
-        <SubmitButton value={ prochaineSerie.id }>Valider serie</SubmitButton>
-      </Form>
+            <PrimaryButton onClick={demarrerRepos}>Valider serie</PrimaryButton>
+          </>
+      }
     </div>
   )
 }
