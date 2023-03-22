@@ -3,40 +3,40 @@
 @tailwind utilities;
 
 @layer base {
-    *:focus-visible {
-        @apply outline-2 outline-light outline-dashed outline-offset-4;
-    }
-    :root {
-        --gap: 2rem;
-        --max-column-count: 4;
-        --grid-item--min-width--sm: 4rem;
-        --grid-item--min-width--md: 8rem;
-        --grid-item--min-width--xl: 12rem;
-        --grid-item--min-width: 16rem;
-        --main-padding: max(5vw, 2rem);
+  *:focus-visible {
+    @apply outline-2 outline-light outline-dashed outline-offset-4;
+  }
+  :root {
+    --gap: 2rem;
+    --max-column-count: 4;
+    --grid-item--min-width--sm: 4rem;
+    --grid-item--min-width--md: 8rem;
+    --grid-item--min-width--xl: 12rem;
+    --grid-item--min-width: 16rem;
+    --main-padding: max(5vw, 2rem);
 
-        --max-number-of-gaps-in-row: calc(var(--max-column-count) - 1);
-        --total-gap-width: calc(var(--max-number-of-gaps-in-row) * var(--gap));
-        --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--max-column-count));
-    }
+    --max-number-of-gaps-in-row: calc(var(--max-column-count) - 1);
+    --total-gap-width: calc(var(--max-number-of-gaps-in-row) * var(--gap));
+    --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--max-column-count));
+  }
 
-    body {
-        @apply text-light;
-    }
+  body {
+    @apply text-light;
+  }
 
-    * {
-        box-sizing: border-box;
-    }
-    [data-theme="default"] {
-        --color-primary: theme('colors.emerald.500');
-        --color-primary-darker: theme('colors.emerald.700');
-        --color-background-main: theme('colors.gray.200');
-        --bg-accueil-button: url("/assets/logo/logo-kauri-dark.png")
-    }
-    [data-theme="focus"] {
-        --color-primary: theme('colors.gray.200');
-        --color-primary-darker: theme('colors.gray.200');
-        --color-background-main: theme('colors.emerald.500');
-        --bg-accueil-button: url("/assets/logo/logo-kauri-light.png")
-    }
+  * {
+    box-sizing: border-box;
+  }
+  [data-theme="default"] {
+    --color-primary: theme("colors.emerald.500");
+    --color-primary-darker: theme("colors.emerald.700");
+    --color-background-main: theme("colors.gray.200");
+    --bg-accueil-button: url("/assets/logo/logo-kauri-dark.png");
+  }
+  [data-theme="focus"] {
+    --color-primary: theme("colors.gray.200");
+    --color-primary-darker: theme("colors.gray.200");
+    --color-background-main: theme("colors.emerald.500");
+    --bg-accueil-button: url("/assets/logo/logo-kauri-light.png");
+  }
 }

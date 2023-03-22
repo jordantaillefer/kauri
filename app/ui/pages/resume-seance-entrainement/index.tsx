@@ -35,26 +35,24 @@ export const ResumeSeanceEntrainement: FunctionComponent = () => {
     <div className="container">
       <H2Title>Résumé de la séance : {detailSeance.nomSeance} </H2Title>
       <ul>
-        {
-          detailSeance.exerciceSeances.map((exercice, indexExercice) => {
-            return (
-              <li key={indexExercice}>
-                <span>{exercice.ordre} / {exercice.categorie} / {exercice.nomExercice}</span>
-                <ul>
-                  {
-                    exercice.series.map((serie, indexSerie) => {
-                      return (
-                        <li key={`${indexExercice}-${exercice.nomExercice}-${indexSerie}`}>
-                          { serie.ordre } / nombre répétitions : {serie.repetitions}
-                        </li>
-                      )
-                    })
-                  }
-                </ul>
-              </li>
-            )
-          })
-        }
+        {detailSeance.exerciceSeances.map((exercice, indexExercice) => {
+          return (
+            <li key={indexExercice}>
+              <span>
+                {exercice.ordre} / {exercice.categorie} / {exercice.nomExercice}
+              </span>
+              <ul>
+                {exercice.series.map((serie, indexSerie) => {
+                  return (
+                    <li key={`${indexExercice}-${exercice.nomExercice}-${indexSerie}`}>
+                      {serie.ordre} / nombre répétitions : {serie.repetitions}
+                    </li>
+                  )
+                })}
+              </ul>
+            </li>
+          )
+        })}
       </ul>
 
       <Form method="post">

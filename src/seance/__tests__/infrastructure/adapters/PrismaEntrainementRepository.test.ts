@@ -233,7 +233,7 @@ describe("PrismaEntrainementRepository", () => {
       await prismaEntrainementRepository.creerEntrainement(entrainement)
 
       // Act
-      await prismaEntrainementRepository.mettreAJourEntrainementEstRealise("2c9d1005-19ce-4289-95b1-e11d41cab187", true)
+      await prismaEntrainementRepository.mettreAJourExerciceEstRealise("2c9d1005-19ce-4289-95b1-e11d41cab187", true)
       // Assert
       const nouvelEntrainement = await prismaEntrainementRepository.recupererParId("f9aaa8ad-c602-417c-8005-0af9d7a24a70")
 

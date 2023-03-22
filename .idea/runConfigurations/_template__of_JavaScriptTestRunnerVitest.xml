@@ -2,8 +2,10 @@
   <configuration default="true" type="JavaScriptTestRunnerVitest">
     <node-interpreter value="project" />
     <vitest-package value="$PROJECT_DIR$/node_modules/vitest" />
-    <vitest-options value="--threads false" />
-    <envs />
+    <vitest-options value="--single-thread" />
+    <envs>
+      <env name="NODE_ENV" value="test" />
+    </envs>
     <scope-kind value="ALL" />
     <method v="2" />
   </configuration>

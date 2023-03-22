@@ -27,7 +27,7 @@ import { DemarrerEntrainementUseCase } from "../../usecases/DemarrerEntrainement
 import { InitialiserSeanceUseCase } from "../../usecases/InitialiserSeanceUseCase"
 import { ListerEntrainementUseCase } from "../../usecases/ListerEntrainementUseCase"
 import { ListerSeanceUseCase } from "../../usecases/ListerSeanceUseCase"
-import { RealiserEntrainementUseCase } from "../../usecases/RealiserEntrainementUseCase"
+import { RealiserExerciceUseCase } from "../../usecases/RealiserExerciceUseCase"
 import { RealiserSerieUseCase } from "../../usecases/RealiserSerieUseCase"
 import { RecupererDetailSeanceUseCase } from "../../usecases/RecupererDetailSeanceUseCase"
 import { RecupererEntrainementUseCase } from "../../usecases/RecupererEntrainementUseCase"
@@ -42,7 +42,7 @@ interface Dependencies {
   recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
   demarrerEntrainementUseCase: DemarrerEntrainementUseCase
   realiserSerieUseCase: RealiserSerieUseCase
-  realiserEntrainementUseCase: RealiserEntrainementUseCase
+  realiserEntrainementUseCase: RealiserExerciceUseCase
   recupererEntrainementUseCase: RecupererEntrainementUseCase
 }
 
@@ -55,7 +55,7 @@ export class SeanceController {
   private recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
   private demarrerEntrainementUseCase: DemarrerEntrainementUseCase
   private realiserSerieUseCase: RealiserSerieUseCase
-  private realiserEntrainementUseCase: RealiserEntrainementUseCase
+  private realiserEntrainementUseCase: RealiserExerciceUseCase
   private recupererEntrainementUseCase: RecupererEntrainementUseCase
 
   constructor({
@@ -155,13 +155,13 @@ export class SeanceController {
 
   @DoitEtreAuthentifie()
   @ProduceServerResponse()
-  async realiserEntrainement(serverRequest: ServerRequest<{ idEntrainement: string }>): Promise<ServerResponse<void>> {
+  async realiserExercice(serverRequest: ServerRequest<{ idExercice: string }>): Promise<ServerResponse<void>> {
     invariant(serverRequest.compteUtilisateurConnecte)
 
-    const { idEntrainement } = serverRequest.payload
+    const { idExercice } = serverRequest.payload
     await this.realiserEntrainementUseCase.execute({
       idUtilisateur: serverRequest.compteUtilisateurConnecte.id,
-      idEntrainement
+      idExercice
     })
     return updated()
   }

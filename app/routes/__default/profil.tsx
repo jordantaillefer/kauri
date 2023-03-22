@@ -1,4 +1,4 @@
-import Profil  from "~/ui/pages/profil"
+import Profil from "~/ui/pages/profil"
 
 export { action, loader } from "~/ui/pages/profil"
 

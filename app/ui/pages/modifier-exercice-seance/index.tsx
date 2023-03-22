@@ -14,7 +14,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData()
 
   const inputRepetitions = formData.getAll("repetitions")
-  const listeSerieExerciceSeance = inputRepetitions.map((repetitions) => ({ repetitions: +repetitions }))
+  const listeSerieExerciceSeance = inputRepetitions.map(repetitions => ({ repetitions: +repetitions }))
   const payload = { idSeance, idExerciceSeance, listeSerieExerciceSeance }
   await container.resolve("exerciceSeanceController").definirSerieExerciceSeance({ request, payload })
 
@@ -22,9 +22,9 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export const loader: LoaderFunction = async ({
-                                               request,
-                                               params
-                                             }): Promise<TypedResponse<{ exerciceSeance: ExerciceSeanceContrat }>> => {
+  request,
+  params
+}): Promise<TypedResponse<{ exerciceSeance: ExerciceSeanceContrat }>> => {
   invariant(params.idSeance, "params $idSeance required")
   invariant(params.idExerciceSeance, "params $idSeance required")
   const { idSeance, idExerciceSeance } = params
@@ -59,7 +59,7 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
 
   const submit = useSubmit()
 
-  const submitForm: MouseEventHandler<HTMLButtonElement> = (event) => {
+  const submitForm: MouseEventHandler<HTMLButtonElement> = event => {
     submit(event.currentTarget)
   }
 
@@ -67,7 +67,6 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
     return listeSerieExerciceSeance.length
       ? listeSerieExerciceSeance.map(serieExerciceSeance => ({ repetitions: serieExerciceSeance.repetitions }))
       : [{ repetitions: 0 }]
-
   }
 
   const [formValues, setFormValues] = useState(initSerieExerciceSeance(exerciceSeance.listeSerieExerciceSeance))
@@ -78,28 +77,35 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
         <div>{exerciceSeance.nomExercice}</div>
         <Form id="modifier-exercice-seance-form" method="post">
           <ul>
-            {
-              formValues.map((formValue, index) => {
-                return (
-                  <li key={index}>
-                    <span>{index + 1}</span>
-                    <input type="number" name="repetitions" value={formValue.repetitions}
-                           onFocus={(event) => event.target.select()}
-                           onChange={e => handleChange(index, e)}
-                           placeholder="Nombre de répétition"
-                    />
-                    <button type="button" onClick={() => removeFormFields(index)}>suppr</button>
-                  </li>
-                )
-              })
-            }
+            {formValues.map((formValue, index) => {
+              return (
+                <li key={index}>
+                  <span>{index + 1}</span>
+                  <input
+                    type="number"
+                    name="repetitions"
+                    value={formValue.repetitions}
+                    onFocus={event => event.target.select()}
+                    onChange={e => handleChange(index, e)}
+                    placeholder="Nombre de répétition"
+                  />
+                  <button type="button" onClick={() => removeFormFields(index)}>
+                    suppr
+                  </button>
+                </li>
+              )
+            })}
           </ul>
-          <button type="button" onClick={() => addFormFields()}>Ajouter une série</button>
+          <button type="button" onClick={() => addFormFields()}>
+            Ajouter une série
+          </button>
         </Form>
       </div>
       <div>
         this will be the footer
-        <RoundedButton type="button" form="modifier-exercice-seance-form" onClick={submitForm}>Confirmer</RoundedButton>
+        <RoundedButton type="button" form="modifier-exercice-seance-form" onClick={submitForm}>
+          Confirmer
+        </RoundedButton>
       </div>
     </>
   )

@@ -1,4 +1,4 @@
-import type { LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node"
+import type { LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node"
 import {
   Links,
@@ -16,40 +16,37 @@ import { ReactNode } from "react"
 import styles from "./styles/tailwind.css"
 import { container } from "api"
 
-type ContextType = { authenticated: boolean };
+type ContextType = { authenticated: boolean }
 
 export const links: LinksFunction = () => {
-  return [
-    { rel: "stylesheet", href: styles }
-  ]
+  return [{ rel: "stylesheet", href: styles }]
 }
 
 export const meta: MetaFunction = () => ({
-  charset: "utf-8",
   title: "Kauri",
   viewport: "width=device-width,initial-scale=1"
 })
 
 interface DocumentProps {
-  children: ReactNode;
-  title?: string;
+  children: ReactNode
+  title?: string
 }
 
 function Document({ children }: DocumentProps) {
   return (
     <html lang="fr">
-    <head>
-      <meta charSet="utf-8" />
-      <meta name="viewport" content="width=device-width,initial-scale=1" />
-      <Meta />
-      <Links />
-    </head>
-    <body>
-    {children}
-    <ScrollRestoration />
-    <Scripts />
-    {process.env.NODE_ENV === "development" && <LiveReload />}
-    </body>
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        {children}
+        <ScrollRestoration />
+        <Scripts />
+        {process.env.NODE_ENV === "development" && <LiveReload />}
+      </body>
     </html>
   )
 }

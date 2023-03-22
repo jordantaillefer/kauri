@@ -15,31 +15,27 @@ export default function handleRequest(
   return new Promise((resolve, reject) => {
     let didError = false
 
-    const { pipe, abort } = renderToPipeableStream(
-      <RemixServer context={remixContext} url={request.url} />,
-      {
-        onShellReady: () => {
-          const body = new PassThrough()
+    const { pipe, abort } = renderToPipeableStream(<RemixServer context={remixContext} url={request.url} />, {
+      onShellReady: () => {
+        const body = new PassThrough()
 
-          responseHeaders.set("Content-Type", "text/html")
-          resolve(
-            new Response(body, {
-              headers: responseHeaders,
-              status: didError ? 500 : responseStatusCode
-            })
-          )
+        responseHeaders.set("Content-Type", "text/html")
+        resolve(
+          new Response(body, {
+            headers: responseHeaders,
+            status: didError ? 500 : responseStatusCode
+          })
+        )
 
-          pipe(body)
-        },
-        onShellError: (err) => {
-          reject(err)
-        },
-        onError: (error) => {
-          didError = true
-
-        }
+        pipe(body)
+      },
+      onShellError: err => {
+        reject(err)
+      },
+      onError: error => {
+        didError = true
       }
-    )
+    })
 
     setTimeout(abort, ABORT_DELAY)
   })

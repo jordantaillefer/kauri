@@ -4,7 +4,7 @@ import type { FunctionComponent, PropsWithChildren, ReactNode } from "react"
 import { Header } from "~/ui/organisms/Header"
 
 type FocusLayoutProps = PropsWithChildren & {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export const FocusLayout: FunctionComponent<FocusLayoutProps> = () => {
@@ -17,7 +17,6 @@ export const FocusLayout: FunctionComponent<FocusLayoutProps> = () => {
       <main id="main" className="flex flex-col flex-grow overflow-x-hidden">
         <Outlet />
       </main>
-
     </div>
   )
 }

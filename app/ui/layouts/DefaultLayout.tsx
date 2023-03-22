@@ -12,7 +12,6 @@ export const DefaultLayout = () => {
       <main id="main" className="flex flex-col flex-grow overflow-x-hidden">
         <Outlet />
       </main>
-
     </div>
   )
 }

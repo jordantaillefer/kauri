@@ -33,16 +33,13 @@ export default function Profil() {
       <H2Title>Liste des séances</H2Title>
       <div>
         <ul>
-          {
-            listeSeance.map(seance => (
-                <li key={seance.id}>
-                  <Link to={`/seance/${seance.id}/resume`}>{seance.nomSeance}</Link>
-                  <Link to={`/seance/${seance.id}`}>[[icon__modifier]]</Link>
-                  <button>[[icon__supprimer]]</button>
-                </li>
-              )
-            )
-          }
+          {listeSeance.map(seance => (
+            <li key={seance.id}>
+              <Link to={`/seance/${seance.id}/resume`}>{seance.nomSeance}</Link>
+              <Link to={`/seance/${seance.id}`}>[[icon__modifier]]</Link>
+              <button>[[icon__supprimer]]</button>
+            </li>
+          ))}
         </ul>
 
         <CreerSeanceButton />
@@ -51,14 +48,11 @@ export default function Profil() {
       <H2Title>Reprendre un entrainement</H2Title>
       <div>
         <ul>
-          {
-            listeEntrainement.map(entrainement => (
-                <li key={entrainement.id}>
-                  <Link to={`/entrainement/${entrainement.id}`}>{entrainement.nomSeance}</Link>
-                </li>
-              )
-            )
-          }
+          {listeEntrainement.map(entrainement => (
+            <li key={entrainement.id}>
+              <Link to={`/entrainement/${entrainement.id}`}>{entrainement.nomSeance}</Link>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

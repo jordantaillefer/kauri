@@ -64,7 +64,7 @@ describe("DefinirSerieExerciceSeanceUseCase", () => {
       // Act
       await definirSerieExerciceSeanceUseCase.execute(idSeance, idExerciceSeance, listeSerie)
       // Assert
-      // TODO Call order -> recupererParIdSeanceEtParId -> supprimerSerie -> mettreAJourExerciceSeance
+      // TODO check the call order -> recupererParIdSeanceEtParId -> supprimerSerie -> mettreAJourExerciceSeance
       expect(exerciceSeanceRepository.recupererParIdSeanceEtParId).toHaveBeenCalledOnce()
       expect(exerciceSeanceRepository.supprimerSerieExerciceSeance).toHaveBeenNthCalledWith(1, "idExerciceSeance")
       expect(exerciceSeanceRepository.ajouterSerieExerciceSeance).toHaveBeenNthCalledWith(1, exerciceSeanceCaptor)

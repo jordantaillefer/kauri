@@ -82,7 +82,7 @@ export class PrismaEntrainementRepository implements EntrainementRepository {
     return listeDEntrainementModels.map(convertirEnEntrainement)
   }
 
-  async mettreAJourEntrainementEstRealise(idEntrainement: string, estRealise: boolean): Promise<void> {
+  async mettreAJourExerciceEstRealise(idEntrainement: string, estRealise: boolean): Promise<void> {
     await prisma.exerciceEntrainement.update({
       where: { id: idEntrainement },
       data: {

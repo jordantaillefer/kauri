@@ -1,6 +1,6 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
 import { useLoaderData, useSubmit } from "@remix-run/react"
-import { FunctionComponent, useEffect, useState } from "react"
+import { FunctionComponent, useCallback, useEffect, useState } from "react"
 import invariant from "tiny-invariant"
 
 import {
@@ -21,7 +21,6 @@ export const action: ActionFunction = async ({ request }) => {
   await container.resolve("seanceController").realiserSerie({ request, payload })
 
   return null
-
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -32,14 +31,16 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   const entrainement = result.data as EntrainementContrat
 
-  let prochainExercice = entrainement.listeExerciceEntrainement.filter(exercice => !exercice.estRealise).at(0)
+  let prochainExercice = entrainement.listeExerciceEntrainement.filter(exercice => !exercice.estRealise).at(0) as ExerciceEntrainementContrat
   let prochaineSerie = prochainExercice?.listeSerieEntrainement.filter(serie => !serie.estRealise).at(0)
 
   // TODO do this on the backend
   if (!prochaineSerie) {
-    const payloadRealiserExercice = { idEntrainement: prochainExercice?.id as string } // TODO change from entrainement to exercice
-    await container.resolve("seanceController").realiserEntrainement({ request, payload: payloadRealiserExercice })
-    prochainExercice = entrainement.listeExerciceEntrainement.filter(exercice => !exercice.estRealise).at(1)
+    const payloadRealiserExercice = {
+      idExercice: prochainExercice?.id as string
+    }
+    await container.resolve("seanceController").realiserExercice({ request, payload: payloadRealiserExercice })
+    prochainExercice = entrainement.listeExerciceEntrainement.filter(exercice => !exercice.estRealise).at(1) as ExerciceEntrainementContrat
 
     if (!prochainExercice) {
       return redirect("/")
@@ -52,15 +53,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     prochainExercice,
     prochaineSerie
   })
-
 }
 
 export const RealiserEntrainement: FunctionComponent = () => {
-  const {
-    entrainement,
-    prochainExercice,
-    prochaineSerie
-  } = useLoaderData<{ entrainement: EntrainementContrat, prochainExercice: ExerciceEntrainementContrat, prochaineSerie: SerieEntrainementContrat }>()
+  const { entrainement, prochainExercice, prochaineSerie } = useLoaderData<{
+    entrainement: EntrainementContrat
+    prochainExercice: ExerciceEntrainementContrat
+    prochaineSerie: SerieEntrainementContrat
+  }>()
 
   const [time, setTime] = useState<number>(0)
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false)
@@ -72,7 +72,7 @@ export const RealiserEntrainement: FunctionComponent = () => {
     setIsTimerActive(true)
   }
 
-  const nextExercice = () => {
+  const nextExercice = useCallback(() => {
     setIsTimerActive(false)
     setTime(0)
     const formData = new FormData()
@@ -80,7 +80,7 @@ export const RealiserEntrainement: FunctionComponent = () => {
     submit(formData, {
       method: "post"
     })
-  }
+  }, [prochaineSerie.id, submit])
 
   useEffect(() => {
     if (isTimerActive) {
@@ -99,26 +99,26 @@ export const RealiserEntrainement: FunctionComponent = () => {
   return (
     <div className="container">
       <H2Title>Entrainement : {entrainement.nomSeance}</H2Title>
-      {
-        isTimerActive ?
-          <>
-            <p>
-              Temps de repos {time} secondes
-            </p>
-          </>
-          :
-          <>
-            <ul>
-              <li>Exercice à réaliser :
-                N°{prochainExercice.ordre} / {prochainExercice.nomExercice}</li>
-              <li>Série n°{prochaineSerie.ordre} : {prochaineSerie.nombreRepetition} répétitions</li>
+      {isTimerActive ? (
+        <>
+          <p>Temps de repos {time} secondes</p>
+        </>
+      ) : (
+        <>
+          <ul>
+            <li>
+              Exercice à réaliser : N°{prochainExercice.ordre} / {prochainExercice.nomExercice}
+            </li>
+            <li>
+              Série n°{prochaineSerie.ordre} : {prochaineSerie.nombreRepetition} répétitions
+            </li>
 
-              <li>Temps Repos : {prochainExercice.tempsRepos}</li>
-            </ul>
+            <li>Temps Repos : {prochainExercice.tempsRepos}</li>
+          </ul>
 
-            <PrimaryButton onClick={demarrerRepos}>Valider serie</PrimaryButton>
-          </>
-      }
+          <PrimaryButton onClick={demarrerRepos}>Valider serie</PrimaryButton>
+        </>
+      )}
     </div>
   )
 }

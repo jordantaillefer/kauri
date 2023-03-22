@@ -35,7 +35,7 @@ import { InitialiserExerciceSeanceUseCase } from "./seance/usecases/InitialiserE
 import { InitialiserSeanceUseCase } from "./seance/usecases/InitialiserSeanceUseCase"
 import { ListerEntrainementUseCase } from "./seance/usecases/ListerEntrainementUseCase"
 import { ListerSeanceUseCase } from "./seance/usecases/ListerSeanceUseCase"
-import { RealiserEntrainementUseCase } from "./seance/usecases/RealiserEntrainementUseCase"
+import { RealiserExerciceUseCase } from "./seance/usecases/RealiserExerciceUseCase"
 import { RealiserSerieUseCase } from "./seance/usecases/RealiserSerieUseCase"
 import { RecupererDetailSeanceUseCase } from "./seance/usecases/RecupererDetailSeanceUseCase"
 import { RecupererEntrainementUseCase } from "./seance/usecases/RecupererEntrainementUseCase"
@@ -73,7 +73,7 @@ type SeanceDependencies = {
   seanceExerciceRepository: SeanceExerciceRepository
   demarrerEntrainementUseCase: DemarrerEntrainementUseCase
   realiserSerieUseCase: RealiserSerieUseCase
-  realiserEntrainementUseCase: RealiserEntrainementUseCase
+  realiserEntrainementUseCase: RealiserExerciceUseCase
   recupererEntrainementUseCase: RecupererEntrainementUseCase
   entrainementRepository: EntrainementRepository
 }
@@ -135,7 +135,7 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
     seanceExerciceRepository: asClass(PrismaSeanceExerciceRepository),
     demarrerEntrainementUseCase: asClass(DemarrerEntrainementUseCase),
     realiserSerieUseCase: asClass(RealiserSerieUseCase),
-    realiserEntrainementUseCase: asClass(RealiserEntrainementUseCase),
+    realiserEntrainementUseCase: asClass(RealiserExerciceUseCase),
     recupererEntrainementUseCase: asClass(RecupererEntrainementUseCase),
     listerEntrainementUseCase: asClass(ListerEntrainementUseCase),
     entrainementRepository: asClass(PrismaEntrainementRepository)

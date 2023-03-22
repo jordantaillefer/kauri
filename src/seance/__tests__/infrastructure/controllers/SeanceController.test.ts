@@ -568,9 +568,9 @@ describe("SeanceController", () => {
           .withListeExerciceEntrainement(exerciceSeance1, exerciceSeance2)
           .build()
         await entrainementRepository.creerEntrainement(entrainement)
-        const payload = { idEntrainement: "79dd6cc5-d54a-4821-ac9a-709f42e87875" }
+        const payload = { idExercice: "79dd6cc5-d54a-4821-ac9a-709f42e87875" }
         // Act
-        const result = await seanceController.realiserEntrainement({
+        const result = await seanceController.realiserExercice({
           request,
           payload
         })

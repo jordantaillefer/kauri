@@ -11,10 +11,12 @@ export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData()
   const { _exercice: idExercice } = Object.fromEntries(formData)
   const payload = { idSeance: params.idSeance, idExercice: idExercice.toString() }
-  const initialiserExerciceSeanceResult = await container.resolve("exerciceSeanceController").initialiserExerciceSeance({
-    request,
-    payload
-  })
+  const initialiserExerciceSeanceResult = await container
+    .resolve("exerciceSeanceController")
+    .initialiserExerciceSeance({
+      request,
+      payload
+    })
   const nouveauExerciceSeance = initialiserExerciceSeanceResult.data as ExerciceSeanceContrat
   return redirect(nouveauExerciceSeance.id)
 }
@@ -38,10 +40,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export const ModifierSeance: FunctionComponent = () => {
-  const {
-    listeExercice,
-    seance
-  } = useLoaderData<LoaderData>()
+  const { listeExercice, seance } = useLoaderData<LoaderData>()
   return (
     <div className="container flex w-full">
       <div className="w-2/4">
@@ -49,15 +48,15 @@ export const ModifierSeance: FunctionComponent = () => {
         <div>
           <span>{seance.nomSeance}</span>
           <ul>
-            {
-              seance.exerciceSeances.map(exercice => {
-                return (
-                  <li key={exercice.id}>
-                    <Link to={`${exercice.id}`}>{ exercice.ordre} / {exercice.nomExercice}</Link>
-                  </li>
-                )
-              })
-            }
+            {seance.exerciceSeances.map(exercice => {
+              return (
+                <li key={exercice.id}>
+                  <Link to={`${exercice.id}`}>
+                    {exercice.ordre} / {exercice.nomExercice}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
         </div>
       </div>
@@ -65,32 +64,23 @@ export const ModifierSeance: FunctionComponent = () => {
         <H2Title>Ajouter un exercice</H2Title>
 
         <Form method="post">
-          {
-            listeExercice.map(listeExerciceCategorie => {
-              return (
-                <ul className="mb-8" key={listeExerciceCategorie[0]}>
-                  <li key={listeExerciceCategorie[0]}>{listeExerciceCategorie[0]}</li>
-                  {
-                    listeExerciceCategorie[1].map(exercice => {
-                      return (
-                        <li key={exercice.id}>
-                          <button
-                            type="submit"
-                            aria-label="_exercice"
-                            value={exercice.id}
-                            name="_exercice">
-                            {exercice.nomExercice}
-                          </button>
-                        </li>
-                      )
-                    })
-                  }
-                </ul>
-              )
-            })
-          }
+          {listeExercice.map(listeExerciceCategorie => {
+            return (
+              <ul className="mb-8" key={listeExerciceCategorie[0]}>
+                <li key={listeExerciceCategorie[0]}>{listeExerciceCategorie[0]}</li>
+                {listeExerciceCategorie[1].map(exercice => {
+                  return (
+                    <li key={exercice.id}>
+                      <button type="submit" aria-label="_exercice" value={exercice.id} name="_exercice">
+                        {exercice.nomExercice}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            )
+          })}
         </Form>
-
       </div>
     </div>
   )
