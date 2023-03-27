@@ -513,7 +513,7 @@ describe("SeanceController", () => {
           .withListeExerciceEntrainement(exerciceSeance1, exerciceSeance2)
           .build()
         await entrainementRepository.creerEntrainement(entrainement)
-        const payload = { idSerie: "c812e04e-f6c7-478d-bc37-19b7a5894de2" }
+        const payload = { idSerie: "c812e04e-f6c7-478d-bc37-19b7a5894de2", idExercice: "2c9d1005-19ce-4289-95b1-e11d41cab187" }
         // Act
         const result = await seanceController.realiserSerie({
           request,

@@ -63,6 +63,7 @@ function _handleError(error: DomainError) {
       data: error.message
     }
   } else {
+    console.error(error)
     return {
       reasonPhrase: ReasonPhrases.BAD_REQUEST,
       data: error.stack

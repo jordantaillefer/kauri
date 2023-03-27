@@ -14,9 +14,9 @@ import { PrimaryButton } from "~/ui/atoms/PrimaryButton"
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const { _action } = Object.fromEntries(formData)
+  const { idSerie, idExercice } = Object.fromEntries(formData)
 
-  const payload = { idSerie: _action.toString() }
+  const payload = { idSerie: idSerie.toString(), idExercice: idExercice.toString() }
 
   await container.resolve("seanceController").realiserSerie({ request, payload })
 
@@ -31,21 +31,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   const entrainement = result.data as EntrainementContrat
 
-  let prochainExercice = entrainement.listeExerciceEntrainement.filter(exercice => !exercice.estRealise).at(0) as ExerciceEntrainementContrat
-  let prochaineSerie = prochainExercice?.listeSerieEntrainement.filter(serie => !serie.estRealise).at(0)
+  const prochainExercice = entrainement.listeExerciceEntrainement.filter(exercice => !exercice.estRealise).at(0) as ExerciceEntrainementContrat
+  const prochaineSerie = prochainExercice?.listeSerieEntrainement.filter(serie => !serie.estRealise).at(0)
 
-  // TODO do this on the backend
-  if (!prochaineSerie) {
-    const payloadRealiserExercice = {
-      idExercice: prochainExercice?.id as string
-    }
-    await container.resolve("seanceController").realiserExercice({ request, payload: payloadRealiserExercice })
-    prochainExercice = entrainement.listeExerciceEntrainement.filter(exercice => !exercice.estRealise).at(1) as ExerciceEntrainementContrat
-
-    if (!prochainExercice) {
-      return redirect("/")
-    }
-    prochaineSerie = prochainExercice?.listeSerieEntrainement.filter(serie => !serie.estRealise).at(0)
+  if (!prochainExercice) {
+    return redirect("/")
   }
 
   return json({
@@ -76,7 +66,8 @@ export const RealiserEntrainement: FunctionComponent = () => {
     setIsTimerActive(false)
     setTime(0)
     const formData = new FormData()
-    formData.set("_action", prochaineSerie.id)
+    formData.set("idSerie", prochaineSerie.id)
+    formData.set("idExercice", prochainExercice.id)
     submit(formData, {
       method: "post"
     })

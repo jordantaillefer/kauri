@@ -1,4 +1,5 @@
 import { Entrainement } from "../Entrainement"
+import { ExerciceEntrainement } from "../ExerciceEntrainement";
 
 export interface EntrainementRepository {
   creerEntrainement: (entrainement: Entrainement) => Promise<void>
@@ -7,4 +8,6 @@ export interface EntrainementRepository {
 
   recupererParId(id: string): Promise<Entrainement>
   recupererTout(idUtilisateur: string): Promise<Entrainement[]>
+  recupererExerciceEntrainementParId(idExercice: string): Promise<ExerciceEntrainement>
+  mettreAJourExercice(exerciceEntrainement: ExerciceEntrainement): Promise<void>
 }

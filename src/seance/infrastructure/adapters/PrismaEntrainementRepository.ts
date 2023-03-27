@@ -19,7 +19,9 @@ function convertirEnModel(entrainement: Entrainement): EntrainementModel {
   }
 }
 
-function convertirExerciceEntrainementEnModel(exerciceEntrainement: ExerciceEntrainement): Omit<ExerciceEntrainementModel, "idEntrainement"> {
+function convertirExerciceEntrainementEnModel(
+  exerciceEntrainement: ExerciceEntrainement
+): Omit<ExerciceEntrainementModel, "idEntrainement"> {
   return {
     id: exerciceEntrainement.id,
     nomExercice: exerciceEntrainement.nomExercice,
@@ -30,7 +32,9 @@ function convertirExerciceEntrainementEnModel(exerciceEntrainement: ExerciceEntr
   }
 }
 
-function convertirSerieEntrainementEnModel(serieEntrainement: SerieEntrainement): Omit<SerieEntrainementModel, "idExerciceEntrainement"> {
+function convertirSerieEntrainementEnModel(
+  serieEntrainement: SerieEntrainement
+): Omit<SerieEntrainementModel, "idExerciceEntrainement"> {
   return {
     id: serieEntrainement.id,
     nombreRepetition: serieEntrainement.nombreRepetition,
@@ -46,7 +50,12 @@ function convertirEnEntrainement(entrainementModel: EntrainementModel): Entraine
     listeExerciceEntrainement: []
   })
 }
-function convertirEnDetailEntrainement(entrainementModel: EntrainementModel & { exerciceEntrainements: (ExerciceEntrainementModel & { serieEntrainements: SerieEntrainementModel [] })[] }): Entrainement {
+
+function convertirEnDetailEntrainement(
+  entrainementModel: EntrainementModel & {
+    exerciceEntrainements: (ExerciceEntrainementModel & { serieEntrainements: SerieEntrainementModel[] })[]
+  }
+): Entrainement {
   return Entrainement.creerEntrainement({
     id: entrainementModel.id,
     nomSeance: entrainementModel.nomSeance,
@@ -54,7 +63,9 @@ function convertirEnDetailEntrainement(entrainementModel: EntrainementModel & { 
   })
 }
 
-function convertirEnExerciceEntrainement(exerciceEntrainementModel: ExerciceEntrainementModel & { serieEntrainements: SerieEntrainementModel [] }): ExerciceEntrainement {
+function convertirEnExerciceEntrainement(
+  exerciceEntrainementModel: ExerciceEntrainementModel & { serieEntrainements: SerieEntrainementModel[] }
+): ExerciceEntrainement {
   return ExerciceEntrainement.creerExerciceEntrainement({
     id: exerciceEntrainementModel.id,
     nomExercice: exerciceEntrainementModel.nomExercice,
@@ -76,6 +87,38 @@ function convertirEnSerieEntrainement(serieEntrainementModel: SerieEntrainementM
 }
 
 export class PrismaEntrainementRepository implements EntrainementRepository {
+  async recupererExerciceEntrainementParId(idExercice: string): Promise<ExerciceEntrainement> {
+    const exerciceModel = await prisma.exerciceEntrainement.findUnique({
+      where: { id: idExercice },
+      include: {
+        serieEntrainements: {
+          orderBy: { ordre: "asc" }
+        }
+      }
+    })
+    if (!exerciceModel) {
+      throw new EntrainementNotFoundError()
+    }
+    return convertirEnExerciceEntrainement(exerciceModel)
+  }
+
+  async mettreAJourExercice(exerciceEntrainement: ExerciceEntrainement): Promise<void> {
+    const updateSerieList = exerciceEntrainement.listeSerieEntrainement.map(this.mettreAJourSerie)
+    await Promise.all(updateSerieList)
+    const exerciceEntrainementModel = convertirExerciceEntrainementEnModel(exerciceEntrainement)
+    await prisma.exerciceEntrainement.update({
+      where: { id: exerciceEntrainementModel.id },
+      data: exerciceEntrainementModel
+    })
+  }
+
+  async mettreAJourSerie(serieEntrainement: SerieEntrainement) {
+    const serieEntrainementModel = convertirSerieEntrainementEnModel(serieEntrainement)
+    await prisma.serieEntrainement.update({
+      where: { id: serieEntrainementModel.id },
+      data: serieEntrainementModel
+    })
+  }
 
   async recupererTout(idUtilisateur: string): Promise<Entrainement[]> {
     const listeDEntrainementModels = await prisma.entrainement.findMany()
@@ -126,7 +169,7 @@ export class PrismaEntrainementRepository implements EntrainementRepository {
         exerciceEntrainements: {
           orderBy: { ordre: "asc" },
           include: {
-            serieEntrainements: { orderBy: { ordre: "asc"} }
+            serieEntrainements: { orderBy: { ordre: "asc" } }
           }
         }
       }

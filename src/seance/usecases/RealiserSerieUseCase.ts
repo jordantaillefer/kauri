@@ -1,6 +1,6 @@
 import { EntrainementRepository } from "../domain/ports/EntrainementRepository"
 
-export interface RealiserSerieRepository extends Pick<EntrainementRepository, "mettreAJourSerieEstRealise"> {
+export interface RealiserSerieRepository extends Pick<EntrainementRepository, "recupererExerciceEntrainementParId" | "mettreAJourExercice"> {
 }
 
 interface Dependencies {
@@ -14,7 +14,11 @@ export class RealiserSerieUseCase {
     this.entrainementRepository = entrainementRepository
   }
 
-  async execute({ idUtilisateur, idSerie }: { idSerie: string; idUtilisateur: string }) {
-    await this.entrainementRepository.mettreAJourSerieEstRealise(idSerie, true)
+  async execute({ idUtilisateur, idExercice, idSerie }: { idUtilisateur: string, idExercice: string, idSerie: string }) {
+    const exerciceEntrainement = await this.entrainementRepository.recupererExerciceEntrainementParId(idExercice)
+    exerciceEntrainement.mettreAJourSerieEstRealise(idSerie, true)
+    exerciceEntrainement.mettreAJourEstRealise()
+
+    await this.entrainementRepository.mettreAJourExercice(exerciceEntrainement)
   }
 }

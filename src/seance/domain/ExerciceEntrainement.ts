@@ -5,7 +5,7 @@ import { SerieEntrainement } from "./SerieEntrainement"
 
 export class ExerciceEntrainement {
   private readonly _id: string
-  private readonly _estRealise: boolean
+  private _estRealise: boolean
   private readonly _tempsRepos: number
   private readonly _nomExercice: string
   private readonly _categorie: CATEGORIE
@@ -58,6 +58,18 @@ export class ExerciceEntrainement {
     return this._listeSerieEntrainement
   }
 
+  mettreAJourSerieEstRealise(idSerie: string, estRealiseSerie: boolean) {
+    // TODO : Mutation interne ? Voir si c'est bien de fork plutot
+    this._listeSerieEntrainement.find(serie => serie.id === idSerie)?.mettreAJourEstRealise(estRealiseSerie)
+  }
+
+  mettreAJourEstRealise() {
+    const estSerieToutesRealisees = this._listeSerieEntrainement.find(serie => !serie.estRealise)
+    if (!estSerieToutesRealisees) {
+      this._estRealise = true
+    }
+  }
+
   static creerExerciceEntrainement({
                                      id,
                                      estRealise,
@@ -75,6 +87,6 @@ export class ExerciceEntrainement {
       categorie,
       ordre,
       listeSerieEntrainement
-    })
+    });
   }
 }

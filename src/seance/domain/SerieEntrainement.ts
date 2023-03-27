@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid"
 export class SerieEntrainement {
   private readonly _id: string
   private readonly _nombreRepetition: number
-  private readonly _estRealise: boolean
+  private _estRealise: boolean
   private readonly _ordre: number
 
   constructor({ id, nombreRepetition, ordre, estRealise }: { id: string, nombreRepetition: number, ordre: number, estRealise: boolean }) {
@@ -27,6 +27,10 @@ export class SerieEntrainement {
 
   get estRealise(): boolean {
     return this._estRealise
+  }
+
+  mettreAJourEstRealise(estRealiseSerie: boolean) {
+    this._estRealise = estRealiseSerie
   }
 
   static creerSerieEntrainement({

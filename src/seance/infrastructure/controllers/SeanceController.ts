@@ -143,12 +143,13 @@ export class SeanceController {
 
   @DoitEtreAuthentifie()
   @ProduceServerResponse()
-  async realiserSerie(serverRequest: ServerRequest<{ idSerie: string }>): Promise<ServerResponse<void>> {
+  async realiserSerie(serverRequest: ServerRequest<{ idSerie: string, idExercice: string }>): Promise<ServerResponse<void>> {
     invariant(serverRequest.compteUtilisateurConnecte)
-    const { idSerie } = serverRequest.payload
+    const { idSerie, idExercice } = serverRequest.payload
     await this.realiserSerieUseCase.execute({
       idUtilisateur: serverRequest.compteUtilisateurConnecte.id,
-      idSerie
+      idSerie,
+      idExercice
     })
     return updated()
   }
