@@ -18,7 +18,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   const payload = { idSerie: idSerie.toString(), idExercice: idExercice.toString() }
 
-  await container.resolve("seanceController").realiserSerie({ request, payload })
+  await container.resolve("entrainementController").realiserSerie({ request, payload })
 
   return null
 }
@@ -27,7 +27,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.idEntrainement, "expected idEntrainement to be defined")
 
   const payload = { idEntrainement: params.idEntrainement }
-  const result = await container.resolve("seanceController").recupererEntrainementParId({ request, payload })
+  const result = await container.resolve("entrainementController").recupererEntrainementParId({ request, payload })
 
   const entrainement = result.data as EntrainementContrat
 

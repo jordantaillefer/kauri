@@ -13,7 +13,7 @@ import { SubmitButton } from "~/ui/molecules/SubmitButton"
 export const action: ActionFunction = async ({ request, params }) => {
   invariant(params.idSeance, "expected params.idSeance")
   const payload = { idSeance: params.idSeance }
-  const result = await container.resolve("seanceController").demarrerEntrainement({ request, payload })
+  const result = await container.resolve("entrainementController").demarrerEntrainement({ request, payload })
 
   const nouvelEntrainement = result.data as EntrainementContrat
 
