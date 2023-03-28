@@ -31,7 +31,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   const entrainement = result.data as EntrainementContrat
 
-  const prochainExercice = entrainement.listeExerciceEntrainement.filter(exercice => !exercice.estRealise).at(0) as ExerciceEntrainementContrat
+  const prochainExercice = entrainement.listeExerciceEntrainement
+    .filter(exercice => !exercice.estRealise)
+    .at(0) as ExerciceEntrainementContrat
   const prochaineSerie = prochainExercice?.listeSerieEntrainement.filter(serie => !serie.estRealise).at(0)
 
   if (!prochainExercice) {
@@ -71,7 +73,7 @@ export const RealiserEntrainement: FunctionComponent = () => {
     submit(formData, {
       method: "post"
     })
-  }, [prochaineSerie.id, submit])
+  }, [prochainExercice.id, prochaineSerie.id, submit])
 
   useEffect(() => {
     if (isTimerActive) {
