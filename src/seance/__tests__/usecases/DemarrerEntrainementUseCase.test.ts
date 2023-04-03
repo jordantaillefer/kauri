@@ -70,6 +70,7 @@ describe("DemarrerEntrainementUseCase", () => {
     expect(entrainementRepository.creerEntrainement).toHaveBeenNthCalledWith(1, sauvegarderCaptor)
 
     expect(nouvelEntrainement.id).toBeDefined()
+    expect(nouvelEntrainement.idUtilisateur).toEqual("idUtilisateur")
     expect(nouvelEntrainement.nomSeance).toEqual("nomSeance 1")
     expect(nouvelEntrainement.listeExerciceEntrainement).toHaveLength(2)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.id).toBeDefined()

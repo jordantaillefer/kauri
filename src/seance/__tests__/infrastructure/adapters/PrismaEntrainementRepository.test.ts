@@ -14,7 +14,7 @@ describe("PrismaEntrainementRepository", () => {
     prismaEntrainementRepository = new PrismaEntrainementRepository()
   })
 
-  describe("creerEntrainement", () => {
+  describe("#creerEntrainement", () => {
     it("doit sauvegarder l'entrainement", async () => {
       // Arrange
       const serieEntrainement1 = new SerieEntrainementBuilder()
@@ -55,6 +55,7 @@ describe("PrismaEntrainementRepository", () => {
         .build()
       const entrainement = new EntrainementBuilder()
         .withId("f9aaa8ad-c602-417c-8005-0af9d7a24a70")
+        .withIdUtilisateur("idUtilisateur")
         .withNomSeance("nomSeance")
         .withListeExerciceEntrainement(exerciceSeance1, exerciceSeance2)
         .build()
@@ -64,6 +65,7 @@ describe("PrismaEntrainementRepository", () => {
       // Assert
       const nouvelEntrainement = await prismaEntrainementRepository.recupererParId("f9aaa8ad-c602-417c-8005-0af9d7a24a70")
       expect(nouvelEntrainement.id).toEqual("f9aaa8ad-c602-417c-8005-0af9d7a24a70")
+      expect(nouvelEntrainement.idUtilisateur).toEqual("idUtilisateur")
       expect(nouvelEntrainement.nomSeance).toEqual("nomSeance")
       expect(nouvelEntrainement.listeExerciceEntrainement).toHaveLength(2)
       expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.id).toEqual("2c9d1005-19ce-4289-95b1-e11d41cab187")
@@ -95,7 +97,7 @@ describe("PrismaEntrainementRepository", () => {
     })
   })
 
-  describe("recupererExerciceEntrainementParId", () => {
+  describe("#recupererExerciceEntrainementParId", () => {
     it("doit sauvegarder l'entrainement", async () => {
       // Arrange
       const serieEntrainement1 = new SerieEntrainementBuilder()
@@ -159,7 +161,7 @@ describe("PrismaEntrainementRepository", () => {
     })
   })
 
-  describe("#recupererTout", () => {
+  describe("##recupererTout", () => {
     it("quand il n'existe aucun entrainement, remonte un tableau vide", async () => {
       // Act
       const listeEntrainementResult = await prismaEntrainementRepository.recupererTout("idUtilisateur")
@@ -170,14 +172,17 @@ describe("PrismaEntrainementRepository", () => {
       // Arrange
       const seanceUtilisateur1: Entrainement = new EntrainementBuilder()
         .withId("859ec5a7-2a34-43fd-bec9-a43ac66238bd")
+        .withIdUtilisateur("idUtilisateur")
         .withNomSeance("Seance 1")
         .build()
       const seanceUtilisateur2: Entrainement = new EntrainementBuilder()
         .withId("c9d14285-c5ae-45e8-aa32-2a8c210b591e")
+        .withIdUtilisateur("idUtilisateur")
         .withNomSeance("Seance 2")
         .build()
       const seanceAutreUtilisateur: Entrainement = new EntrainementBuilder()
         .withId("54d9eb29-5410-4428-936f-9d252799e4ce")
+        .withIdUtilisateur("idAutreUtilisateur")
         .build()
       await prismaEntrainementRepository.creerEntrainement(seanceUtilisateur1)
       await prismaEntrainementRepository.creerEntrainement(seanceUtilisateur2)
@@ -187,8 +192,7 @@ describe("PrismaEntrainementRepository", () => {
       const listeEntrainementResult = await prismaEntrainementRepository.recupererTout("idUtilisateur")
       // Assert
 
-      // TODO il faut ajouter l'idUtilisateur !!!
-      expect(listeEntrainementResult).toHaveLength(3)
+      expect(listeEntrainementResult).toHaveLength(2)
       expect(listeEntrainementResult.at(0)?.id).toEqual("859ec5a7-2a34-43fd-bec9-a43ac66238bd")
       expect(listeEntrainementResult.at(0)?.nomSeance).toEqual("Seance 1")
       expect(listeEntrainementResult.at(1)?.id).toEqual("c9d14285-c5ae-45e8-aa32-2a8c210b591e")
@@ -196,7 +200,7 @@ describe("PrismaEntrainementRepository", () => {
     })
   })
 
-  describe("mettreAJourSerieEstRealise", () => {
+  describe("#mettreAJourSerieEstRealise", () => {
     it("doit mettre à jour le champ est réalisé de la série", async () => {
       // Arrange
       const serieEntrainement1 = new SerieEntrainementBuilder()
@@ -250,7 +254,7 @@ describe("PrismaEntrainementRepository", () => {
     })
   })
 
-  describe("mettreAJourExercice", () => {
+  describe("#mettreAJourExercice", () => {
     it("doit mettre à jour le champ est réalisé de la série", async () => {
       // Arrange
       const serieEntrainement1 = new SerieEntrainementBuilder()
@@ -350,7 +354,7 @@ describe("PrismaEntrainementRepository", () => {
     })
   })
 
-  describe("mettreAJourEntrainementEstRealise", () => {
+  describe("#mettreAJourEntrainementEstRealise", () => {
     it("doit mettre à jour le champ est réalisé de l'entrainement", async () => {
       // Arrange
       const serieEntrainement1 = new SerieEntrainementBuilder()

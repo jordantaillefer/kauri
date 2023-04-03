@@ -15,6 +15,7 @@ import { EntrainementRepository } from "../../domain/ports/EntrainementRepositor
 function convertirEnModel(entrainement: Entrainement): EntrainementModel {
   return {
     id: entrainement.id,
+    idUtilisateur: entrainement.idUtilisateur,
     nomSeance: entrainement.nomSeance
   }
 }
@@ -46,6 +47,7 @@ function convertirSerieEntrainementEnModel(
 function convertirEnEntrainement(entrainementModel: EntrainementModel): Entrainement {
   return Entrainement.creerEntrainement({
     id: entrainementModel.id,
+    idUtilisateur: entrainementModel.idUtilisateur,
     nomSeance: entrainementModel.nomSeance,
     listeExerciceEntrainement: []
   })
@@ -58,6 +60,7 @@ function convertirEnDetailEntrainement(
 ): Entrainement {
   return Entrainement.creerEntrainement({
     id: entrainementModel.id,
+    idUtilisateur: entrainementModel.idUtilisateur,
     nomSeance: entrainementModel.nomSeance,
     listeExerciceEntrainement: entrainementModel.exerciceEntrainements.map(convertirEnExerciceEntrainement)
   })
@@ -121,7 +124,9 @@ export class PrismaEntrainementRepository implements EntrainementRepository {
   }
 
   async recupererTout(idUtilisateur: string): Promise<Entrainement[]> {
-    const listeDEntrainementModels = await prisma.entrainement.findMany()
+    const listeDEntrainementModels = await prisma.entrainement.findMany({
+      where: { idUtilisateur: idUtilisateur }
+    })
     return listeDEntrainementModels.map(convertirEnEntrainement)
   }
 

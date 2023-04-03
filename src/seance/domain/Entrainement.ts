@@ -6,17 +6,23 @@ export class Entrainement {
   private readonly _id: string
   private readonly _nomSeance: string
   private readonly _listeExerciceEntrainement: ExerciceEntrainement[]
+  private readonly _idUtilisateur: string;
 
-  private constructor({ id, nomSeance, listeExerciceEntrainement }: {
-    id: string, nomSeance: string, listeExerciceEntrainement: ExerciceEntrainement[]
+  private constructor({ id, idUtilisateur, nomSeance, listeExerciceEntrainement }: {
+    id: string, idUtilisateur: string, nomSeance: string, listeExerciceEntrainement: ExerciceEntrainement[]
   }) {
     this._id = id
     this._nomSeance = nomSeance
+    this._idUtilisateur = idUtilisateur
     this._listeExerciceEntrainement = listeExerciceEntrainement
   }
 
   get id(): string {
     return this._id
+  }
+
+  get idUtilisateur(): string {
+    return this._idUtilisateur;
   }
 
   get nomSeance(): string {
@@ -30,15 +36,18 @@ export class Entrainement {
   static creerEntrainement({
                              id,
                              nomSeance,
+                             idUtilisateur,
                              listeExerciceEntrainement
                            }: {
     id?: string,
     nomSeance: string,
+    idUtilisateur: string,
     listeExerciceEntrainement: ExerciceEntrainement[]
   }) {
     return new Entrainement({
       id: id || uuid(),
       nomSeance,
+      idUtilisateur,
       listeExerciceEntrainement
     })
   }

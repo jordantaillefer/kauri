@@ -46,6 +46,7 @@ export class DemarrerEntrainementUseCase {
     })
     const entrainement = Entrainement.creerEntrainement({
       nomSeance: detailSeance.nomSeance,
+      idUtilisateur,
       listeExerciceEntrainement
     })
 

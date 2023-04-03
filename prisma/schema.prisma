@@ -50,6 +50,7 @@ model SerieExerciceSeance {
 
 model Entrainement {
   id                    String                 @id
+  idUtilisateur         String
   nomSeance             String
   exerciceEntrainements ExerciceEntrainement[]
 }
