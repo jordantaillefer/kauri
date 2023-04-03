@@ -14,7 +14,7 @@ type LoaderData = {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const resultListerSeance = await container.resolve("seanceController").listerSeance({ request })
-  const resultListerEntrainement = await container.resolve("seanceController").listerEntrainement({ request })
+  const resultListerEntrainement = await container.resolve("entrainementController").listerEntrainement({ request })
   const listeSeance = resultListerSeance.data as SeanceContrat[]
   const listeEntrainement = resultListerEntrainement.data as EntrainementContrat[]
   return json<LoaderData>({ listeSeance, listeEntrainement })
