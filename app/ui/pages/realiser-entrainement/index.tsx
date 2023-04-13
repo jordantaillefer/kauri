@@ -1,16 +1,13 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
-import { useLoaderData, useSubmit } from "@remix-run/react"
-import { FunctionComponent, useCallback, useEffect, useState } from "react"
+import { FunctionComponent } from "react"
 import invariant from "tiny-invariant"
 
-import {
-  EntrainementContrat,
-  ExerciceEntrainementContrat,
-  SerieEntrainementContrat
-} from "../../../../src/app/contrats/EntrainementContrat"
+import { EntrainementContrat, ExerciceEntrainementContrat } from "../../../../src/app/contrats/EntrainementContrat"
 import { container } from "api"
 import { H2Title } from "~/ui/atoms/H2Title"
-import { PrimaryButton } from "~/ui/atoms/PrimaryButton"
+import { BlocProchainExercice } from "~/ui/pages/realiser-entrainement/BlocProchainExercice"
+import { Timer } from "~/ui/pages/realiser-entrainement/timer"
+import { useEntrainement } from "~/ui/pages/realiser-entrainement/useEntrainement"
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
@@ -36,10 +33,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     .at(0) as ExerciceEntrainementContrat
   const prochaineSerie = prochainExercice?.listeSerieEntrainement.filter(serie => !serie.estRealise).at(0)
 
-  if (!prochainExercice) {
-    return redirect("/")
-  }
-
   return json({
     entrainement,
     prochainExercice,
@@ -48,70 +41,26 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export const RealiserEntrainement: FunctionComponent = () => {
-  const { entrainement, prochainExercice, prochaineSerie } = useLoaderData<{
-    entrainement: EntrainementContrat
-    prochainExercice: ExerciceEntrainementContrat
-    prochaineSerie: SerieEntrainementContrat
-  }>()
-
-  const [time, setTime] = useState<number>(0)
-  const [isTimerActive, setIsTimerActive] = useState<boolean>(false)
-
-  const submit = useSubmit()
-
-  const demarrerRepos = async () => {
-    await setTime(prochainExercice.tempsRepos)
-    setIsTimerActive(true)
-  }
-
-  const nextExercice = useCallback(() => {
-    setIsTimerActive(false)
-    setTime(0)
-    const formData = new FormData()
-    formData.set("idSerie", prochaineSerie.id)
-    formData.set("idExercice", prochainExercice.id)
-    submit(formData, {
-      method: "post"
-    })
-  }, [prochainExercice.id, prochaineSerie.id, submit])
-
-  useEffect(() => {
-    if (isTimerActive) {
-      const interval = setInterval(() => {
-        if (time === 0) {
-          clearInterval(interval)
-          nextExercice()
-        } else {
-          setTime(time - 1)
-        }
-      }, 1000)
-      return () => clearInterval(interval)
-    }
-  }, [isTimerActive, time, nextExercice, prochainExercice.tempsRepos])
+  const {
+    nomSeance,
+    prochainExercice,
+    prochaineSerie,
+    demarrerRepos,
+    isTimerActive, // sortir ca dans un useCountdown
+    time
+  } = useEntrainement()
 
   return (
     <div className="container">
-      <H2Title>Entrainement : {entrainement.nomSeance}</H2Title>
-      {isTimerActive ? (
-        <>
-          <p>Temps de repos {time} secondes</p>
-        </>
-      ) : (
-        <>
-          <ul>
-            <li>
-              Exercice à réaliser : N°{prochainExercice.ordre} / {prochainExercice.nomExercice}
-            </li>
-            <li>
-              Série n°{prochaineSerie.ordre} : {prochaineSerie.nombreRepetition} répétitions
-            </li>
+      <H2Title>Entrainement : {nomSeance}</H2Title>
 
-            <li>Temps Repos : {prochainExercice.tempsRepos}</li>
-          </ul>
+      {isTimerActive && <Timer time={time} /> }
 
-          <PrimaryButton onClick={demarrerRepos}>Valider serie</PrimaryButton>
-        </>
-      )}
+      <BlocProchainExercice
+        prochainExercice={prochainExercice}
+        prochaineSerie={prochaineSerie}
+        onClick={demarrerRepos}
+      />
     </div>
   )
 }
