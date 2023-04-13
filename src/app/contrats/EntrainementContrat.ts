@@ -2,7 +2,6 @@ export interface SerieEntrainementContrat {
   id: string
   nombreRepetition: number
   ordre: number
-
   estRealise: boolean
 }
 

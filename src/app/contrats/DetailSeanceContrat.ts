@@ -8,7 +8,6 @@ export interface DetailExerciceContrat {
   categorie: string
   ordre: number
   series: DetailSerieContrat[]
-
 }
 
 export interface DetailSeanceContrat {

@@ -46,7 +46,7 @@ function _generateDescriptor(
       }
 
       if (result && result instanceof Promise) {
-        return result.catch((error: unknown) => _handleError(error as DomainError))
+        return result.catch(_handleError)
       }
       return result
     } catch (error: unknown) {

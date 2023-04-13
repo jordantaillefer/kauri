@@ -1,4 +1,3 @@
-
 export interface ExerciceContrat {
   id: string
   nomExercice: string
