@@ -11,6 +11,7 @@ interface VitestConfigExport extends UserConfig {
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   test: {
+    cache: false,
     globals: true,
     environment: "happy-dom",
     setupFiles: ["./test/setup-test-env.ts", "config.ts"],

@@ -147,4 +147,13 @@ export class PrismaSeanceRepository implements SeanceRepository {
       }
     })
   }
+
+  async modifierNomSeance(idSeance: string, nouveauNomSeance: string): Promise<void> {
+    await prisma.seance.update({
+      where: { id: idSeance },
+      data: {
+        nomSeance: nouveauNomSeance
+      }
+    })
+  }
 }

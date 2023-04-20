@@ -1,6 +1,7 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
 import { Form, Link, useLoaderData } from "@remix-run/react"
-import { FunctionComponent } from "react"
+import debounce from "lodash.debounce"
+import { ChangeEvent, FunctionComponent, useEffect, useMemo, useRef, useState } from "react"
 import invariant from "tiny-invariant"
 
 import { container, ExerciceContrat, ExerciceSeanceContrat, ListeExerciceContrat, SeanceContrat } from "api"
@@ -9,16 +10,32 @@ import { H2Title } from "~/ui/atoms/H2Title"
 export const action: ActionFunction = async ({ request, params }) => {
   invariant(params.idSeance, "expected params.idSeance")
   const formData = await request.formData()
-  const { _exercice: idExercice } = Object.fromEntries(formData)
-  const payload = { idSeance: params.idSeance, idExercice: idExercice.toString() }
-  const initialiserExerciceSeanceResult = await container
-    .resolve("exerciceSeanceController")
-    .initialiserExerciceSeance({
-      request,
-      payload
-    })
-  const nouveauExerciceSeance = initialiserExerciceSeanceResult.data as ExerciceSeanceContrat
-  return redirect(nouveauExerciceSeance.id)
+  const { _action } = Object.fromEntries(formData)
+  switch (_action) {
+    case "mettre-a-jour-nom-seance": {
+      const { inputNomSeance } = Object.fromEntries(formData)
+      const payload = { idSeance: params.idSeance, nomSeance: inputNomSeance.toString() }
+      await container
+        .resolve("seanceController")
+        .mettreAJourNomSeance({
+          request,
+          payload
+        })
+      return null;
+    }
+    case "ajouter-exercice": {
+      const { idExercice } = Object.fromEntries(formData)
+      const payload = { idSeance: params.idSeance, idExercice: idExercice.toString() }
+      const initialiserExerciceSeanceResult = await container
+        .resolve("exerciceSeanceController")
+        .initialiserExerciceSeance({
+          request,
+          payload
+        })
+      const nouveauExerciceSeance = initialiserExerciceSeanceResult.data as ExerciceSeanceContrat
+      return redirect(nouveauExerciceSeance.id)
+    }
+  }
 }
 
 interface LoaderData {
@@ -39,6 +56,45 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   return json<LoaderData>({ listeExercice, seance })
 }
 
+const useDebounce = (callback: (event: ChangeEvent<HTMLInputElement>) => void) => {
+  const ref = useRef<any>()
+
+  useEffect(() => {
+    ref.current = callback
+  }, [callback])
+
+  return useMemo(() => {
+    const func = (event: ChangeEvent<HTMLInputElement>) => {
+      ref.current?.(event)
+    }
+
+    return debounce(func, 1000)
+  }, [])
+}
+
+const InputDebounced: FunctionComponent<{ initialValue: string; form: string, id: string, name: string }> = ({ initialValue, form, id, name }) => {
+  const [value, setValue] = useState(initialValue)
+
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.form?.requestSubmit()
+  }
+
+  const debouncedOnChange = useDebounce(onInputChange)
+
+  return (
+    <input
+      onChange={event => {
+        debouncedOnChange(event)
+        setValue(event.target.value)
+      }}
+      form={form}
+      id={id}
+      name={name}
+      defaultValue={value}
+    />
+  )
+}
+
 export const ModifierSeance: FunctionComponent = () => {
   const { listeExercice, seance } = useLoaderData<LoaderData>()
   return (
@@ -46,17 +102,18 @@ export const ModifierSeance: FunctionComponent = () => {
       <div className="w-2/4">
         <H2Title>Déroulé de la séance</H2Title>
         <div>
-          <span>{seance.nomSeance}</span>
+          <Form method="post" id="form-mettre-a-jour-nom-seance">
+            <input type="hidden" key="_action" name="_action" value="mettre-a-jour-nom-seance" />
+            <InputDebounced initialValue={seance.nomSeance} form="form-mettre-a-jour-nom-seance" id="input-nom-seance" name="inputNomSeance" />
+          </Form>
           <ul>
-            {seance.exerciceSeances.map(exercice => {
-              return (
-                <li key={exercice.id}>
-                  <Link to={`${exercice.id}`}>
-                    {exercice.ordre} / {exercice.nomExercice}
-                  </Link>
-                </li>
-              )
-            })}
+            {seance.exerciceSeances.map(exercice => (
+              <li key={exercice.id}>
+                <Link to={`${exercice.id}`}>
+                  {exercice.ordre} / {exercice.nomExercice}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -64,6 +121,7 @@ export const ModifierSeance: FunctionComponent = () => {
         <H2Title>Ajouter un exercice</H2Title>
 
         <Form method="post">
+          <input type="hidden" key="_action" name="_action" value="ajouter-exercice" />
           {listeExercice.map(listeExerciceCategorie => {
             return (
               <ul className="mb-8" key={listeExerciceCategorie[0]}>
@@ -71,7 +129,7 @@ export const ModifierSeance: FunctionComponent = () => {
                 {listeExerciceCategorie[1].map(exercice => {
                   return (
                     <li key={exercice.id}>
-                      <button type="submit" aria-label="_exercice" value={exercice.id} name="_exercice">
+                      <button type="submit" aria-label="idExercice" value={exercice.id} name="idExercice">
                         {exercice.nomExercice}
                       </button>
                     </li>

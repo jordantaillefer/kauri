@@ -1,6 +1,7 @@
 import { ReasonPhrases } from "http-status-codes"
 import { describe, expect, it } from "vitest"
 
+import { prisma } from "../../../../db/prisma";
 import { CATEGORIE } from "../../../../exercice/domain/categorie"
 import { SeanceBuilder } from "../../../../testUtils/builders/SeanceBuilder"
 import { ExerciceSeanceBuilder } from "../../../application/builders/ExerciceSeanceBuilder"
@@ -252,6 +253,22 @@ describe("PrismaSeanceRepository", () => {
       expect(seanceResult.exerciceSeances).toHaveLength(2)
       expect(seanceResult.exerciceSeances.at(0)?.ordre).toEqual(1)
       expect(seanceResult.exerciceSeances.at(1)?.ordre).toEqual(2)
+    })
+  })
+
+  describe("#modifierNomSeance", () => {
+    it("doit mettre à jour le nom de la séance", async () => {
+      // Arrange
+      const seance1: Seance = new SeanceBuilder()
+        .withId("fcf88475-e6d8-4062-9aa4-10411c1b15b5")
+        .withNomSeance("nom Seance")
+        .build()
+      await prismaSeanceRepository.creerSeance(seance1)
+      // Act
+      await prismaSeanceRepository.modifierNomSeance("fcf88475-e6d8-4062-9aa4-10411c1b15b5", "nouveau nom séance")
+      // Assert
+      const seanceMiseAJour = await prisma.seance.findUnique({ where: { id: "fcf88475-e6d8-4062-9aa4-10411c1b15b5"}})
+      expect(seanceMiseAJour?.nomSeance).toEqual("nouveau nom séance")
     })
   })
 })

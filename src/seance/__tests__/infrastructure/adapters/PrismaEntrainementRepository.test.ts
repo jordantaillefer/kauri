@@ -79,6 +79,7 @@ describe("PrismaEntrainementRepository", () => {
       expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.nombreRepetition).toEqual(8)
       expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.ordre).toEqual(1)
       expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.estRealise).toEqual(false)
+
       expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.id).toEqual("79dd6cc5-d54a-4821-ac9a-709f42e87875")
       expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.estRealise).toEqual(true)
       expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.tempsRepos).toEqual(55)

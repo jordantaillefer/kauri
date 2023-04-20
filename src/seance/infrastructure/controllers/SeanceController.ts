@@ -1,7 +1,7 @@
 import invariant from "tiny-invariant"
 
 import { ServerRequest, ServerRequestWithoutPayload } from "../../../app/ServerRequest"
-import { created, ServerResponse, success } from "../../../app/ServerResponse"
+import { created, ServerResponse, success, updated } from "../../../app/ServerResponse";
 import {
   DetailExerciceContrat,
   DetailSeanceContrat,
@@ -17,6 +17,7 @@ import { ExerciceSeance } from "../../domain/ExerciceSeance"
 import { Seance } from "../../domain/Seance"
 import { InitialiserSeanceUseCase } from "../../usecases/InitialiserSeanceUseCase"
 import { ListerSeanceUseCase } from "../../usecases/ListerSeanceUseCase"
+import { ModifierNomSeanceUseCase } from "../../usecases/ModifierNomSeanceUseCase"
 import { RecupererDetailSeanceUseCase } from "../../usecases/RecupererDetailSeanceUseCase"
 import { RecupererSeanceUseCase } from "../../usecases/RecupererSeanceUseCase"
 import { ExerciceSeanceContrat, SeanceContrat } from "api"
@@ -26,6 +27,7 @@ interface Dependencies {
   listerSeanceUseCase: ListerSeanceUseCase
   recupererSeanceUseCase: RecupererSeanceUseCase
   recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
+  modifierNomSeanceUseCase: ModifierNomSeanceUseCase
 }
 
 @Controller()
@@ -34,17 +36,20 @@ export class SeanceController {
   private listerSeanceUseCase: ListerSeanceUseCase
   private recupererSeanceUseCase: RecupererSeanceUseCase
   private recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
+  private modifierNomSeanceUseCase: ModifierNomSeanceUseCase
 
   constructor({
     initialiserSeanceUseCase,
     listerSeanceUseCase,
     recupererSeanceUseCase,
-    recupererDetailSeanceUseCase
+    recupererDetailSeanceUseCase,
+    modifierNomSeanceUseCase
   }: Dependencies) {
     this.initialiserSeanceUseCase = initialiserSeanceUseCase
     this.listerSeanceUseCase = listerSeanceUseCase
     this.recupererSeanceUseCase = recupererSeanceUseCase
     this.recupererDetailSeanceUseCase = recupererDetailSeanceUseCase
+    this.modifierNomSeanceUseCase = modifierNomSeanceUseCase
   }
 
   @DoitEtreAuthentifie()
@@ -86,6 +91,20 @@ export class SeanceController {
       idSeance
     })
     return success(presenterEnDetailSeanceContrat(seanceResult))
+  }
+
+  @DoitEtreAuthentifie()
+  @ProduceServerResponse()
+  async mettreAJourNomSeance(
+    serverRequest: ServerRequest<{ idSeance: string; nomSeance: string }>
+  ): Promise<ServerResponse<void>> {
+    invariant(serverRequest.compteUtilisateurConnecte)
+    const { idSeance, nomSeance } = serverRequest.payload
+    await this.modifierNomSeanceUseCase.execute({
+      idSeance,
+      nouveauNomSeance: nomSeance
+    })
+    return updated()
   }
 }
 
