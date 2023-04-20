@@ -56,7 +56,7 @@ const config = convict({
   authenticatorStrategy: {
     format: String,
     default: "google",
-    env: "AUTHENTICATOR_STRATEGY"
+    env: "AUTHENTICATOR_STRATEGY",
   },
   google: {
     clientId: {

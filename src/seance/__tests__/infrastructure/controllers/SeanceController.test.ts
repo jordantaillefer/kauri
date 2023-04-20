@@ -326,4 +326,29 @@ describe("SeanceController", () => {
       })
     })
   })
+
+  describe("#mettreAJourNomSeance", () => {
+    describe("Cas OK", () => {
+      it("doit mettre à jour le nom de la séance", async () => {
+        // Arrange
+        const request = await creerRequestPourCompteUtilisateur("idUtilisateur")
+        const seanceUtilisateur1: Seance = new SeanceBuilder()
+          .withId("859ec5a7-2a34-43fd-bec9-a43ac66238bd")
+          .withIdUtilisateur("idUtilisateur")
+          .withNomSeance("Seance 1")
+          .build()
+        const seanceAutreUtilisateur: Seance = new SeanceBuilder()
+          .withId("54d9eb29-5410-4428-936f-9d252799e4ce")
+          .withIdUtilisateur("idAutreUtilisateur")
+          .build()
+        await seanceRepository.creerSeance(seanceUtilisateur1)
+        await seanceRepository.creerSeance(seanceAutreUtilisateur)
+        // Act
+        const payload = { idSeance: "859ec5a7-2a34-43fd-bec9-a43ac66238bd", nomSeance: "nouveau nom seance 1" }
+        const response = await seanceController.mettreAJourNomSeance({ request, payload })
+        // Assert
+        expect(response.reasonPhrase).toEqual(ReasonPhrases.NO_CONTENT)
+      })
+    })
+  })
 })

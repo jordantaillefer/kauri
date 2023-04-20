@@ -32,6 +32,7 @@ import { InitialiserExerciceSeanceUseCase } from "./seance/usecases/InitialiserE
 import { InitialiserSeanceUseCase } from "./seance/usecases/InitialiserSeanceUseCase"
 import { ListerEntrainementUseCase } from "./seance/usecases/ListerEntrainementUseCase"
 import { ListerSeanceUseCase } from "./seance/usecases/ListerSeanceUseCase"
+import { ModifierNomSeanceUseCase } from "./seance/usecases/ModifierNomSeanceUseCase"
 import { RealiserSerieUseCase } from "./seance/usecases/RealiserSerieUseCase"
 import { RecupererDetailSeanceUseCase } from "./seance/usecases/RecupererDetailSeanceUseCase"
 import { RecupererEntrainementUseCase } from "./seance/usecases/RecupererEntrainementUseCase"
@@ -57,6 +58,7 @@ type SeanceDependencies = {
   listerSeanceUseCase: ListerSeanceUseCase
   listerEntrainementUseCase: ListerEntrainementUseCase
   recupererSeanceUseCase: RecupererSeanceUseCase
+  modifierNomSeanceUseCase: ModifierNomSeanceUseCase
   recupererDetailSeanceUseCase: RecupererDetailSeanceUseCase
   initialiserSeanceUseCase: InitialiserSeanceUseCase
   seanceController: SeanceController
@@ -119,6 +121,7 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
   container.register({
     initialiserSeanceUseCase: asClass(InitialiserSeanceUseCase),
     recupererSeanceUseCase: asClass(RecupererSeanceUseCase),
+    modifierNomSeanceUseCase: asClass(ModifierNomSeanceUseCase),
     recupererDetailSeanceUseCase: asClass(RecupererDetailSeanceUseCase),
     listerSeanceUseCase: asClass(ListerSeanceUseCase),
     seanceRepository: asClass(PrismaSeanceRepository),
