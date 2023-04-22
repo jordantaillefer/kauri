@@ -5,6 +5,8 @@ import { Link, useLoaderData } from "@remix-run/react"
 import { EntrainementContrat } from "../../../../src/app/contrats/EntrainementContrat"
 import { container, SeanceContrat } from "api"
 import { H2Title } from "~/ui/atoms/H2Title"
+import { PencilIcon } from "~/ui/icons/Pencil"
+import { TrashIcon } from "~/ui/icons/Trash"
 import { CreerSeanceButton } from "~/ui/molecules/CreerSeanceButton"
 
 type LoaderData = {
@@ -34,10 +36,14 @@ export default function Profil() {
       <div>
         <ul>
           {listeSeance.map(seance => (
-            <li key={seance.id}>
+            <li key={seance.id} className="flex">
               <Link to={`/seance/${seance.id}/resume`}>{seance.nomSeance}</Link>
-              <Link to={`/seance/${seance.id}`}>[[icon__modifier]]</Link>
-              <button>[[icon__supprimer]]</button>
+              <Link to={`/seance/${seance.id}`}>
+                <PencilIcon />
+              </Link>
+              <button>
+                <TrashIcon />
+              </button>
             </li>
           ))}
         </ul>
