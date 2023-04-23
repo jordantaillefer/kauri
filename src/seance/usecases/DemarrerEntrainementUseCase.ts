@@ -37,7 +37,7 @@ export class DemarrerEntrainementUseCase {
 
       return ExerciceEntrainement.creerExerciceEntrainement({
         estRealise: false,
-        tempsRepos: 45,
+        tempsRepos: detailExercice.tempsRepos,
         nomExercice: detailExercice.nomExercice,
         categorie: detailExercice.categorie,
         ordre: detailExercice.ordre,

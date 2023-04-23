@@ -1,6 +1,7 @@
 import { ReasonPhrases } from "http-status-codes"
 import { describe, expect, it } from "vitest"
 
+import { prisma } from "../../../../db/prisma"
 import { CATEGORIE } from "../../../../exercice/domain/categorie"
 import { creerRequest, creerRequestPourCompteUtilisateur } from "../../../../testUtils/RequestUtils"
 import { SeanceBuilder } from "../../../../testUtils/builders/SeanceBuilder"
@@ -53,6 +54,7 @@ describe("ExerciceSeanceController", () => {
         expect(listeExerciceSeances.at(0)?.idExercice).toEqual("c73434ce-9cbe-4890-b7ed-56704485c356")
         expect(listeExerciceSeances.at(0)?.nomExercice).toEqual("nomExercice")
         expect(listeExerciceSeances.at(0)?.categorie).toEqual(CATEGORIE.ABDOMINAUX)
+        expect(listeExerciceSeances.at(0)?.tempsRepos).toEqual(45)
         const nouveauExerciceSeance = response.data as ExerciceSeanceContrat
         expect(nouveauExerciceSeance).toBeDefined()
         expect(nouveauExerciceSeance.nomExercice).toEqual("nomExercice")
@@ -82,6 +84,7 @@ describe("ExerciceSeanceController", () => {
           .withIdExercice("330a330b-e66e-447d-9166-2173562e2cbb")
           .withNomExercice("nomExercice")
           .withCategorie(CATEGORIE.ABDOMINAUX)
+          .withTempsRepos(45)
           .build()
         await seanceRepository.creerSeance(seance)
 
@@ -91,14 +94,15 @@ describe("ExerciceSeanceController", () => {
           idExerciceSeance: "2289cca2-a211-43e1-805c-97c5dc97fc2a"
         }
         // Act
-        // Assert
         const response = await exerciceSeanceController.recupererExerciceSeance({ request, payload })
+        // Assert
         expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
         const exerciceSeanceResult = response.data as ExerciceSeanceContrat
         expect(exerciceSeanceResult.id).toEqual("2289cca2-a211-43e1-805c-97c5dc97fc2a")
         expect(exerciceSeanceResult.idExercice).toEqual("330a330b-e66e-447d-9166-2173562e2cbb")
         expect(exerciceSeanceResult.nomExercice).toEqual("nomExercice")
         expect(exerciceSeanceResult.categorie).toEqual(CATEGORIE.ABDOMINAUX)
+        expect(exerciceSeanceResult.tempsRepos).toEqual(45)
       })
     })
   })
@@ -108,22 +112,21 @@ describe("ExerciceSeanceController", () => {
       it("quand il n'y a pas de série, doit ajouter les séries à l'exercice seance", async () => {
         // Arrange
         const request = await creerRequestPourCompteUtilisateur("idUtilisateur")
-        const seance = new SeanceBuilder()
-          .withId("6bc42156-b946-4128-b605-3b180765738f")
-          .build()
+        const seance = new SeanceBuilder().withId("6bc42156-b946-4128-b605-3b180765738f").build()
         const exerciceSeance = new ExerciceSeanceBuilder()
           .withId("0e2947f4-960d-4fa2-b3f4-3c1f63447527")
           .withIdSeance("6bc42156-b946-4128-b605-3b180765738f")
           .build()
         await seanceRepository.creerSeance(seance)
         await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
-        const payload: { idSeance: string, idExerciceSeance: string, listeSerieExerciceSeance: SerieExerciceSeancePayload[] } = {
+        const payload: {
+          idSeance: string
+          idExerciceSeance: string
+          listeSerieExerciceSeance: SerieExerciceSeancePayload[]
+        } = {
           idSeance: "6bc42156-b946-4128-b605-3b180765738f",
           idExerciceSeance: "0e2947f4-960d-4fa2-b3f4-3c1f63447527",
-          listeSerieExerciceSeance: [
-            { repetitions: 10 },
-            { repetitions: 12 }
-          ]
+          listeSerieExerciceSeance: [{ repetitions: 10 }, { repetitions: 12 }]
         }
         // Act
         const response = await exerciceSeanceController.definirSerieExerciceSeance({
@@ -133,16 +136,17 @@ describe("ExerciceSeanceController", () => {
         // Assert
         expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
 
-        const exerciceSeanceResult = await exerciceSeanceRepository.recupererParIdSeanceEtParId("6bc42156-b946-4128-b605-3b180765738f", "0e2947f4-960d-4fa2-b3f4-3c1f63447527")
+        const exerciceSeanceResult = await exerciceSeanceRepository.recupererParIdSeanceEtParId(
+          "6bc42156-b946-4128-b605-3b180765738f",
+          "0e2947f4-960d-4fa2-b3f4-3c1f63447527"
+        )
         expect(exerciceSeanceResult.listeSerieExerciceSeance).toHaveLength(2)
       })
 
       it("quand il existe déjà des séries, doit écraser les séries de l'exercice seance", async () => {
         // Arrange
         const request = await creerRequestPourCompteUtilisateur("idUtilisateur")
-        const seance = new SeanceBuilder()
-          .withId("6bc42156-b946-4128-b605-3b180765738f")
-          .build()
+        const seance = new SeanceBuilder().withId("6bc42156-b946-4128-b605-3b180765738f").build()
         const serieExerciceSeanceAEcraser = new SerieExerciceSeanceBuilder()
           .withId("e05848ad-146d-4cac-ba39-a146ab679cf6")
           .withRepetitions(12)
@@ -154,13 +158,14 @@ describe("ExerciceSeanceController", () => {
           .build()
         await seanceRepository.creerSeance(seance)
         await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
-        const payload: { idSeance: string, idExerciceSeance: string, listeSerieExerciceSeance: SerieExerciceSeancePayload[] } = {
+        const payload: {
+          idSeance: string
+          idExerciceSeance: string
+          listeSerieExerciceSeance: SerieExerciceSeancePayload[]
+        } = {
           idSeance: "6bc42156-b946-4128-b605-3b180765738f",
           idExerciceSeance: "0e2947f4-960d-4fa2-b3f4-3c1f63447527",
-          listeSerieExerciceSeance: [
-            { repetitions: 8 },
-            { repetitions: 7 }
-          ]
+          listeSerieExerciceSeance: [{ repetitions: 8 }, { repetitions: 7 }]
         }
         // Act
         const response = await exerciceSeanceController.definirSerieExerciceSeance({
@@ -170,7 +175,10 @@ describe("ExerciceSeanceController", () => {
         // Assert
         expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
 
-        const exerciceSeanceResult = await exerciceSeanceRepository.recupererParIdSeanceEtParId("6bc42156-b946-4128-b605-3b180765738f", "0e2947f4-960d-4fa2-b3f4-3c1f63447527")
+        const exerciceSeanceResult = await exerciceSeanceRepository.recupererParIdSeanceEtParId(
+          "6bc42156-b946-4128-b605-3b180765738f",
+          "0e2947f4-960d-4fa2-b3f4-3c1f63447527"
+        )
         expect(exerciceSeanceResult.listeSerieExerciceSeance).toHaveLength(2)
         expect(exerciceSeanceResult.listeSerieExerciceSeance.at(0)?.repetitions).toEqual(8)
         expect(exerciceSeanceResult.listeSerieExerciceSeance.at(1)?.repetitions).toEqual(7)
@@ -185,6 +193,39 @@ describe("ExerciceSeanceController", () => {
         const response = await exerciceSeanceController.initialiserExerciceSeance({ request, payload })
         // Assert
         expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
+      })
+    })
+  })
+
+  describe("#modifierTempsDeRepos", () => {
+    describe("Cas OK", () => {
+      it("quand l'exercice existe, doit modifier son temps de repos", async () => {
+        const request = await creerRequestPourCompteUtilisateur("idUtilisateur")
+        const seance = new SeanceBuilder().withId("081904a6-aaac-4e55-aab6-2652b099bce4").build()
+        const exerciceSeance = new ExerciceSeanceBuilder()
+          .withId("2289cca2-a211-43e1-805c-97c5dc97fc2a")
+          .withIdSeance("081904a6-aaac-4e55-aab6-2652b099bce4")
+          .withIdExercice("330a330b-e66e-447d-9166-2173562e2cbb")
+          .withNomExercice("nomExercice")
+          .withCategorie(CATEGORIE.ABDOMINAUX)
+          .withTempsRepos(45)
+          .build()
+        await seanceRepository.creerSeance(seance)
+
+        await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
+        const payload = {
+          idExerciceSeance: "2289cca2-a211-43e1-805c-97c5dc97fc2a",
+          tempsRepos: 55
+        }
+        // Act
+        const response = await exerciceSeanceController.modifierTempsDeRepos({ request, payload })
+
+        // Assert
+        expect(response.reasonPhrase).toEqual(ReasonPhrases.NO_CONTENT)
+        const exerciceSeanceUpdated = await prisma.exerciceSeance.findUnique({
+          where: { id: "2289cca2-a211-43e1-805c-97c5dc97fc2a" }
+        })
+        expect(exerciceSeanceUpdated?.tempsRepos).toEqual(55)
       })
     })
   })

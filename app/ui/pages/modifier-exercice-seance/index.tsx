@@ -6,19 +6,30 @@ import invariant from "tiny-invariant"
 import { container, ExerciceSeanceContrat, SerieExerciceSeanceContrat } from "api"
 import { H2Title } from "~/ui/atoms/H2Title"
 import { RoundedButton } from "~/ui/atoms/RoundedButton"
+import { TrashIcon } from "~/ui/icons/Trash";
+import { InputDebounced } from "~/ui/molecules/InputDebounced";
 
 export const action: ActionFunction = async ({ request, params }) => {
   invariant(params.idSeance, "params $idSeance required")
   invariant(params.idExerciceSeance, "params $idSeance required")
   const { idSeance, idExerciceSeance } = params
   const formData = await request.formData()
-
-  const inputRepetitions = formData.getAll("repetitions")
-  const listeSerieExerciceSeance = inputRepetitions.map(repetitions => ({ repetitions: +repetitions }))
-  const payload = { idSeance, idExerciceSeance, listeSerieExerciceSeance }
-  await container.resolve("exerciceSeanceController").definirSerieExerciceSeance({ request, payload })
-
-  return null
+  const { _action } = Object.fromEntries(formData)
+  switch (_action) {
+    case "mettre-a-jour-temps-repos": {
+      const { inputTempsRepos } = Object.fromEntries(formData)
+      const payload = { idExerciceSeance, tempsRepos: Number(inputTempsRepos.toString()) }
+      await container.resolve("exerciceSeanceController").modifierTempsDeRepos({ request, payload })
+      return null
+    }
+    case "modifier-exercice-seance": {
+      const inputRepetitions = formData.getAll("repetitions")
+      const listeSerieExerciceSeance = inputRepetitions.map(repetitions => ({ repetitions: +repetitions }))
+      const payload = { idSeance, idExerciceSeance, listeSerieExerciceSeance }
+      await container.resolve("exerciceSeanceController").definirSerieExerciceSeance({ request, payload })
+      return null
+    }
+  }
 }
 
 export const loader: LoaderFunction = async ({
@@ -73,9 +84,16 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
   return (
     <>
       <div className="container w-full flex flex-col grow">
+        <H2Title>Définir le temps de repos</H2Title>
+        <Form method="post" id="form-mettre-a-jour-temps-repos">
+          <input type="hidden" key="_action" name="_action" value="mettre-a-jour-temps-repos" />
+          <InputDebounced initialValue={exerciceSeance.tempsRepos} form="form-mettre-a-jour-temps-repos" id="input-temps-repos" name="inputTempsRepos" />
+          <span>secondes</span>
+        </Form>
         <H2Title>Définir les séries</H2Title>
         <div>{exerciceSeance.nomExercice}</div>
         <Form id="modifier-exercice-seance-form" method="post">
+          <input type="hidden" key="_action" name="_action" value="modifier-exercice-seance" />
           <ul>
             {formValues.map((formValue, index) => {
               return (
@@ -90,7 +108,7 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
                     placeholder="Nombre de répétition"
                   />
                   <button type="button" onClick={() => removeFormFields(index)}>
-                    suppr
+                    <TrashIcon />
                   </button>
                 </li>
               )

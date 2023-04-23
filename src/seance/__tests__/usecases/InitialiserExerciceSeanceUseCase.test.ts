@@ -53,6 +53,7 @@ describe("InitialiserExerciceSeanceUseCase", () => {
     expect(nouvelExerciceSeance.ordre).toEqual(1)
     expect(nouvelExerciceSeance.idExercice).toEqual("idExercice")
     expect(nouvelExerciceSeance.nomExercice).toEqual("nomExercice")
+    expect(nouvelExerciceSeance.tempsRepos).toEqual(45)
     expect(nouvelExerciceSeance.categorie).toEqual(CATEGORIE.ABDOMINAUX)
   })
   it("quand il existe déjà un exercice, doit ajouter l'exercice à la liste pour une séance", async () => {
