@@ -38,7 +38,8 @@ function convertirEnExerciceSeance(exerciceSeanceModel: ExerciceSeanceModel): Ex
     idExercice: exerciceSeanceModel.idExercice,
     nomExercice: exerciceSeanceModel.nomExercice,
     ordre: exerciceSeanceModel.ordre,
-    categorie: exerciceSeanceModel.categorie as CATEGORIE
+    categorie: exerciceSeanceModel.categorie as CATEGORIE,
+    tempsRepos: exerciceSeanceModel.tempsRepos
   })
 }
 
@@ -61,6 +62,7 @@ function convertirEnDetailExerciceSeance(detailExerciceModel: DetailExerciceMode
     nomExercice: detailExerciceModel.nomExercice,
     categorie: detailExerciceModel.categorie as CATEGORIE,
     ordre: detailExerciceModel.ordre,
+    tempsRepos: detailExerciceModel.tempsRepos,
     listeDetailSerie: detailExerciceModel.serieExerciceSeances.map(convertirEnDetailSerie)
   })
 
@@ -80,7 +82,8 @@ function convertirEnExerciceSeanceModel(exerciceSeance: ExerciceSeance): Omit<Ex
     idExercice: exerciceSeance.idExercice,
     nomExercice: exerciceSeance.nomExercice,
     categorie: exerciceSeance.categorie,
-    ordre: exerciceSeance.ordre
+    ordre: exerciceSeance.ordre,
+    tempsRepos: exerciceSeance.tempsRepos
   }
 }
 

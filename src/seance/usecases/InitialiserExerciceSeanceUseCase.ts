@@ -35,7 +35,8 @@ export class InitialiserExerciceSeanceUseCase {
       idExercice,
       nomExercice: exercice.nomExercice,
       ordre: (seance.exerciceSeances.at(-1)?.ordre || 0) + 1,
-      categorie: exercice.categorie
+      categorie: exercice.categorie,
+      tempsRepos: 45
     })
 
     await this.seanceRepository.ajouterExerciceSeanceASeance(idSeance, exerciceSeance)

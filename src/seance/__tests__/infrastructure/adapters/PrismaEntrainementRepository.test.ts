@@ -35,7 +35,7 @@ describe("PrismaEntrainementRepository", () => {
         .withOrdre(2)
         .withEstRealise(false)
         .build()
-      const exerciceSeance1 = new ExerciceEntrainementBuilder()
+      const exerciceEntrainement1 = new ExerciceEntrainementBuilder()
         .withId("2c9d1005-19ce-4289-95b1-e11d41cab187")
         .withEstRealise(false)
         .withTempsRepos(45)
@@ -44,7 +44,7 @@ describe("PrismaEntrainementRepository", () => {
         .withCategorie(CATEGORIE.PECTORAUX)
         .withListeSerieEntrainement(serieEntrainement1)
         .build()
-      const exerciceSeance2 = new ExerciceEntrainementBuilder()
+      const exerciceEntrainement2 = new ExerciceEntrainementBuilder()
         .withId("79dd6cc5-d54a-4821-ac9a-709f42e87875")
         .withEstRealise(true)
         .withTempsRepos(55)
@@ -57,7 +57,7 @@ describe("PrismaEntrainementRepository", () => {
         .withId("f9aaa8ad-c602-417c-8005-0af9d7a24a70")
         .withIdUtilisateur("idUtilisateur")
         .withNomSeance("nomSeance")
-        .withListeExerciceEntrainement(exerciceSeance1, exerciceSeance2)
+        .withListeExerciceEntrainement(exerciceEntrainement1, exerciceEntrainement2)
         .build()
 
       // Act

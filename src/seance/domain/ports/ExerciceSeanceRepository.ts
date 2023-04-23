@@ -1,10 +1,13 @@
 import { ExerciceSeance } from "../ExerciceSeance"
 
 export interface ExerciceSeanceRepository {
-  creerExerciceSeance: (exerciceSeance: ExerciceSeance) => Promise<void>
+  mettreAJourTempsRepos(idExerciceSeance: string, tempsRepos: number): Promise<void>
 
-  ajouterSerieExerciceSeance: (exerciceSeance: ExerciceSeance) => Promise<void>
-  supprimerSerieExerciceSeance: (idExerciceSeance: string) => Promise<void>
+  creerExerciceSeance(exerciceSeance: ExerciceSeance): Promise<void>
+
+  ajouterSerieExerciceSeance(exerciceSeance: ExerciceSeance): Promise<void>
+
+  supprimerSerieExerciceSeance(idExerciceSeance: string): Promise<void>
 
   recupererTout(): Promise<ExerciceSeance[]>
 

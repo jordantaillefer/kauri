@@ -1,11 +1,11 @@
-import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
-import { Form, Link, useLoaderData } from "@remix-run/react"
-import debounce from "lodash.debounce"
-import { ChangeEvent, FunctionComponent, useEffect, useMemo, useRef, useState } from "react"
-import invariant from "tiny-invariant"
+import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node";
+import { Form, Link, useLoaderData } from "@remix-run/react";
+import { FunctionComponent } from "react";
+import invariant from "tiny-invariant";
 
-import { container, ExerciceContrat, ExerciceSeanceContrat, ListeExerciceContrat, SeanceContrat } from "api"
-import { H2Title } from "~/ui/atoms/H2Title"
+import { container, ExerciceContrat, ExerciceSeanceContrat, ListeExerciceContrat, SeanceContrat } from "api";
+import { H2Title } from "~/ui/atoms/H2Title";
+import { InputDebounced } from "~/ui/molecules/InputDebounced";
 
 export const action: ActionFunction = async ({ request, params }) => {
   invariant(params.idSeance, "expected params.idSeance")
@@ -54,45 +54,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const seance = seanceResult.data as SeanceContrat
 
   return json<LoaderData>({ listeExercice, seance })
-}
-
-const useDebounce = (callback: (event: ChangeEvent<HTMLInputElement>) => void) => {
-  const ref = useRef<any>()
-
-  useEffect(() => {
-    ref.current = callback
-  }, [callback])
-
-  return useMemo(() => {
-    const func = (event: ChangeEvent<HTMLInputElement>) => {
-      ref.current?.(event)
-    }
-
-    return debounce(func, 1000)
-  }, [])
-}
-
-const InputDebounced: FunctionComponent<{ initialValue: string; form: string, id: string, name: string }> = ({ initialValue, form, id, name }) => {
-  const [value, setValue] = useState(initialValue)
-
-  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    event.target.form?.requestSubmit()
-  }
-
-  const debouncedOnChange = useDebounce(onInputChange)
-
-  return (
-    <input
-      onChange={event => {
-        debouncedOnChange(event)
-        setValue(event.target.value)
-      }}
-      form={form}
-      id={id}
-      name={name}
-      defaultValue={value}
-    />
-  )
 }
 
 export const ModifierSeance: FunctionComponent = () => {

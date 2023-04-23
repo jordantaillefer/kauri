@@ -7,6 +7,7 @@ export interface DetailExerciceContrat {
   nomExercice: string,
   categorie: string
   ordre: number
+  tempsRepos: number
   series: DetailSerieContrat[]
 }
 

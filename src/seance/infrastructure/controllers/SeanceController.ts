@@ -115,6 +115,7 @@ function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): Exerc
     categorie: exerciceSeance.categorie,
     idExercice: exerciceSeance.idExercice,
     ordre: exerciceSeance.ordre,
+    tempsRepos: exerciceSeance.tempsRepos,
     listeSerieExerciceSeance: []
   }
 }
@@ -139,6 +140,7 @@ function presenterEnDetailExerciceSeanceContrat(detailExerciceSeance: DetailExer
     nomExercice: detailExerciceSeance.nomExercice,
     categorie: detailExerciceSeance.categorie,
     ordre: detailExerciceSeance.ordre,
+    tempsRepos: detailExerciceSeance.tempsRepos,
     series: detailExerciceSeance.listeDetailSerie.map(presenterEnDetailSerieSeanceContrat)
   }
 }
