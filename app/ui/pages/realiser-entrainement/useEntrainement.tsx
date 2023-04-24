@@ -37,7 +37,7 @@ export function useEntrainement() {
   useEffect(() => {
     if (isTimerActive) {
       const interval = setInterval(() => {
-        if (time === 0) {
+        if (time <= 0) {
           clearInterval(interval)
           setIsTimerActive(false)
         } else {
