@@ -15,12 +15,16 @@ export function useEntrainement() {
   }>()
 
   const [time, setTime] = useState<number>(0)
+  const [initialTime, setInitialTime] = useState<number>(0)
+  const [tempsRepos, setTempsRepos] = useState<number>(0)
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false)
 
   const submit = useSubmit()
 
   const demarrerRepos = async () => {
     await setTime(prochainExercice.tempsRepos)
+    await setTempsRepos(prochainExercice.tempsRepos)
+    await setInitialTime(Date.now())
     const formData = new FormData()
     formData.set("idSerie", prochaineSerie.id)
     formData.set("idExercice", prochainExercice.id)
@@ -37,12 +41,13 @@ export function useEntrainement() {
           clearInterval(interval)
           setIsTimerActive(false)
         } else {
-          setTime(time - 1)
+          const remainingTime = Date.now()
+          setTime(tempsRepos - Math.trunc((remainingTime - initialTime) / 1000))
         }
       }, 1000)
       return () => clearInterval(interval)
     }
-  }, [isTimerActive, time, prochainExercice?.tempsRepos])
+  }, [isTimerActive, initialTime, time, prochainExercice?.tempsRepos])
 
   return {
     nomSeance: entrainement.nomSeance,
