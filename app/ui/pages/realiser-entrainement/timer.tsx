@@ -1,10 +1,11 @@
 import { FunctionComponent } from "react"
+import padStart from "lodash.padstart"
 
 function presenterTempsRestant(remainingTime: number) {
   const minutes = Math.floor(remainingTime / 60)
   const seconds = remainingTime % 60
 
-  return `${minutes}:${seconds}`
+  return `${padStart(`${minutes}`, 2, "0")} m ${padStart(`${seconds}`, 2, "0")} s`
 }
 
 export const Timer: FunctionComponent<{ time: number }> = ({ time }) => {
