@@ -51,10 +51,14 @@ export const RealiserEntrainement: FunctionComponent = () => {
   } = useEntrainement()
 
   return (
-    <div className="container">
-      <H2Title>Entrainement : {nomSeance}</H2Title>
+    <div className="container flex flex-col flex-grow">
+      <H2Title>{nomSeance}</H2Title>
 
-      {isTimerActive && <Timer time={time} /> }
+      {isTimerActive && (
+        <div className="mb-4">
+          <Timer time={time} />
+        </div>
+      )}
 
       <BlocProchainExercice
         prochainExercice={prochainExercice}
