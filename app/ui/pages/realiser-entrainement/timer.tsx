@@ -1,5 +1,5 @@
-import { FunctionComponent } from "react"
 import padStart from "lodash.padstart"
+import { FunctionComponent } from "react"
 
 function presenterTempsRestant(remainingTime: number) {
   const minutes = Math.floor(remainingTime / 60)
@@ -9,7 +9,11 @@ function presenterTempsRestant(remainingTime: number) {
 }
 
 export const Timer: FunctionComponent<{ time: number }> = ({ time }) => {
-  return <div className="flex justify-center w-full">
-    <span className="border-4 border-primary p-4 text-xl text-primary w-1/2 flex justify-center rounded-lg font-bold">{presenterTempsRestant(time)}</span>
-  </div>
+  return (
+    <div className="flex w-full justify-center">
+      <span className="flex w-1/2 justify-center rounded-lg border-4 p-4 text-xl font-bold border-primary text-primary">
+        {presenterTempsRestant(time)}
+      </span>
+    </div>
+  )
 }

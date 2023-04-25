@@ -18,7 +18,7 @@ export function DeleteButton({ children, value, name = "_action", hiddenProps }:
         aria-label={name}
         value={value}
         name={name}
-        className="text-base p-3 bg-red-800 font-medium leading-6 text-white whitespace-no-wrap focus:outline-none focus rounded-md"
+        className="rounded-md bg-red-800 p-3 text-base font-medium leading-6 text-white whitespace-no-wrap focus focus:outline-none"
       >
         {children}
       </button>

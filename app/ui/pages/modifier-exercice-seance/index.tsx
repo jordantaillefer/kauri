@@ -83,7 +83,7 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
   const [formValues, setFormValues] = useState(initSerieExerciceSeance(exerciceSeance.listeSerieExerciceSeance))
   return (
     <>
-      <div className="container w-full flex flex-col grow">
+      <div className="container flex w-full grow flex-col">
         <H2Title>Définir le temps de repos</H2Title>
         <Form method="post" id="form-mettre-a-jour-temps-repos">
           <input type="hidden" key="_action" name="_action" value="mettre-a-jour-temps-repos" />

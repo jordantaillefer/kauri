@@ -3,8 +3,8 @@ import * as React from "react"
 
 export function AccueilButton() {
   return (
-    <Link to="/" className="flex items-center w-24 md:w-32 text-2xl text-primary h-full">
-      <span className="flex bg-no-repeat bg-contain bg-center bg-accueil-button h-8 w-full" />
+    <Link to="/" className="flex h-full w-24 items-center text-2xl text-primary md:w-32">
+      <span className="flex h-8 w-full bg-contain bg-center bg-no-repeat bg-accueil-button" />
     </Link>
   )
 }

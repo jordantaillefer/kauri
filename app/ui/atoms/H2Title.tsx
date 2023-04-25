@@ -4,5 +4,5 @@ interface H2TitleProps {
   children: ReactNode
 }
 export function H2Title({ children }: H2TitleProps) {
-  return <h2 className="text-2xl text-primary-darker font-bold mb-4">{children}</h2>
+  return <h2 className="mb-4 text-2xl font-bold text-primary-darker">{children}</h2>
 }

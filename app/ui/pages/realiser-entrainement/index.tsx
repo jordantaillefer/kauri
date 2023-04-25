@@ -51,7 +51,7 @@ export const RealiserEntrainement: FunctionComponent = () => {
   } = useEntrainement()
 
   return (
-    <div className="container flex flex-col flex-grow">
+    <div className="container flex flex-grow flex-col">
       <H2Title>{nomSeance}</H2Title>
 
       {isTimerActive && (

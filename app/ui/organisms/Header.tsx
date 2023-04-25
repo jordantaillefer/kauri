@@ -10,9 +10,9 @@ type HeaderProps = {
 export const Header: FunctionComponent<HeaderProps> = ({ authenticated }) => {
   return (
     <header className="container">
-      <div className="flex items-center justify-between h-20 md:justify-start md:space-x-6">
+      <div className="flex h-20 items-center justify-between md:space-x-6 md:justify-start">
         <AccueilButton />
-        <nav className="flex items-center justify-end flex-1 w-full h-full space-x-10 flex">
+        <nav className="flex h-full w-full flex-1 items-center justify-end space-x-10">
           {authenticated ? <SeDeconnecterButton /> : <SeConnecterButton />}
         </nav>
       </div>

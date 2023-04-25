@@ -14,9 +14,9 @@ export function BlocProchainExercice({
   return (
     <>
       {prochainExercice ? (
-        <div className="flex flex-col flex-grow">
+        <div className="flex flex-grow flex-col">
           <div className="flex flex-grow flex-col">
-            <div className="bg-secondary p-4 text-secondary-darker rounded-md mb-4 h-fit">
+            <div className="mb-4 h-fit rounded-md p-4 bg-secondary text-secondary-darker">
               <p className="font-bold">{prochainExercice.nomExercice}</p>
               <p>Temps Repos : {prochainExercice.tempsRepos}</p>
             </div>

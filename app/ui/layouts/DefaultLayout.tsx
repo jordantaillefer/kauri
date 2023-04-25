@@ -6,10 +6,10 @@ export const DefaultLayout = () => {
   const { authenticated } = useOutletContext<{ authenticated: boolean }>()
 
   return (
-    <div className="flex flex-col min-h-screen bg-background-main" data-theme="default">
+    <div className="flex min-h-screen flex-col bg-background-main" data-theme="default">
       <Header authenticated={authenticated} />
 
-      <main id="main" className="flex flex-col flex-grow overflow-x-hidden">
+      <main id="main" className="flex flex-grow flex-col overflow-x-hidden">
         <Outlet />
       </main>
     </div>
