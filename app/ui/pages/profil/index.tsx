@@ -1,6 +1,6 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node"
 import { json, redirect } from "@remix-run/node"
-import { Link, useLoaderData, useSearchParams } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react"
 import { addDays, format, subDays } from "date-fns"
 import { fr } from "date-fns/locale"
 import { useState } from "react"
@@ -15,7 +15,7 @@ import { HeaderCalendar } from "~/ui/organisms/HeaderCalendar"
 
 type LoaderData = {
   listeSeance: SeanceContrat[]
-  listeEntrainement: EntrainementContrat[],
+  listeEntrainement: EntrainementContrat[]
   day: string
 }
 
@@ -75,62 +75,73 @@ export default function Profil() {
   const [categorieSelected, setCategorieSelected] = useState<Categorie>(Categorie.ENTRAINEMENT)
 
   return (
-    <div className="container">
-      <HeaderCalendar selected={day} dates={dates} />
+    <div className="relative">
+      <div className="container">
+        <HeaderCalendar selected={day} dates={dates} />
 
-      <div className="flex w-full justify-between">
-        <button
-          className={`border-2 border-primary rounded-full px-4 py-1 ${
-            categorieSelected === Categorie.ENTRAINEMENT ? "text-white bg-primary shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]" : "text-primary"
-          }`}
-          onClick={() => setCategorieSelected(Categorie.ENTRAINEMENT)}
-        >
-          Mon entrainement
-        </button>
-        <button
-          className={`border-2 border-primary rounded-full px-4 py-1 ${
-            categorieSelected === Categorie.SEANCE ? "text-white bg-primary shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]" : "text-primary"
-          }`}
-          onClick={() => setCategorieSelected(Categorie.SEANCE)}
-        >
-          Mes séances
-        </button>
+        <div className="flex w-full justify-between">
+          <button
+            className={`border-2 border-primary rounded-full px-4 py-1 ${
+              categorieSelected === Categorie.ENTRAINEMENT
+                ? "text-white bg-primary shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+                : "text-primary"
+            }`}
+            onClick={() => setCategorieSelected(Categorie.ENTRAINEMENT)}
+          >
+            Mon entrainement
+          </button>
+          <button
+            className={`border-2 border-primary rounded-full px-4 py-1 ${
+              categorieSelected === Categorie.SEANCE
+                ? "text-white bg-primary shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+                : "text-primary"
+            }`}
+            onClick={() => setCategorieSelected(Categorie.SEANCE)}
+          >
+            Mes séances
+          </button>
+        </div>
+        {categorieSelected === Categorie.SEANCE && (
+          <>
+            <H2Title>Liste des séances</H2Title>
+            <div>
+              <ul>
+                {listeSeance.map(seance => (
+                  <li key={seance.id} className="flex text-primary w-full border border-primary rounded mb-2 p-4 justify-between">
+                    <Link to={`/seance/${seance.id}/resume`}>{seance.nomSeance}</Link>
+                    <div className="flex">
+                      <Link to={`/seance/${seance.id}`} className="mr-2">
+                        <PencilIcon />
+                      </Link>
+                      <button>
+                        <TrashIcon />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
+        {categorieSelected === Categorie.ENTRAINEMENT && (
+          <>
+            <H2Title>Reprendre un entrainement</H2Title>
+            <div>
+              <ul>
+                {listeEntrainement.map(entrainement => (
+                  <li key={entrainement.id} className="text-primary w-full border border-primary rounded mb-2 p-4">
+                    <Link to={`/entrainement/${entrainement.id}`}>{entrainement.nomSeance}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
       </div>
       {categorieSelected === Categorie.SEANCE && (
-        <>
-          <H2Title>Liste des séances</H2Title>
-          <div>
-            <ul>
-              {listeSeance.map(seance => (
-                <li key={seance.id} className="flex text-primary w-full border border-primary rounded mb-2 p-4">
-                  <Link to={`/seance/${seance.id}/resume`}>{seance.nomSeance}</Link>
-                  <Link to={`/seance/${seance.id}`}>
-                    <PencilIcon />
-                  </Link>
-                  <button>
-                    <TrashIcon />
-                  </button>
-                </li>
-              ))}
-            </ul>
-
-            <CreerSeanceButton />
-          </div>
-        </>
-      )}
-      {categorieSelected === Categorie.ENTRAINEMENT && (
-        <>
-          <H2Title>Reprendre un entrainement</H2Title>
-          <div>
-            <ul>
-              {listeEntrainement.map(entrainement => (
-                <li key={entrainement.id} className="text-primary w-full border border-primary rounded mb-2 p-4">
-                  <Link to={`/entrainement/${entrainement.id}`}>{entrainement.nomSeance}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </>
+        <div className="fixed bottom-0 left-0 w-full p-8">
+          <CreerSeanceButton />
+        </div>
       )}
     </div>
   )

@@ -7,7 +7,7 @@ export const CreerSeanceButton: FunctionComponent = () => {
       <button
         type="submit"
         aria-label="creer-seance"
-        className="rounded-md p-3 text-base font-medium leading-6 text-white bg-primary whitespace-no-wrap focus focus:outline-none"
+        className="rounded-md w-full p-3 text-base font-medium leading-6 text-white bg-primary whitespace-no-wrap focus focus:outline-none"
       >
         Créer une nouvelle séance
       </button>

@@ -1,8 +1,8 @@
 function PresentationKauri() {
   return (
     <>
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">Bienvenue sur Kauri</h2>
-      <h1 className="mt-3 bg-gradient-to-r bg-clip-text pb-2 text-4xl font-extrabold leading-10 tracking-tight text-transparent from-primary-darker via-primary-lighter to-primary-darker md:my-5">
+      <h2 className="text-sm text-primary font-semibold uppercase tracking-wide text-gray-700">Bienvenue sur Kauri</h2>
+      <h1 className="mt-3 bg-gradient-to-r bg-clip-text pb-2 text-xl font-extrabold leading-10 tracking-tight text-transparent from-primary-darker via-primary-lighter to-primary-darker md:my-5">
         Ré-inventer votre idée du fitness
       </h1>
     </>
