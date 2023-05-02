@@ -18,6 +18,8 @@
     --max-number-of-gaps-in-row: calc(var(--max-column-count) - 1);
     --total-gap-width: calc(var(--max-number-of-gaps-in-row) * var(--gap));
     --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--max-column-count));
+
+    --transparent: rgba(255,255,255,0);
   }
 
   body {
@@ -28,15 +30,17 @@
     box-sizing: border-box;
   }
   [data-theme="default"] {
-    --color-primary: theme("colors.teal.600");
+    --color-primary-transparent: theme("colors.teal.600/75%");
+    --color-primary: theme("colors.teal.500");
     --color-secondary: #b2dedb;
     --color-secondary-lighter: theme("colors.gray.200");
     --color-secondary-darker: theme("colors.gray.200");
     --color-primary-darker: theme("colors.emerald.700");
-    --color-background-main: theme("colors.gray.200");
-    --bg-accueil-button: url("/assets/logo/logo-kauri-dark.png");
+    --color-background-main: theme("colors.black");
+    --bg-accueil-button: url("/assets/logo/logo-kauri-light.png");
   }
   [data-theme="focus"] {
+    --color-primary-transparent: theme("colors.gray.200/25");
     --color-primary: theme("colors.gray.200");
     --color-secondary: #b2dedb;
     --color-secondary-lighter: theme("colors.white");
