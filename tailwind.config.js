@@ -23,6 +23,7 @@ module.exports = {
         light: "hsl(220,9%,46%)",
         inverse: "hsl(235, 19%, 12%)",
         primary: "var(--color-primary)",
+        "primary-transparent": "var(--color-primary-transparent)",
         secondary: "var(--color-secondary)",
         "secondary-darker": "var(--color-secondary-darker)",
         "secondary-lighter": "var(--color-secondary-lighter)",
@@ -34,7 +35,8 @@ module.exports = {
         "danger-lighter": "hsl(345, 86%, 80%)"
       },
       backgroundImage: {
-        "accueil-button": "var(--bg-accueil-button)"
+        "accueil-button": "var(--bg-accueil-button)",
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
       keyframes: {
         "scale-in": {
