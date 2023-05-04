@@ -43,9 +43,9 @@ function convertirEnExerciceSeance(exerciceSeanceModel: ExerciceSeanceModel): Ex
   })
 }
 
-type DetailSeanceModel =
-  SeanceModel
-  & { exerciceSeances: (ExerciceSeanceModel & { serieExerciceSeances: SerieExerciceSeanceModel[] })[] }
+type DetailSeanceModel = SeanceModel & {
+  exerciceSeances: (ExerciceSeanceModel & { serieExerciceSeances: SerieExerciceSeanceModel[] })[]
+}
 type DetailExerciceModel = ExerciceSeanceModel & { serieExerciceSeances: SerieExerciceSeanceModel[] }
 
 function convertirEnDetailSerie(serieExerciceSeanceModel: SerieExerciceSeanceModel): DetailSerie {
@@ -65,7 +65,6 @@ function convertirEnDetailExerciceSeance(detailExerciceModel: DetailExerciceMode
     tempsRepos: detailExerciceModel.tempsRepos,
     listeDetailSerie: detailExerciceModel.serieExerciceSeances.map(convertirEnDetailSerie)
   })
-
 }
 
 function convertirEnDetailSeance(detailSeanceModel: DetailSeanceModel): DetailSeance {
@@ -102,7 +101,11 @@ export class PrismaSeanceRepository implements SeanceRepository {
   async recupererParId(idSeance: string): Promise<Seance> {
     const seanceModel = await prisma.seance.findUnique({
       where: { id: idSeance },
-      include: { exerciceSeances: true }
+      include: {
+        exerciceSeances: {
+          orderBy: { ordre: "asc" }
+        }
+      }
     })
     if (seanceModel === null) {
       throw new SeanceNotFoundError()
