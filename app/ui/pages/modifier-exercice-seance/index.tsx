@@ -54,7 +54,9 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
 
   const handleChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newFormValues = [...formValues]
-    newFormValues[index].repetitions = Number(event.target.value)
+    console.log(event.target.value);
+    console.log(Number.isNaN(event.target.value));
+    newFormValues[index].repetitions = event.target.value && !Number.isNaN(event.target.value) ? Number(event.target.value): ""
     setFormValues(newFormValues)
   }
 
@@ -80,48 +82,49 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
       : [{ repetitions: 0 }]
   }
 
-  const [formValues, setFormValues] = useState(initSerieExerciceSeance(exerciceSeance.listeSerieExerciceSeance))
+  const [formValues, setFormValues] = useState<{ repetitions: number | string}[]>(initSerieExerciceSeance(exerciceSeance.listeSerieExerciceSeance))
   return (
     <>
       <div className="container flex w-full grow flex-col">
         <H2Title>Définir le temps de repos</H2Title>
         <Form method="post" id="form-mettre-a-jour-temps-repos">
           <input type="hidden" key="_action" name="_action" value="mettre-a-jour-temps-repos" />
-          <InputDebounced initialValue={exerciceSeance.tempsRepos} form="form-mettre-a-jour-temps-repos" id="input-temps-repos" name="inputTempsRepos" />
-          <span>secondes</span>
+          <div className="flex gap-2 w-full">
+            <InputDebounced initialValue={exerciceSeance.tempsRepos} form="form-mettre-a-jour-temps-repos" id="input-temps-repos" name="inputTempsRepos" />
+            <span>secondes</span>
+          </div>
         </Form>
         <H2Title>Définir les séries</H2Title>
-        <div>{exerciceSeance.nomExercice}</div>
+        <div className="text-primary mb-4">{exerciceSeance.nomExercice}</div>
         <Form id="modifier-exercice-seance-form" method="post">
           <input type="hidden" key="_action" name="_action" value="modifier-exercice-seance" />
-          <ul>
+          <ul className="mb-4">
             {formValues.map((formValue, index) => {
               return (
-                <li key={index}>
-                  <span>{index + 1}</span>
+                <li key={index} className="flex gap-4 mb-2">
+                  <span className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1 w-9 h-9">{index + 1}</span>
                   <input
-                    type="number"
+                    type="text"
                     name="repetitions"
                     value={formValue.repetitions}
                     onFocus={event => event.target.select()}
                     onChange={e => handleChange(index, e)}
                     placeholder="Nombre de répétition"
                   />
-                  <button type="button" onClick={() => removeFormFields(index)}>
+                  <button type="button" className="text-primary" onClick={() => removeFormFields(index)}>
                     <TrashIcon />
                   </button>
                 </li>
               )
             })}
           </ul>
-          <button type="button" onClick={() => addFormFields()}>
+          <RoundedButton onClick={() => addFormFields()}>
             Ajouter une série
-          </button>
+          </RoundedButton>
         </Form>
       </div>
-      <div>
-        this will be the footer
-        <RoundedButton type="button" form="modifier-exercice-seance-form" onClick={submitForm}>
+      <div className="p-4 flex justify-end w-full">
+        <RoundedButton form="modifier-exercice-seance-form" onClick={submitForm}>
           Confirmer
         </RoundedButton>
       </div>
