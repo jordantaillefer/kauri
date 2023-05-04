@@ -26,6 +26,7 @@ export const InputDebounced: FunctionComponent<{
       id={id}
       name={name}
       defaultValue={value}
+      className="bg-transparent text-primary text-xl w-full"
     />
   )
 }
