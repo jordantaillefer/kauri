@@ -13,6 +13,7 @@ import { CreerSeanceButton } from "~/ui/molecules/CreerSeanceButton";
 import { HeaderCalendar } from "~/ui/organisms/HeaderCalendar";
 import { Categorie } from "~/ui/pages/profil/Categorie";
 import { CategorieSelector } from "~/ui/pages/profil/CategorieSelector";
+import { ReasonPhrases } from "http-status-codes";
 
 type LoaderData = {
   listeSeance: SeanceContrat[]
@@ -24,6 +25,11 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ request }) => {
   const resultListerSeance = await container.resolve("seanceController").listerSeance({ request })
   const resultListerEntrainement = await container.resolve("entrainementController").listerEntrainement({ request })
+
+  if(resultListerSeance.reasonPhrase === ReasonPhrases.FORBIDDEN || resultListerEntrainement.reasonPhrase === ReasonPhrases.FORBIDDEN) {
+    redirect("/")
+  }
+
   const listeSeance = resultListerSeance.data as SeanceContrat[]
   const listeEntrainement = resultListerEntrainement.data as EntrainementContrat[]
 
