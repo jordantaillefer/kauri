@@ -1,17 +1,20 @@
-import type { ReactNode } from "react"
+import clsx from "clsx"
+import type { FunctionComponent, PropsWithChildren } from "react"
+import * as React from "react"
 
-interface PrimaryButtonProps {
-  children: ReactNode
-  onClick: () => void
-}
+import { clsxm } from "~/utils/clsxm"
 
-export function PrimaryButton({ children, onClick }: PrimaryButtonProps) {
-  return (
-    <button
-      onClick={onClick}
-      className="mr-2 mb-2 rounded-lg bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 px-5 text-center text-sm font-medium text-white shadow-lg shadow-teal-500/50 py-2.5 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-teal-300 dark:shadow-lg dark:shadow-teal-800/80 dark:focus:ring-teal-800"
-    >
-      {children}
-    </button>
+type PrimaryButtonProps = PropsWithChildren<{}> & React.ButtonHTMLAttributes<HTMLButtonElement>
+
+export const PrimaryButton: FunctionComponent<PrimaryButtonProps> = ({ className, ...props }) => {
+  const defaultClasses = clsx(
+    "bg-primary",
+    "mx-2 px-5 py-2.5",
+    "rounded-lg",
+    "text-sm font-medium text-center text-white",
+    "shadow-lg"
   )
+  const classes = clsxm(defaultClasses, className)
+
+  return <button {...props} className={classes} />
 }

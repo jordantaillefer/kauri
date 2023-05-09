@@ -6,8 +6,9 @@ import { EntrainementContrat, ExerciceEntrainementContrat } from "../../../../sr
 import { container } from "api"
 import { H2Title } from "~/ui/atoms/H2Title"
 import { BlocProchainExercice } from "~/ui/pages/realiser-entrainement/BlocProchainExercice"
-import { Timer } from "~/ui/pages/realiser-entrainement/timer"
+import { Timer } from "~/ui/pages/realiser-entrainement/Timer"
 import { useEntrainement } from "~/ui/pages/realiser-entrainement/useEntrainement"
+import { PrimaryButton } from "~/ui/atoms/PrimaryButton";
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
@@ -54,17 +55,20 @@ export const RealiserEntrainement: FunctionComponent = () => {
     <div className="container flex flex-grow flex-col">
       <H2Title>{nomSeance}</H2Title>
 
-      {isTimerActive && (
-        <div className="mb-4">
-          <Timer time={time} />
-        </div>
-      )}
+      <div className="flex flex-col flex-grow">
+        <BlocProchainExercice
+          prochainExercice={prochainExercice}
+          prochaineSerie={prochaineSerie}
+        />
 
-      <BlocProchainExercice
-        prochainExercice={prochainExercice}
-        prochaineSerie={prochaineSerie}
-        onClick={demarrerRepos}
-      />
+        {isTimerActive && (
+          <div className="mt-4">
+            <Timer time={time} />
+          </div>
+        )}
+      </div>
+
+      <PrimaryButton onClick={demarrerRepos}>Valider serie</PrimaryButton>
     </div>
   )
 }
