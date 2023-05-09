@@ -34,18 +34,28 @@ export const ResumeSeanceEntrainement: FunctionComponent = () => {
   return (
     <div className="container">
       <H2Title>Résumé de la séance : {detailSeance.nomSeance} </H2Title>
-      <ul>
+      <ul className="text-primary">
         {detailSeance.exerciceSeances.map((exercice, indexExercice) => {
           return (
-            <li key={indexExercice}>
-              <span>
-                {exercice.ordre} / {exercice.categorie} / {exercice.nomExercice}
-              </span>
+            <li key={indexExercice} className="flex flex-col gap-4 items-center">
+              <div className="flex gap-4 items-center">
+                <span className="bg-primary text-white border-2 border-primary rounded-full px-2">
+                  {exercice.ordre}
+                </span>
+                <span>
+                  {exercice.categorie} / {exercice.nomExercice}
+                </span>
+              </div>
               <ul>
                 {exercice.series.map((serie, indexSerie) => {
                   return (
-                    <li key={`${indexExercice}-${exercice.nomExercice}-${indexSerie}`}>
-                      {serie.ordre} / nombre répétitions : {serie.repetitions}
+                    <li key={`${indexExercice}-${exercice.nomExercice}-${indexSerie}`} className="mb-2">
+                      <div className="flex gap-4 items-center">
+                        <span className="flex items-center justify-center bg-primary text-white border-2 border-primary rounded-full h-6 w-6">
+                          {serie.ordre}
+                        </span>
+                        <span>nombre répétitions : {serie.repetitions}</span>
+                      </div>
                     </li>
                   )
                 })}

@@ -85,12 +85,12 @@ export const ModifierSeance: FunctionComponent = () => {
             </Form>
             <ul className="mt-4 text-primary">
               {seance.exerciceSeances.map(exercice => (
-                <li key={exercice.id} className="mb-2">
+                <li key={exercice.id}>
                   <Link to={`${exercice.id}`} className="flex gap-4 items-center">
                     <span className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1">{exercice.ordre}</span>
                     <span>{exercice.nomExercice}</span>
                   </Link>
-                  <span className="before:block before:bg-primary before:w-px before:h-4 before:ml-[18px] after:block after:bg-primary after:w-px after:h-4 after:ml-[18px]">
+                  <span className="before:block before:bg-primary before:w-px before:h-3 before:ml-[18px] after:block after:bg-primary after:w-px after:h-3 after:ml-[18px]">
                     {exercice.tempsRepos} sec
                   </span>
                 </li>
