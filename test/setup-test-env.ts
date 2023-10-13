@@ -2,10 +2,15 @@ import { installGlobals } from "@remix-run/node"
 import "@testing-library/jest-dom/extend-expect"
 import { PrismaClient } from "@prisma/client"
 import { afterEach } from "vitest"
-import { join } from "path"
+import path, { join } from "path"
 import dotenv from "dotenv"
+import { fileURLToPath } from "url";
 
 const env = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : ""
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const envPath = join(__dirname, `../.env${env}`)
 
 dotenv.config({ path: envPath })

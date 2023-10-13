@@ -2,7 +2,8 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { addDays, format, subDays } from "date-fns";
-import { fr } from "date-fns/locale";
+import fr  from "date-fns/locale/fr/index.js";
+import { ReasonPhrases } from "http-status-codes";
 
 import { EntrainementContrat } from "../../../../src/app/contrats/EntrainementContrat";
 import { container, SeanceContrat } from "api";
@@ -13,7 +14,6 @@ import { CreerSeanceButton } from "~/ui/molecules/CreerSeanceButton";
 import { HeaderCalendar } from "~/ui/organisms/HeaderCalendar";
 import { Categorie } from "~/ui/pages/profil/Categorie";
 import { CategorieSelector } from "~/ui/pages/profil/CategorieSelector";
-import { ReasonPhrases } from "http-status-codes";
 
 type LoaderData = {
   listeSeance: SeanceContrat[]
