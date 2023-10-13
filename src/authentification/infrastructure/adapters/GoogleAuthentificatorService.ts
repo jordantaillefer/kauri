@@ -28,7 +28,7 @@ export class GoogleAuthentificatorService implements AuthentificationService {
           clientID: config.google.clientId,
           clientSecret: config.google.clientSecret,
           scope: ["openid", "email", "profile"],
-          callbackURL: `${config.baseUrl}/authentication/${config.authenticatorStrategy}/callback`,
+          callbackURL: `/authentication/${config.authenticatorStrategy}/callback`,
           prompt: "select_account"
         },
         this.handleSocialAuthCallback

@@ -1,9 +1,14 @@
 import convict from "convict"
 import dotenv from "dotenv"
 import dotenvExpand from "dotenv-expand"
-import { join } from "path"
+import path, { join } from "path"
+import { fileURLToPath } from "url";
 
 const env = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : ""
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const envPath = join(__dirname, `.env${env}`)
 
 const envVars = dotenv.config({ path: envPath, override: true })
@@ -12,7 +17,7 @@ dotenvExpand.expand(envVars)
 const config = convict({
   baseUrl: {
     format: String,
-    default: "http://localhost:3000",
+    default: "http://192.168.1.170:3000",
     env: "BASE_URL"
   },
   env: {
