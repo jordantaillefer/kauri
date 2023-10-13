@@ -13,6 +13,8 @@ const __dirname = path.dirname(__filename);
 
 const envPath = join(__dirname, `../.env${env}`)
 
+console.log(envPath);
+
 dotenv.config({ path: envPath })
 
 const prisma = new PrismaClient()
@@ -20,6 +22,7 @@ const prisma = new PrismaClient()
 installGlobals()
 
 afterEach(async () => {
+  console.log('envPath', envPath);
   await prisma.user.deleteMany()
   await prisma.serieExerciceSeance.deleteMany()
   await prisma.exerciceSeance.deleteMany()
@@ -28,5 +31,6 @@ afterEach(async () => {
   await prisma.serieEntrainement.deleteMany()
   await prisma.exerciceEntrainement.deleteMany()
   await prisma.entrainement.deleteMany()
+
   vi.restoreAllMocks()
 })

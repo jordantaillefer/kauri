@@ -16,7 +16,7 @@
     "migrate:test": "dotenv -e .env.test prisma migrate deploy",
     "prestart": "yarn migrate",
     "start": "remix-serve build",
-    "test": "NODE_ENV=test vitest --threads false"
+    "test": "NODE_ENV=test vitest --no-threads"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
