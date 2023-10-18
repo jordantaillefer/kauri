@@ -1,5 +1,6 @@
 import { installGlobals } from "@remix-run/node"
 import "@testing-library/jest-dom/extend-expect"
+import matchers, { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers'
 import { PrismaClient } from "@prisma/client"
 import { afterEach } from "vitest"
 import path, { join } from "path"
