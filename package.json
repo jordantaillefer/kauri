@@ -23,11 +23,11 @@
   },
   "dependencies": {
     "@prisma/client": "4.10.1",
-    "@remix-run/css-bundle": "^2.0.1",
-    "@remix-run/node": "2.0.1",
-    "@remix-run/react": "2.0.1",
-    "@remix-run/serve": "2.0.1",
-    "@remix-run/server-runtime": "2.0.1",
+    "@remix-run/css-bundle": "2.1.0",
+    "@remix-run/node": "2.1.0",
+    "@remix-run/react": "2.1.0",
+    "@remix-run/serve": "2.1.0",
+    "@remix-run/server-runtime": "2.1.0",
     "isbot": "^3.6.8",
     "awilix": "8.0.0",
     "clsx": "^1.2.1",
@@ -49,8 +49,8 @@
     "uuid": "9.0.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "2.0.1",
-    "@remix-run/eslint-config": "2.0.1",
+    "@remix-run/dev": "2.1.0",
+    "@remix-run/eslint-config": "2.1.0",
     "@testing-library/jest-dom": "5.16.5",
     "@types/convict": "6.1.1",
     "@types/convict-format-with-validator": "6.0.2",
