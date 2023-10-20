@@ -1,20 +1,20 @@
 import { ReasonPhrases } from "http-status-codes"
 import { describe, expect, it } from "vitest"
 
-import { creerRequest, creerRequestPourCompteUtilisateur } from "../../../../testUtils/RequestUtils"
-import { ExerciceBuilder } from "../../../../testUtils/builders/ExerciceBuilder"
 import { Exercice } from "../../../domain/Exercice"
 import { CATEGORIE } from "../../../domain/categorie"
 import { ExerciceRepository } from "../../../domain/ports/ExerciceRepository"
-import { ExerciceController } from "../../../infrastructure/controllers/ExerciceController"
+import { ExerciceQuery } from "../../../infrastructure/query/ExerciceQuery"
 import { container, ListeExerciceContrat } from "api"
+import { creerRequest, creerRequestPourCompteUtilisateur } from "api/testUtils/RequestUtils"
+import { ExerciceBuilder } from "api/testUtils/builders/ExerciceBuilder"
 
-describe("ExerciceController", () => {
-  let exerciceController: ExerciceController
+describe("ExerciceQuery", () => {
+  let exerciceQuery: ExerciceQuery
   let exerciceRepository: ExerciceRepository
 
   beforeEach(() => {
-    exerciceController = container.resolve("exerciceController")
+    exerciceQuery = container.resolve("exerciceQuery")
     exerciceRepository = container.resolve("exerciceRepository")
   })
 
@@ -42,7 +42,7 @@ describe("ExerciceController", () => {
         await exerciceRepository.creerExercice(exercice2)
         await exerciceRepository.creerExercice(exercice3)
         // Act
-        const response = await exerciceController.listerExercice({ request })
+        const response = await exerciceQuery.listerExercice({ request })
         // Assert
         expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
         const listeExercice = response.data as ListeExerciceContrat
@@ -62,7 +62,7 @@ describe("ExerciceController", () => {
         // Arrange
         const request = creerRequest()
         // Act
-        const response = await exerciceController.listerExercice({ request })
+        const response = await exerciceQuery.listerExercice({ request })
         // Assert
         expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
       })

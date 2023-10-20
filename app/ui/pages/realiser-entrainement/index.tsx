@@ -2,13 +2,13 @@ import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
 import { FunctionComponent } from "react"
 import invariant from "tiny-invariant"
 
-import { EntrainementContrat, ExerciceEntrainementContrat } from "../../../../src/app/contrats/EntrainementContrat"
 import { container } from "api"
+import { DetailEntrainementContrat, ExerciceEntrainementContrat } from "api/app/contrats/EntrainementContrat"
 import { H2Title } from "~/ui/atoms/H2Title"
+import { PrimaryButton } from "~/ui/atoms/PrimaryButton"
 import { BlocProchainExercice } from "~/ui/pages/realiser-entrainement/BlocProchainExercice"
 import { Timer } from "~/ui/pages/realiser-entrainement/Timer"
 import { useEntrainement } from "~/ui/pages/realiser-entrainement/useEntrainement"
-import { PrimaryButton } from "~/ui/atoms/PrimaryButton";
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
@@ -25,9 +25,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.idEntrainement, "expected idEntrainement to be defined")
 
   const payload = { idEntrainement: params.idEntrainement }
-  const result = await container.resolve("entrainementController").recupererEntrainementParId({ request, payload })
+  const result = await container.resolve("entrainementQuery").recupererEntrainementParId({ request, payload })
 
-  const entrainement = result.data as EntrainementContrat
+  const entrainement = result.data as DetailEntrainementContrat
 
   const prochainExercice = entrainement.listeExerciceEntrainement
     .filter(exercice => !exercice.estRealise)
@@ -56,10 +56,7 @@ export const RealiserEntrainement: FunctionComponent = () => {
       <H2Title>{nomSeance}</H2Title>
 
       <div className="flex flex-col flex-grow">
-        <BlocProchainExercice
-          prochainExercice={prochainExercice}
-          prochaineSerie={prochaineSerie}
-        />
+        <BlocProchainExercice prochainExercice={prochainExercice} prochaineSerie={prochaineSerie} />
 
         {isTimerActive && (
           <div className="mt-4">

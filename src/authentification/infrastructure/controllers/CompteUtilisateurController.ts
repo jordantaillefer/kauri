@@ -1,15 +1,15 @@
-import { ServerRequest } from "../../../app/ServerRequest"
-import { created, ServerResponse, success } from "../../../app/ServerResponse"
-import { Controller } from "../../../app/decorators/ControllerDecorator"
-import { DoitEtreAuthentifie } from "../../../app/decorators/DoitEtreAuthentifieDecorator"
-import { ProduceServerResponse } from "../../../app/decorators/ProduceServerResponseDecorator"
-import { SessionManager } from "../../../app/session.server"
 import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
 import { CreerCompteUtilisateurUseCase } from "../../usecases/CreerCompteUtilisateurUseCase"
 import { RecupererCompteUtilisateurConnecteUseCase } from "../../usecases/RecupererCompteUtilisateurConnecteUseCase"
 import { RecupererCompteUtilisateurUseCase } from "../../usecases/RecupererCompteUtilisateurUseCase"
 import { SeConnecterUseCase } from "../../usecases/SeConnecterUseCase"
 import { SeDeconnecterUseCase } from "../../usecases/SeDeconnecterUseCase"
+import type { ServerRequest } from "api/app/ServerRequest"
+import { created, ServerResponse, success } from "api/app/ServerResponse"
+import { Controller } from "api/app/decorators/ControllerDecorator"
+import { DoitEtreAuthentifie } from "api/app/decorators/DoitEtreAuthentifieDecorator"
+import { ProduceServerResponse } from "api/app/decorators/ProduceServerResponseDecorator"
+import { SessionManager } from "api/app/session.server"
 
 interface Dependencies {
   creerCompteUtilisateurUseCase: CreerCompteUtilisateurUseCase
@@ -30,13 +30,13 @@ export class CompteUtilisateurController {
   private sessionManager: SessionManager
 
   constructor({
-                creerCompteUtilisateurUseCase,
-                recupererCompteUtilisateurUseCase,
-                recupererCompteUtilisateurConnecteUseCase,
-                seConnecterUseCase,
-                seDeconnecterUseCase,
-                sessionManager
-              }: Dependencies) {
+    creerCompteUtilisateurUseCase,
+    recupererCompteUtilisateurUseCase,
+    recupererCompteUtilisateurConnecteUseCase,
+    seConnecterUseCase,
+    seDeconnecterUseCase,
+    sessionManager
+  }: Dependencies) {
     this.creerCompteUtilisateurUseCase = creerCompteUtilisateurUseCase
     this.recupererCompteUtilisateurUseCase = recupererCompteUtilisateurUseCase
     this.recupererCompteUtilisateurConnecteUseCase = recupererCompteUtilisateurConnecteUseCase

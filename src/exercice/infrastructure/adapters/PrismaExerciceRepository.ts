@@ -1,9 +1,8 @@
 import { Exercice as ExerciceModel } from "@prisma/client"
 
-import { prisma } from "../../../db/prisma"
 import { Exercice } from "../../domain/Exercice"
-import { CATEGORIE } from "../../domain/categorie"
 import { ExerciceRepository } from "../../domain/ports/ExerciceRepository"
+import { prisma } from "api/db/prisma"
 
 function convertirEnModel(exercice: Exercice): ExerciceModel {
   return {
@@ -11,14 +10,6 @@ function convertirEnModel(exercice: Exercice): ExerciceModel {
     nomExercice: exercice.nomExercice,
     categorie: exercice.categorie
   }
-}
-
-function convertirEnExercice(exerciceModel: ExerciceModel): Exercice {
-  return Exercice.creerExercice({
-    id: exerciceModel.id,
-    nomExercice: exerciceModel.nomExercice,
-    categorie: exerciceModel.categorie as CATEGORIE
-  })
 }
 
 export class PrismaExerciceRepository implements ExerciceRepository {
@@ -31,10 +22,5 @@ export class PrismaExerciceRepository implements ExerciceRepository {
         categorie: exerciceModel.categorie
       }
     })
-  }
-
-  async recupererTout(): Promise<Exercice[]> {
-    const listeDExerciceModels = await prisma.exercice.findMany()
-    return listeDExerciceModels.map(convertirEnExercice)
   }
 }

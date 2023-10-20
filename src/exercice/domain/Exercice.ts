@@ -1,4 +1,5 @@
-import { v4 as uuid } from "uuid"
+
+import { randomUUID } from "crypto";
 
 import { CATEGORIE } from "./categorie"
 
@@ -38,6 +39,6 @@ export class Exercice {
                          nomExercice,
                          categorie
                        }: { id?: IdExercice, nomExercice: NomExercice, categorie: CategorieExercice }) {
-    return new Exercice({ id: id || uuid(), nomExercice, categorie })
+    return new Exercice({ id: id || randomUUID(), nomExercice, categorie })
   }
 }

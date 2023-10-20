@@ -16,6 +16,10 @@ export interface ExerciceEntrainementContrat {
 }
 
 export interface EntrainementContrat {
+  id: string
+  nomSeance: string
+}
+export interface DetailEntrainementContrat {
   listeExerciceEntrainement: ExerciceEntrainementContrat[]
   id: string
   nomSeance: string

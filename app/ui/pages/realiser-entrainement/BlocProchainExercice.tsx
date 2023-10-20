@@ -1,9 +1,9 @@
 import { ExerciceEntrainementContrat, SerieEntrainementContrat } from "../../../../src/app/contrats/EntrainementContrat"
-import { clsxm } from "~/utils/clsxm";
+import { clsxm } from "~/utils/clsxm"
 
 export function BlocProchainExercice({
   prochainExercice,
-  prochaineSerie,
+  prochaineSerie
 }: {
   prochainExercice: ExerciceEntrainementContrat
   prochaineSerie: SerieEntrainementContrat

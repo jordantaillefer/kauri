@@ -1,4 +1,4 @@
-import { v4 as uuid } from "uuid"
+import { randomUUID } from "crypto";
 import { DeepMockProxy, mockDeep } from "vitest-mock-extended"
 
 import { CompteUtilisateur } from "../authentification/domain/CompteUtilisateur"
@@ -6,13 +6,13 @@ import { SessionUtilisateur } from "../authentification/domain/SessionUtilisateu
 import { container } from "api"
 
 export async function creerRequestPourCompteUtilisateur(idUtilisateur?: string) {
-  const id = idUtilisateur || uuid()
+  const id = idUtilisateur || randomUUID()
   const compteUtilisateurRepository = container.resolve("compteUtilisateurRepository")
   await compteUtilisateurRepository.creerCompteUtilisateur(CompteUtilisateur.creerCompteUtilisateur({ id }))
   return creerRequestAvecSession(id)
 }
 export async function creerRequestAvecSession(idUtilisateur?: string): Promise<DeepMockProxy<Request>> {
-  const id = idUtilisateur || uuid()
+  const id = idUtilisateur || randomUUID()
   const initialRequest = mockDeep<Request>()
   const sessionManager = container.resolve("sessionManager")
   const session = await sessionManager.get(initialRequest)

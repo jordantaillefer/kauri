@@ -122,8 +122,6 @@ export class PrismaSeanceRepository implements SeanceRepository {
   }
 
   async recupererDetailParId(idUtilisateur: string, idSeance: string): Promise<DetailSeance> {
-    // TODO Utiliser idUtilisateur pour sécu
-
     const detailSeanceModel = await prisma.seance.findUnique({
       where: { id: idSeance },
       include: {

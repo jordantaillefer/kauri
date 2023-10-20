@@ -14,7 +14,7 @@ export class RealiserSerieUseCase {
     this.entrainementRepository = entrainementRepository
   }
 
-  async execute({ idUtilisateur, idExercice, idSerie }: { idUtilisateur: string, idExercice: string, idSerie: string }) {
+  async execute({ idExercice, idSerie }: { idUtilisateur: string, idExercice: string, idSerie: string }) {
     const exerciceEntrainement = await this.entrainementRepository.recupererExerciceEntrainementParId(idExercice)
     exerciceEntrainement.mettreAJourSerieEstRealise(idSerie, true)
     exerciceEntrainement.mettreAJourEstRealise()

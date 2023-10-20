@@ -1,6 +1,6 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
 import { Form, Link, useLoaderData } from "@remix-run/react"
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useState } from "react"
 import invariant from "tiny-invariant"
 
 import { Categorie } from "./Categorie"
@@ -47,9 +47,9 @@ interface LoaderData {
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.idSeance, "expected params.idSeance")
 
-  const exerciceResult = await container.resolve("exerciceController").listerExercice({ request })
+  const exerciceResult = await container.resolve("exerciceQuery").listerExercice({ request })
   const payload = { idSeance: params.idSeance }
-  const seanceResult = await container.resolve("seanceController").recupererSeanceParId({ request, payload })
+  const seanceResult = await container.resolve("seanceQuery").recupererSeanceParId({ request, payload })
 
   const listeExercice = Array.from((exerciceResult.data as ListeExerciceContrat).entries())
   const seance = seanceResult.data as SeanceContrat
@@ -87,7 +87,9 @@ export const ModifierSeance: FunctionComponent = () => {
               {seance.exerciceSeances.map(exercice => (
                 <li key={exercice.id}>
                   <Link to={`${exercice.id}`} className="flex gap-4 items-center">
-                    <span className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1">{exercice.ordre}</span>
+                    <span className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1">
+                      {exercice.ordre}
+                    </span>
                     <span>{exercice.nomExercice}</span>
                   </Link>
                   <span className="before:block before:bg-primary before:w-px before:h-3 before:ml-[18px] after:block after:bg-primary after:w-px after:h-3 after:ml-[18px]">
@@ -112,25 +114,49 @@ export const ModifierSeance: FunctionComponent = () => {
           <Form method="post">
             <input type="hidden" key="_action" name="_action" value="ajouter-exercice" />
             {listeExercice.map((listeExerciceCategorie, index) => {
-              return index === selectedCategorie && (
-                 <ul className="mb-8 text-primary" key={listeExerciceCategorie[0]}>
-                  <li key={listeExerciceCategorie[0]} className="mb-4">
-                    <div className="flex w-full justify-center gap-4">
-                      <button type="button" className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1" onClick={() => setSelectedCategorie((listeExercice.length + selectedCategorie - 1) % listeExercice.length)}>{"<-"}</button>
-                      <span className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1">{listeExerciceCategorie[0]}</span>
-                      <button type="button" className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1" onClick={() => setSelectedCategorie((index + 1) % listeExercice.length)}>{"->"}</button>
-                    </div>
-                  </li>
-                  {listeExerciceCategorie[1].map(exercice => {
-                    return (
-                      <li key={exercice.id} className="mb-2">
-                        <button type="submit" aria-label="idExercice" className="flex text-start border-2 p-2 w-full border-primary" value={exercice.id} name="idExercice">
-                          {exercice.nomExercice}
+              return (
+                index === selectedCategorie && (
+                  <ul className="mb-8 text-primary" key={listeExerciceCategorie[0]}>
+                    <li key={listeExerciceCategorie[0]} className="mb-4">
+                      <div className="flex w-full justify-center gap-4">
+                        <button
+                          type="button"
+                          className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1"
+                          onClick={() =>
+                            setSelectedCategorie((listeExercice.length + selectedCategorie - 1) % listeExercice.length)
+                          }
+                        >
+                          {"<-"}
                         </button>
-                      </li>
-                    )
-                  })}
-                </ul>
+                        <span className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1">
+                          {listeExerciceCategorie[0]}
+                        </span>
+                        <button
+                          type="button"
+                          className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1"
+                          onClick={() => setSelectedCategorie((index + 1) % listeExercice.length)}
+                        >
+                          {"->"}
+                        </button>
+                      </div>
+                    </li>
+                    {listeExerciceCategorie[1].map(exercice => {
+                      return (
+                        <li key={exercice.id} className="mb-2">
+                          <button
+                            type="submit"
+                            aria-label="idExercice"
+                            className="flex text-start border-2 p-2 w-full border-primary"
+                            value={exercice.id}
+                            name="idExercice"
+                          >
+                            {exercice.nomExercice}
+                          </button>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                )
               )
             })}
           </Form>

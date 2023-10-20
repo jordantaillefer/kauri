@@ -1,4 +1,4 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
+import { cssBundleHref } from "@remix-run/css-bundle"
 import type { LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { json } from "@remix-run/node"
 import {
@@ -20,10 +20,7 @@ import { container } from "api"
 type ContextType = { authenticated: boolean }
 
 export const links: LinksFunction = () => {
-  return [
-    ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
-    { rel: "stylesheet", href: styles }
-  ]
+  return [...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []), { rel: "stylesheet", href: styles }]
 }
 
 export const meta: MetaFunction = () => {
@@ -31,10 +28,10 @@ export const meta: MetaFunction = () => {
     { title: "Very cool app | Remix" },
     {
       property: "viewport",
-      content: "width=device-width,initial-scale=1",
+      content: "width=device-width,initial-scale=1"
     }
-  ];
-};
+  ]
+}
 
 interface DocumentProps {
   children: ReactNode

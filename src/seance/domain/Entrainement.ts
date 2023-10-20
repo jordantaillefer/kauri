@@ -1,4 +1,4 @@
-import { v4 as uuid } from "uuid"
+import { randomUUID } from "crypto";
 
 import { ExerciceEntrainement } from "./ExerciceEntrainement"
 
@@ -45,7 +45,7 @@ export class Entrainement {
     listeExerciceEntrainement: ExerciceEntrainement[]
   }) {
     return new Entrainement({
-      id: id || uuid(),
+      id: id || randomUUID(),
       nomSeance,
       idUtilisateur,
       listeExerciceEntrainement

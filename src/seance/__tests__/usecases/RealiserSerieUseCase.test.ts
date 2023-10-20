@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { mock, MockProxy } from "vitest-mock-extended"
-import { captor, CaptorMatcher } from "vitest-mock-extended"
+import { mock, MockProxy , captor, CaptorMatcher } from "vitest-mock-extended"
 
 import { ExerciceEntrainementBuilder } from "../../application/builders/ExerciceEntrainementBuilder"
 import { SerieEntrainementBuilder } from "../../application/builders/SerieEntrainementBuilder"

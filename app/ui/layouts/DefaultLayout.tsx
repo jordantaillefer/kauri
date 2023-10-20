@@ -1,9 +1,8 @@
-import { Outlet, useOutletContext } from "@remix-run/react";
+import { Outlet, useOutletContext } from "@remix-run/react"
 
-import { Header } from "~/ui/organisms/Header";
+import { Header } from "~/ui/organisms/Header"
 
 export const DefaultLayout = () => {
-
   const { authenticated } = useOutletContext<{ authenticated: boolean }>()
 
   return (

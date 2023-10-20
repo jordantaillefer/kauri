@@ -4,13 +4,13 @@ import {
   SerieEntrainement as SerieEntrainementModel
 } from "@prisma/client"
 
-import { prisma } from "../../../db/prisma"
-import { CATEGORIE } from "../../../exercice/domain/categorie"
 import { Entrainement } from "../../domain/Entrainement"
 import { ExerciceEntrainement } from "../../domain/ExerciceEntrainement"
 import { SerieEntrainement } from "../../domain/SerieEntrainement"
 import { EntrainementNotFoundError } from "../../domain/errors/EntrainementNotFoundError"
 import { EntrainementRepository } from "../../domain/ports/EntrainementRepository"
+import { prisma } from "api/db/prisma"
+import { CATEGORIE } from "api/exercice/domain/categorie"
 
 function convertirEnModel(entrainement: Entrainement): EntrainementModel {
   return {
@@ -42,28 +42,6 @@ function convertirSerieEntrainementEnModel(
     ordre: serieEntrainement.ordre,
     estRealise: serieEntrainement.estRealise
   }
-}
-
-function convertirEnEntrainement(entrainementModel: EntrainementModel): Entrainement {
-  return Entrainement.creerEntrainement({
-    id: entrainementModel.id,
-    idUtilisateur: entrainementModel.idUtilisateur,
-    nomSeance: entrainementModel.nomSeance,
-    listeExerciceEntrainement: []
-  })
-}
-
-function convertirEnDetailEntrainement(
-  entrainementModel: EntrainementModel & {
-    exerciceEntrainements: (ExerciceEntrainementModel & { serieEntrainements: SerieEntrainementModel[] })[]
-  }
-): Entrainement {
-  return Entrainement.creerEntrainement({
-    id: entrainementModel.id,
-    idUtilisateur: entrainementModel.idUtilisateur,
-    nomSeance: entrainementModel.nomSeance,
-    listeExerciceEntrainement: entrainementModel.exerciceEntrainements.map(convertirEnExerciceEntrainement)
-  })
 }
 
 function convertirEnExerciceEntrainement(
@@ -123,13 +101,6 @@ export class PrismaEntrainementRepository implements EntrainementRepository {
     })
   }
 
-  async recupererTout(idUtilisateur: string): Promise<Entrainement[]> {
-    const listeDEntrainementModels = await prisma.entrainement.findMany({
-      where: { idUtilisateur: idUtilisateur }
-    })
-    return listeDEntrainementModels.map(convertirEnEntrainement)
-  }
-
   async mettreAJourExerciceEstRealise(idEntrainement: string, estRealise: boolean): Promise<void> {
     await prisma.exerciceEntrainement.update({
       where: { id: idEntrainement },
@@ -165,25 +136,5 @@ export class PrismaEntrainementRepository implements EntrainementRepository {
         }
       }
     })
-  }
-
-  async recupererParId(id: string): Promise<Entrainement> {
-    const entrainementModel = await prisma.entrainement.findUnique({
-      where: { id },
-      include: {
-        exerciceEntrainements: {
-          orderBy: { ordre: "asc" },
-          include: {
-            serieEntrainements: { orderBy: { ordre: "asc" } }
-          }
-        }
-      }
-    })
-
-    if (!entrainementModel) {
-      throw new EntrainementNotFoundError()
-    }
-
-    return convertirEnDetailEntrainement(entrainementModel)
   }
 }

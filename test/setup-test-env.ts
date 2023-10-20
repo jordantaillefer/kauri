@@ -1,6 +1,5 @@
 import { installGlobals } from "@remix-run/node"
 import "@testing-library/jest-dom/extend-expect"
-import matchers, { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers'
 import { PrismaClient } from "@prisma/client"
 import { afterEach } from "vitest"
 import path, { join } from "path"
@@ -14,8 +13,6 @@ const __dirname = path.dirname(__filename);
 
 const envPath = join(__dirname, `../.env${env}`)
 
-console.log(envPath);
-
 dotenv.config({ path: envPath })
 
 const prisma = new PrismaClient()
@@ -23,7 +20,6 @@ const prisma = new PrismaClient()
 installGlobals()
 
 afterEach(async () => {
-  console.log('envPath', envPath);
   await prisma.user.deleteMany()
   await prisma.serieExerciceSeance.deleteMany()
   await prisma.exerciceSeance.deleteMany()
