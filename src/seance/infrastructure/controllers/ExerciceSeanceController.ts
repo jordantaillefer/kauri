@@ -1,10 +1,5 @@
 import invariant from "tiny-invariant"
 
-import { ServerRequest } from "../../../app/ServerRequest"
-import { created, ServerResponse, success, updated } from "../../../app/ServerResponse"
-import { Controller } from "../../../app/decorators/ControllerDecorator"
-import { DoitEtreAuthentifie } from "../../../app/decorators/DoitEtreAuthentifieDecorator"
-import { ProduceServerResponse } from "../../../app/decorators/ProduceServerResponseDecorator"
 import { ExerciceSeance } from "../../domain/ExerciceSeance"
 import { SerieExerciceSeance } from "../../domain/SerieExerciceSeance"
 import {
@@ -15,6 +10,11 @@ import { DefinirTempsReposExerciceSeanceUseCase } from "../../usecases/DefinirTe
 import { InitialiserExerciceSeanceUseCase } from "../../usecases/InitialiserExerciceSeanceUseCase"
 import { RecupererExerciceSeanceUseCase } from "../../usecases/RecupererExerciceSeanceUseCase"
 import { ExerciceSeanceContrat, SerieExerciceSeanceContrat } from "api"
+import type { ServerRequest } from "api/app/ServerRequest"
+import { created, ServerResponse, success, updated } from "api/app/ServerResponse"
+import { Controller } from "api/app/decorators/ControllerDecorator"
+import { DoitEtreAuthentifie } from "api/app/decorators/DoitEtreAuthentifieDecorator"
+import { ProduceServerResponse } from "api/app/decorators/ProduceServerResponseDecorator"
 
 interface Dependencies {
   initialiserExerciceSeanceUseCase: InitialiserExerciceSeanceUseCase

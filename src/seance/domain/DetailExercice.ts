@@ -1,7 +1,7 @@
-import { v4 as uuid } from "uuid"
+import { randomUUID } from "crypto";
 
-import { CATEGORIE } from "../../exercice/domain/categorie"
 import { DetailSerie } from "./DetailSerie"
+import { CATEGORIE } from "api/exercice/domain/categorie"
 
 export class DetailExercice {
   private readonly _id: string
@@ -73,6 +73,6 @@ export class DetailExercice {
     tempsRepos: number
     listeDetailSerie: DetailSerie[]
   }) {
-    return new DetailExercice({ id: id || uuid(), nomExercice, categorie, ordre, tempsRepos, listeDetailSerie })
+    return new DetailExercice({ id: id || randomUUID(), nomExercice, categorie, ordre, tempsRepos, listeDetailSerie })
   }
 }

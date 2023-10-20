@@ -1,4 +1,4 @@
-import { v4 as uuid } from "uuid"
+import { randomUUID } from "crypto";
 
 export class DetailSerie {
   private readonly _id: string
@@ -24,6 +24,6 @@ export class DetailSerie {
   }
 
   static creerDetailSerie({ id, nombreRepetition, ordre }: { id: string, nombreRepetition: number, ordre: number }) {
-    return new DetailSerie({ id: id || uuid(), nombreRepetition, ordre })
+    return new DetailSerie({ id: id || randomUUID(), nombreRepetition, ordre })
   }
 }

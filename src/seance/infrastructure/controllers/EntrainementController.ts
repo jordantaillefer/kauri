@@ -1,54 +1,44 @@
 import invariant from "tiny-invariant"
 
-import { ServerRequest, ServerRequestWithoutPayload } from "../../../app/ServerRequest"
-import { created, ServerResponse, success, updated } from "../../../app/ServerResponse"
-import {
-  EntrainementContrat,
-  ExerciceEntrainementContrat,
-  SerieEntrainementContrat
-} from "../../../app/contrats/EntrainementContrat"
-import { Controller } from "../../../app/decorators/ControllerDecorator"
-import { DoitEtreAuthentifie } from "../../../app/decorators/DoitEtreAuthentifieDecorator"
-import { ProduceServerResponse } from "../../../app/decorators/ProduceServerResponseDecorator"
 import { Entrainement } from "../../domain/Entrainement"
 import { ExerciceEntrainement } from "../../domain/ExerciceEntrainement"
 import { SerieEntrainement } from "../../domain/SerieEntrainement"
 import { DemarrerEntrainementUseCase } from "../../usecases/DemarrerEntrainementUseCase"
-import { ListerEntrainementUseCase } from "../../usecases/ListerEntrainementUseCase"
 import { RealiserSerieUseCase } from "../../usecases/RealiserSerieUseCase"
-import { RecupererEntrainementUseCase } from "../../usecases/RecupererEntrainementUseCase"
+import type { ServerRequest } from "api/app/ServerRequest"
+import { created, ServerResponse, updated } from "api/app/ServerResponse"
+import {
+  DetailEntrainementContrat,
+  ExerciceEntrainementContrat,
+  SerieEntrainementContrat
+} from "api/app/contrats/EntrainementContrat";
+import { Controller } from "api/app/decorators/ControllerDecorator"
+import { DoitEtreAuthentifie } from "api/app/decorators/DoitEtreAuthentifieDecorator"
+import { ProduceServerResponse } from "api/app/decorators/ProduceServerResponseDecorator"
 
 interface Dependencies {
-  listerEntrainementUseCase: ListerEntrainementUseCase
   demarrerEntrainementUseCase: DemarrerEntrainementUseCase
   realiserSerieUseCase: RealiserSerieUseCase
-  recupererEntrainementUseCase: RecupererEntrainementUseCase
 }
 
 @Controller()
 export class EntrainementController {
-  private listerEntrainementUseCase: ListerEntrainementUseCase
   private demarrerEntrainementUseCase: DemarrerEntrainementUseCase
-  private recupererEntrainementUseCase: RecupererEntrainementUseCase
   private realiserSerieUseCase: RealiserSerieUseCase
 
   constructor({
     demarrerEntrainementUseCase,
     realiserSerieUseCase,
-    recupererEntrainementUseCase,
-    listerEntrainementUseCase
   }: Dependencies) {
-    this.listerEntrainementUseCase = listerEntrainementUseCase
     this.demarrerEntrainementUseCase = demarrerEntrainementUseCase
     this.realiserSerieUseCase = realiserSerieUseCase
-    this.recupererEntrainementUseCase = recupererEntrainementUseCase
   }
 
   @DoitEtreAuthentifie()
   @ProduceServerResponse()
   async demarrerEntrainement(
     serverRequest: ServerRequest<{ idSeance: string }>
-  ): Promise<ServerResponse<EntrainementContrat>> {
+  ): Promise<ServerResponse<DetailEntrainementContrat>> {
     invariant(serverRequest.compteUtilisateurConnecte)
     const { idSeance } = serverRequest.payload
     const nouvelEntrainement = await this.demarrerEntrainementUseCase.execute({
@@ -56,20 +46,6 @@ export class EntrainementController {
       idSeance
     })
     return created(presenterEnEntrainementContrat(nouvelEntrainement))
-  }
-
-  @DoitEtreAuthentifie()
-  @ProduceServerResponse()
-  async recupererEntrainementParId(
-    serverRequest: ServerRequest<{ idEntrainement: string }>
-  ): Promise<ServerResponse<EntrainementContrat>> {
-    invariant(serverRequest.compteUtilisateurConnecte)
-    const { idEntrainement } = serverRequest.payload
-    const entrainementResult = await this.recupererEntrainementUseCase.execute({
-      idUtilisateur: serverRequest.compteUtilisateurConnecte.id,
-      idEntrainement
-    })
-    return success(presenterEnEntrainementContrat(entrainementResult))
   }
 
   @DoitEtreAuthentifie()
@@ -86,17 +62,9 @@ export class EntrainementController {
     })
     return updated()
   }
-
-  @DoitEtreAuthentifie()
-  @ProduceServerResponse()
-  async listerEntrainement(serverRequest: ServerRequestWithoutPayload): Promise<ServerResponse<EntrainementContrat[]>> {
-    invariant(serverRequest.compteUtilisateurConnecte)
-    const listeSeance = await this.listerEntrainementUseCase.execute(serverRequest.compteUtilisateurConnecte.id)
-    return success(listeSeance.map(presenterEnEntrainementContrat))
-  }
 }
 
-function presenterEnEntrainementContrat(entrainement: Entrainement): EntrainementContrat {
+function presenterEnEntrainementContrat(entrainement: Entrainement): DetailEntrainementContrat {
   return {
     id: entrainement.id,
     nomSeance: entrainement.nomSeance,

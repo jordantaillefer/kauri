@@ -1,8 +1,7 @@
-import * as React from "react";
-import { FunctionComponent } from "react";
+import * as React from "react"
+import { FunctionComponent } from "react"
 
-import { Titre } from "~/ui/atoms/Titre";
-import { ComponentWithAs } from "~/utils/ComponentWithAs";
+import { Titre } from "~/ui/atoms/Titre"
 
 const PresentationKauri: FunctionComponent = () => {
   return (

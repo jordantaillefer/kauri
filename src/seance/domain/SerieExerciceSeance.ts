@@ -1,4 +1,4 @@
-import { v4 as uuid } from "uuid"
+import { randomUUID } from "crypto";
 
 export class SerieExerciceSeance {
   private readonly _id: string
@@ -25,6 +25,6 @@ export class SerieExerciceSeance {
   }
 
   static creerSerieExerciceSeance({ id, repetitions, ordre }: { id?: string, repetitions: number, ordre: number }): SerieExerciceSeance {
-    return new SerieExerciceSeance({ id: id || uuid(), repetitions, ordre })
+    return new SerieExerciceSeance({ id: id || randomUUID(), repetitions, ordre })
   }
 }

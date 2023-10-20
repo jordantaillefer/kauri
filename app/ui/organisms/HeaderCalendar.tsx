@@ -1,10 +1,4 @@
-const ItemDate = ({
-  date,
-  selected
-}: {
-  date: { daysAndMonth: string; days: string }
-  selected: string
-}) => {
+const ItemDate = ({ date, selected }: { date: { daysAndMonth: string; days: string }; selected: string }) => {
   return (
     <button
       type="submit"
@@ -17,13 +11,15 @@ const ItemDate = ({
     </button>
   )
 }
-export const HeaderCalendar = ({ dates, selected, categorie }: {
+export const HeaderCalendar = ({
+  dates,
+  selected,
+  categorie
+}: {
   dates: { daysAndMonth: string; days: string }[]
   selected: string
-                                    categorie: string
-}
-) => {
-
+  categorie: string
+}) => {
   return (
     <div className="border-b border-primary-transparent mt-4 h-16">
       <form method="GET">

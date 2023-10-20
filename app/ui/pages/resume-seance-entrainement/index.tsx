@@ -22,7 +22,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.idSeance, "expected params.idSeance")
   const payload = { idSeance: params.idSeance }
-  const result = await container.resolve("seanceController").recupererDetailSeanceParId({ request, payload })
+  const result = await container.resolve("seanceQuery").recupererDetailSeanceParId({ request, payload })
   const detailSeance = result.data as DetailSeanceContrat
 
   return json({

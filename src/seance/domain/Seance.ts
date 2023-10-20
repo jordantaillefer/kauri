@@ -1,4 +1,5 @@
-import { v4 as uuid } from "uuid"
+
+import { randomUUID } from "crypto";
 
 import { ExerciceSeance } from "./ExerciceSeance"
 
@@ -50,6 +51,6 @@ export class Seance {
                        nomSeance,
                        exerciceSeances
                      }: { id?: IdSeance, idUtilisateur: IdUtilisateur, nomSeance: NomSeance, exerciceSeances: ExerciceSeance[] }) {
-    return new Seance({ id: id || uuid(), idUtilisateur, nomSeance, exerciceSeances })
+    return new Seance({ id: id || randomUUID(), idUtilisateur, nomSeance, exerciceSeances })
   }
 }

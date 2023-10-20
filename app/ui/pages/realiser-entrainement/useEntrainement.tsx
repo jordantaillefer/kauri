@@ -5,7 +5,7 @@ import {
   EntrainementContrat,
   ExerciceEntrainementContrat,
   SerieEntrainementContrat
-} from "../../../../src/app/contrats/EntrainementContrat"
+} from "api/app/contrats/EntrainementContrat"
 
 export function useEntrainement() {
   const { entrainement, prochainExercice, prochaineSerie } = useLoaderData<{
@@ -47,7 +47,7 @@ export function useEntrainement() {
       }, 1000)
       return () => clearInterval(interval)
     }
-  }, [isTimerActive, initialTime, time, prochainExercice?.tempsRepos])
+  }, [isTimerActive, initialTime, time, prochainExercice.tempsRepos, tempsRepos])
 
   return {
     nomSeance: entrainement.nomSeance,

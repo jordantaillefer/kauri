@@ -12,10 +12,7 @@ type TitreProps = PropsWithChildren<{}>
 export const Titre = <T extends TypeTitre = "h1">({ as, className, ...props }: ComponentWithAs<T, TitreProps>) => {
   const Component = as || "h1"
 
-  const defaultClasses = clsx(
-    "text-primary",
-    "font-bold",
-  )
+  const defaultClasses = clsx("text-primary", "font-bold")
   const classes = clsxm(defaultClasses, className)
 
   return <Component {...props} className={classes} />

@@ -1,19 +1,19 @@
-import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
-import { addDays, format, subDays } from "date-fns";
-import fr  from "date-fns/locale/fr/index.js";
-import { ReasonPhrases } from "http-status-codes";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node"
+import { json, redirect } from "@remix-run/node"
+import { Link, useLoaderData } from "@remix-run/react"
+import { addDays, format, subDays } from "date-fns"
+import fr from "date-fns/locale/fr/index.js"
+import { ReasonPhrases } from "http-status-codes"
 
-import { EntrainementContrat } from "../../../../src/app/contrats/EntrainementContrat";
-import { container, SeanceContrat } from "api";
-import { H2Title } from "~/ui/atoms/H2Title";
-import { PencilIcon } from "~/ui/icons/Pencil";
-import { TrashIcon } from "~/ui/icons/Trash";
-import { CreerSeanceButton } from "~/ui/molecules/CreerSeanceButton";
-import { HeaderCalendar } from "~/ui/organisms/HeaderCalendar";
-import { Categorie } from "~/ui/pages/profil/Categorie";
-import { CategorieSelector } from "~/ui/pages/profil/CategorieSelector";
+import { EntrainementContrat } from "../../../../src/app/contrats/EntrainementContrat"
+import { container, SeanceContrat } from "api"
+import { H2Title } from "~/ui/atoms/H2Title"
+import { PencilIcon } from "~/ui/icons/Pencil"
+import { TrashIcon } from "~/ui/icons/Trash"
+import { CreerSeanceButton } from "~/ui/molecules/CreerSeanceButton"
+import { HeaderCalendar } from "~/ui/organisms/HeaderCalendar"
+import { Categorie } from "~/ui/pages/profil/Categorie"
+import { CategorieSelector } from "~/ui/pages/profil/CategorieSelector"
 
 type LoaderData = {
   listeSeance: SeanceContrat[]
@@ -23,10 +23,13 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const resultListerSeance = await container.resolve("seanceController").listerSeance({ request })
-  const resultListerEntrainement = await container.resolve("entrainementController").listerEntrainement({ request })
+  const resultListerSeance = await container.resolve("seanceQuery").listerSeance({ request })
+  const resultListerEntrainement = await container.resolve("entrainementQuery").listerEntrainement({ request })
 
-  if(resultListerSeance.reasonPhrase === ReasonPhrases.FORBIDDEN || resultListerEntrainement.reasonPhrase === ReasonPhrases.FORBIDDEN) {
+  if (
+    resultListerSeance.reasonPhrase === ReasonPhrases.FORBIDDEN ||
+    resultListerEntrainement.reasonPhrase === ReasonPhrases.FORBIDDEN
+  ) {
     redirect("/")
   }
 
@@ -36,7 +39,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url)
 
   const day = url.searchParams.get("day") || dates[2].daysAndMonth
-  const categorie = url.searchParams.get("categorie") as Categorie || Categorie.ENTRAINEMENT
+  const categorie = (url.searchParams.get("categorie") as Categorie) || Categorie.ENTRAINEMENT
 
   return json<LoaderData>({ listeSeance, listeEntrainement, day, categorie })
 }
@@ -89,8 +92,10 @@ export default function Profil() {
             <div>
               <ul>
                 {listeSeance.map(seance => (
-                  <li key={seance.id}
-                      className="flex text-primary w-full border border-primary rounded mb-2 p-4 justify-between">
+                  <li
+                    key={seance.id}
+                    className="flex text-primary w-full border border-primary rounded mb-2 p-4 justify-between"
+                  >
                     <Link to={`/seance/${seance.id}/resume`}>{seance.nomSeance}</Link>
                     <div className="flex">
                       <Link to={`/seance/${seance.id}`} className="mr-2">

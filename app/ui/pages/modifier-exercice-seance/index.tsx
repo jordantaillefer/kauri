@@ -6,8 +6,8 @@ import invariant from "tiny-invariant"
 import { container, ExerciceSeanceContrat, SerieExerciceSeanceContrat } from "api"
 import { H2Title } from "~/ui/atoms/H2Title"
 import { RoundedButton } from "~/ui/atoms/RoundedButton"
-import { TrashIcon } from "~/ui/icons/Trash";
-import { InputDebounced } from "~/ui/molecules/InputDebounced";
+import { TrashIcon } from "~/ui/icons/Trash"
+import { InputDebounced } from "~/ui/molecules/InputDebounced"
 
 export const action: ActionFunction = async ({ request, params }) => {
   invariant(params.idSeance, "params $idSeance required")
@@ -54,9 +54,8 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
 
   const handleChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newFormValues = [...formValues]
-    console.log(event.target.value);
-    console.log(Number.isNaN(event.target.value));
-    newFormValues[index].repetitions = event.target.value && !Number.isNaN(event.target.value) ? Number(event.target.value): ""
+    newFormValues[index].repetitions =
+      event.target.value && !Number.isNaN(event.target.value) ? Number(event.target.value) : ""
     setFormValues(newFormValues)
   }
 
@@ -82,7 +81,9 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
       : [{ repetitions: 0 }]
   }
 
-  const [formValues, setFormValues] = useState<{ repetitions: number | string}[]>(initSerieExerciceSeance(exerciceSeance.listeSerieExerciceSeance))
+  const [formValues, setFormValues] = useState<{ repetitions: number | string }[]>(
+    initSerieExerciceSeance(exerciceSeance.listeSerieExerciceSeance)
+  )
   return (
     <>
       <div className="container flex w-full grow flex-col">
@@ -90,7 +91,12 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
         <Form method="post" id="form-mettre-a-jour-temps-repos">
           <input type="hidden" key="_action" name="_action" value="mettre-a-jour-temps-repos" />
           <div className="flex gap-2 w-full">
-            <InputDebounced initialValue={exerciceSeance.tempsRepos} form="form-mettre-a-jour-temps-repos" id="input-temps-repos" name="inputTempsRepos" />
+            <InputDebounced
+              initialValue={exerciceSeance.tempsRepos}
+              form="form-mettre-a-jour-temps-repos"
+              id="input-temps-repos"
+              name="inputTempsRepos"
+            />
             <span>secondes</span>
           </div>
         </Form>
@@ -102,7 +108,9 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
             {formValues.map((formValue, index) => {
               return (
                 <li key={index} className="flex gap-4 mb-2">
-                  <span className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1 w-9 h-9">{index + 1}</span>
+                  <span className="bg-primary text-white border-2 border-primary rounded-full px-3 py-1 w-9 h-9">
+                    {index + 1}
+                  </span>
                   <input
                     type="text"
                     name="repetitions"
@@ -118,9 +126,7 @@ export const ModifierExerciceSeance: FunctionComponent = () => {
               )
             })}
           </ul>
-          <RoundedButton onClick={() => addFormFields()}>
-            Ajouter une série
-          </RoundedButton>
+          <RoundedButton onClick={() => addFormFields()}>Ajouter une série</RoundedButton>
         </Form>
       </div>
       <div className="p-4 flex justify-end w-full">
