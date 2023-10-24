@@ -1,19 +1,27 @@
 import { Outlet, useOutletContext } from "@remix-run/react"
+import { FunctionComponent, PropsWithChildren } from "react"
 
-import { Header } from "~/ui/organisms/Header"
+import { SideBar } from "~/ui/organisms/SideBar"
 
 export const DefaultLayout = () => {
   const { authenticated } = useOutletContext<{ authenticated: boolean }>()
 
   return (
-    <div
-      className="flex h-full flex-col bg-background-main bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,_var(--tw-gradient-stops))] from-primary-transparent to-transparent"
-      data-theme="default"
-    >
-      <Header authenticated={authenticated} />
-      <main id="main" className="flex flex-grow flex-col overflow-x-hidden">
-        <Outlet />
+    <div className="flex h-full flex-col" data-theme="default">
+      <main id="main" className="flex flex-grow overflow-x-hidden">
+        <SideBar authenticated={authenticated} />
+        <MainContent>
+          <Outlet />
+        </MainContent>
       </main>
+    </div>
+  )
+}
+
+const MainContent: FunctionComponent<PropsWithChildren<{}>> = ({ children }) => {
+  return (
+    <div className="w-full">
+      { children }
     </div>
   )
 }

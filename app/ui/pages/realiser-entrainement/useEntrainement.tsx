@@ -1,11 +1,10 @@
-import { useLoaderData, useSubmit } from "@remix-run/react"
-import { useEffect, useState } from "react"
-
 import {
   EntrainementContrat,
   ExerciceEntrainementContrat,
   SerieEntrainementContrat
-} from "api/app/contrats/EntrainementContrat"
+} from "@/api/app/contrats/EntrainementContrat"
+import { useLoaderData, useSubmit } from "@remix-run/react"
+import { useEffect, useState } from "react"
 
 export function useEntrainement() {
   const { entrainement, prochainExercice, prochaineSerie } = useLoaderData<{

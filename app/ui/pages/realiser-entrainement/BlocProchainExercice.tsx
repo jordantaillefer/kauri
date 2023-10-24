@@ -1,4 +1,4 @@
-import { ExerciceEntrainementContrat, SerieEntrainementContrat } from "../../../../src/app/contrats/EntrainementContrat"
+import { ExerciceEntrainementContrat, SerieEntrainementContrat } from "~/server/app/contrats/EntrainementContrat"
 import { clsxm } from "~/utils/clsxm"
 
 export function BlocProchainExercice({

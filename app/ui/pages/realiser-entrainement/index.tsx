@@ -1,9 +1,9 @@
+import { container } from "@/api"
+import { DetailEntrainementContrat, ExerciceEntrainementContrat } from "@/api/app/contrats/EntrainementContrat"
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
 import { FunctionComponent } from "react"
 import invariant from "tiny-invariant"
 
-import { container } from "api"
-import { DetailEntrainementContrat, ExerciceEntrainementContrat } from "api/app/contrats/EntrainementContrat"
 import { H2Title } from "~/ui/atoms/H2Title"
 import { PrimaryButton } from "~/ui/atoms/PrimaryButton"
 import { BlocProchainExercice } from "~/ui/pages/realiser-entrainement/BlocProchainExercice"
