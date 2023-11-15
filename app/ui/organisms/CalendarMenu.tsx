@@ -1,10 +1,10 @@
 import { Menu, Transition } from "@headlessui/react"
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid"
-import { Fragment } from "react"
+import { Dispatch, Fragment, FunctionComponent, SetStateAction } from "react";
 
 import { classNames } from "~/ui/pages/Planning"
 
-export const CalendarMenu = () => {
+export const CalendarMenu: FunctionComponent<{ setIsOpen: Dispatch<SetStateAction<boolean>>}> = ({ setIsOpen }) => {
   return (
     <Menu as="div" className="relative ml-6 md:hidden">
       <Menu.Button className="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500">
@@ -25,15 +25,15 @@ export const CalendarMenu = () => {
           <div className="py-1">
             <Menu.Item>
               {({ active }) => (
-                <a
-                  href="/"
+                <button
+                  onClick={() => setIsOpen(true)}
                   className={classNames(
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
                 >
                   Ajouter une séance
-                </a>
+                </button>
               )}
             </Menu.Item>
           </div>
