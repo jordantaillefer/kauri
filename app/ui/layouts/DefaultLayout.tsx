@@ -8,7 +8,7 @@ export const DefaultLayout = () => {
 
   return (
     <div className="flex h-full flex-col" data-theme="default">
-      <main id="main" className="flex flex-grow overflow-x-hidden">
+      <main id="main" className="flex flex-col md:flex-row flex-grow overflow-x-hidden">
         <SideBar authenticated={authenticated} />
         <MainContent>
           <Outlet />

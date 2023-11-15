@@ -125,7 +125,7 @@ const HomePage = () => {
       <header className="absolute inset-x-0 top-0 z-50">
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
+            <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Kauri</span>
               <img className="h-4 w-auto" src={LogoKauri} alt="du logo de kauri" />
             </a>
@@ -182,7 +182,7 @@ const HomePage = () => {
                     S'inscrire
                   </button>
                 </Form>
-                <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+                <a href="/" className="text-sm font-semibold leading-6 text-gray-900">
                   En savoir plus <span aria-hidden="true">→</span>
                 </a>
               </div>
@@ -337,7 +337,7 @@ const HomePage = () => {
                       <span className="text-4xl font-bold tracking-tight text-gray-900">{tier.priceMonthly}</span>
                       <span className="text-sm font-semibold leading-6 text-gray-600">/month</span>
                     </p>
-                    <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600">
+                    <ul className="mt-8 space-y-3 text-sm leading-6 text-gray-600">
                       {tier.features.map(feature => (
                         <li key={feature} className="flex gap-x-3">
                           <CheckIcon className="h-6 w-5 flex-none text-indigo-600" aria-hidden="true" />
@@ -405,12 +405,12 @@ const HomePage = () => {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
-                href="#"
+                href="/"
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Get started
               </a>
-              <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+              <a href="/" className="text-sm font-semibold leading-6 text-gray-900">
                 Learn more <span aria-hidden="true">→</span>
               </a>
             </div>
@@ -449,7 +449,7 @@ const HomePage = () => {
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
                   <h3 className="text-sm font-semibold leading-6 text-gray-900">Solutions</h3>
-                  <ul role="list" className="mt-6 space-y-4">
+                  <ul className="mt-6 space-y-4">
                     {footerNavigation.solutions.map(item => (
                       <li key={item.name}>
                         <a href={item.href} className="text-sm leading-6 text-gray-600 hover:text-gray-900">
@@ -461,7 +461,7 @@ const HomePage = () => {
                 </div>
                 <div className="mt-10 md:mt-0">
                   <h3 className="text-sm font-semibold leading-6 text-gray-900">Support</h3>
-                  <ul role="list" className="mt-6 space-y-4">
+                  <ul className="mt-6 space-y-4">
                     {footerNavigation.support.map(item => (
                       <li key={item.name}>
                         <a href={item.href} className="text-sm leading-6 text-gray-600 hover:text-gray-900">
@@ -475,7 +475,7 @@ const HomePage = () => {
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
                   <h3 className="text-sm font-semibold leading-6 text-gray-900">Company</h3>
-                  <ul role="list" className="mt-6 space-y-4">
+                  <ul className="mt-6 space-y-4">
                     {footerNavigation.company.map(item => (
                       <li key={item.name}>
                         <a href={item.href} className="text-sm leading-6 text-gray-600 hover:text-gray-900">
@@ -487,7 +487,7 @@ const HomePage = () => {
                 </div>
                 <div className="mt-10 md:mt-0">
                   <h3 className="text-sm font-semibold leading-6 text-gray-900">Legal</h3>
-                  <ul role="list" className="mt-6 space-y-4">
+                  <ul className="mt-6 space-y-4">
                     {footerNavigation.legal.map(item => (
                       <li key={item.name}>
                         <a href={item.href} className="text-sm leading-6 text-gray-600 hover:text-gray-900">
