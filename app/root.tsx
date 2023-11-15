@@ -1,7 +1,9 @@
+import { container } from "@/api"
 import { cssBundleHref } from "@remix-run/css-bundle"
 import type { LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { json } from "@remix-run/node"
 import {
+  isRouteErrorResponse,
   Links,
   LiveReload,
   Meta,
@@ -9,13 +11,12 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useOutletContext
-} from "@remix-run/react"
+  useOutletContext, useRouteError
+} from "@remix-run/react";
 import { ReasonPhrases } from "http-status-codes"
 import { ReactNode } from "react"
 
 import styles from "./styles/tailwind.css"
-import { container } from "api"
 
 type ContextType = { authenticated: boolean }
 
@@ -25,7 +26,7 @@ export const links: LinksFunction = () => {
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Very cool app | Remix" },
+    { title: "Kauri" },
     {
       property: "viewport",
       content: "width=device-width,initial-scale=1"
@@ -78,6 +79,28 @@ export function useAuthenticated() {
   return useOutletContext<ContextType>()
 }
 
-export function ErrorBoundary({ error }: { error: Error }) {
-  console.log(error)
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>
+          {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </div>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
+  }
 }

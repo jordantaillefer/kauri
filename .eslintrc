@@ -31,14 +31,20 @@
             },
             "groups": [
               [
-                "builtin",
-                "external"
+                "external",
+                "builtin"
               ],
               [
                 "internal",
                 "parent",
                 "sibling"
               ]
+            ],
+            "pathGroups": [
+              {
+                "pattern": "@/{api/**,api}",
+                "group": "external"
+              }
             ],
             "newlines-between": "always"
           }

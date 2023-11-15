@@ -11,9 +11,6 @@ export default {
       }
     },
     extend: {
-      fontFamily: {
-        roboto: ["Roboto Thin"]
-      },
       colors: {
         darker: "hsl(234,19%,79%)",
         dark: "hsl(124,55%,24%)",
@@ -30,6 +27,7 @@ export default {
         "primary-lighter": colors.teal["500"],
         "primary-darker": "var(--color-primary-darker)",
         "danger-darker": "hsl(345,96%,19%)",
+        "main-kauri": "var(--color-main-kaury)",
         danger: "hsl(345, 86%, 56%)",
         "danger-lighter": "hsl(345, 86%, 80%)"
       },
@@ -57,7 +55,7 @@ export default {
         "translate-background": "translate-background-tptp 1s ease-in-out infinite"
       },
       gridTemplateColumns: {
-        responsive: "repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr))"
+        responsive: "repeat(auto-fill, minmax(max(var(--grid-item--min-width--xl), var(--grid-item--max-width)), 1fr))"
       }
     }
   },

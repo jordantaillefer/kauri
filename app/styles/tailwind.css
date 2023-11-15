@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,700');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -22,22 +24,24 @@
     --transparent: rgba(255, 255, 255, 0);
   }
 
-  body {
-    @apply text-light;
-  }
-
   * {
     box-sizing: border-box;
   }
+
+  html {
+    font-family: "Roboto", system-ui, sans-serif;
+  }
+
   [data-theme="default"] {
     --color-primary-transparent: theme("colors.teal.600/75%");
-    --color-primary: theme("colors.teal.500");
+    --color-primary: theme("colors.gray.600");
     --color-secondary: #b2dedb;
+    --color-main-kaury: #009A64;
     --color-secondary-lighter: theme("colors.gray.200");
     --color-secondary-darker: theme("colors.gray.200");
     --color-primary-darker: theme("colors.emerald.700");
-    --color-background-main: theme("colors.black");
-    --bg-accueil-button: url("/assets/logo/logo-kauri-light.png");
+    --color-background-main: theme("colors.gray.100");
+    --bg-accueil-button: url("/assets/logo/logo-kauri-dark.png");
   }
   [data-theme="focus"] {
     --color-primary-transparent: theme("colors.gray.200/25");

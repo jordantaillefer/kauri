@@ -1,7 +1,10 @@
-import { ChangeEvent, FunctionComponent, useState } from "react"
+import { ChangeEvent, FunctionComponent, KeyboardEventHandler, useState } from "react";
 
 import { useDebounce } from "~/hooks/useDebounce"
 
+export const blockInvalidChar: KeyboardEventHandler<HTMLInputElement> = event => {
+  event.key.match(/^[a-zA-Z+-]$/) && event.preventDefault()
+}
 export const InputDebounced: FunctionComponent<{
   initialValue: string | number
   form: string
@@ -17,16 +20,20 @@ export const InputDebounced: FunctionComponent<{
   const debouncedOnChange = useDebounce(onInputChange)
 
   return (
-    <input
-      onChange={event => {
-        debouncedOnChange(event)
-        setValue(event.target.value)
-      }}
-      form={form}
-      id={id}
-      name={name}
-      defaultValue={value}
-      className="bg-transparent text-primary text-xl w-full"
-    />
+    <div className="flex flex-row h-10 w-32 rounded-lg relative bg-transparent mt-1">
+      <input
+        onChange={event => {
+          debouncedOnChange(event)
+          setValue(event.target.value)
+        }}
+        type="number"
+        form={form}
+        id={id}
+        name={name}
+        defaultValue={value}
+        onKeyDown={blockInvalidChar}
+        className="focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black md:text-basecursor-default flex items-center text-gray-700 outline-none [appearance:textfield]"
+      />
+    </div>
   )
 }
