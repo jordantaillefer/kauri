@@ -8,9 +8,10 @@ import { SelectionExercice } from "~/ui/molecules/SelectionExercice"
 import { Modale } from "~/ui/organisms/Modale"
 
 export const AjouterExerciceModale: FunctionComponent<{
+  idSeance: string,
   listeExercice: ListeExerciceContrat
   listeCategorie: string[]
-}> = ({ listeExercice, listeCategorie }) => {
+}> = ({ idSeance, listeExercice, listeCategorie }) => {
   const [open, setOpen] = useState(false)
 
   const [categorie, setSelectedCategorie] = useState(listeCategorie[0])
@@ -38,6 +39,7 @@ export const AjouterExerciceModale: FunctionComponent<{
     <Modale labelBouton="Ajouter un exercice" titre="Ajouter un exercice" open={open} setOpen={setOpen}>
       <fetcher.Form method="POST">
         <input type="hidden" name="_action" value="ajouter-exercice" />
+        <input type="hidden" name="idSeance" value={idSeance} />
         <div className="flex gap-4">
           <div className="w-1/6 max-h-[80vh] overflow-scroll">
             <SelectionCategorie

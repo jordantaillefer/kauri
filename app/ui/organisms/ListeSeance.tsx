@@ -1,4 +1,5 @@
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat";
+import { Link } from "@remix-run/react";
 import { Dispatch, FunctionComponent, SetStateAction } from "react";
 
 import { SeanceCard } from "~/ui/organisms/SeanceCard";
@@ -9,12 +10,12 @@ export const ListeSeance: FunctionComponent<{
   setIdSeanceSelectionne: Dispatch<SetStateAction<string | null>>
 }> = ({ listeSeance, idSeanceSelectionne, setIdSeanceSelectionne }) => {
   return listeSeance.map(seance => (
-    <div key={seance.id} onClick={() => setIdSeanceSelectionne(seance.id)}>
+    <Link to={seance.id} key={seance.id} onClick={() => setIdSeanceSelectionne(seance.id)}>
       <SeanceCard
         name={seance.nomSeance}
         description={`${seance.exerciceSeances.length} exercice${seance.exerciceSeances.length > 1 ? "s" : ""}`}
         active={seance.id === idSeanceSelectionne}
       ></SeanceCard>
-    </div>
+    </Link>
   ));
 };
