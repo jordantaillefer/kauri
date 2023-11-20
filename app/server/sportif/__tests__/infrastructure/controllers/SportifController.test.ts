@@ -33,7 +33,6 @@ describe("SportifController", () => {
         // Assert
         const listeSportifEvenementResult = await prisma.sportifEvenement.findMany()
 
-        console.log(listeSportifEvenementResult);
         const nouveauSportifEvenement = listeSportifEvenementResult.find(
           evenement => evenement.idUtilisateur === idUtilisateur
         )
