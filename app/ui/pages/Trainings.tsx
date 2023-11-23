@@ -1,10 +1,10 @@
-import { container, ListeExerciceContrat } from "@/api"
+import { container, ListeExerciceContrat } from "@/api";
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import type { ActionFunction, LoaderFunctionArgs } from "@remix-run/node"
 import { json, redirect } from "@remix-run/node"
-import { Link, Outlet, useLoaderData, useParams } from "@remix-run/react";
+import { Outlet, UIMatch, useLoaderData, useMatches, useParams } from "@remix-run/react";
 import { ReasonPhrases } from "http-status-codes"
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useState } from "react"
 
 import { H2Title } from "~/ui/atoms/H2Title"
 import { CreerSeanceCard } from "~/ui/organisms/CreerSeanceCard"
@@ -38,34 +38,28 @@ export const action: ActionFunction = async ({ request }) => {
       await container.resolve("seanceController").initialiserSeance({ request })
       break
     }
-    case "modifier-nom-seance": {
-      const { idSeance, nomSeance } = Object.fromEntries(formData)
-
-      const payload = {
-        idSeance: idSeance.toString(),
-        nomSeance: nomSeance.toString()
-      }
-      await container.resolve("seanceController").mettreAJourNomSeance({ request, payload })
-      break
-    }
   }
 
   return null
 }
 
-export const handle ={
-  breadcrumb: () => <Link to="/trainings">Mes séances</Link>,
+export const handle = {
+  breadcrumb: () => ({ to: "/trainings", label: "Mes séances", state: "lister-seance" })
 }
 
 const Trainings: FunctionComponent = () => {
   const { listeSeance } = useLoaderData<typeof loader>()
+  const matches = useMatches() as UIMatch<any, { breadcrumb: (match: UIMatch) => { to: string, label: string, state: string } }>[]
+
+  const lastMatch = matches[matches.length - 1]
+  const lastState = lastMatch.handle.breadcrumb(lastMatch).state
 
   const [idSeanceSelectionne, setIdSeanceSelectionne] = useState<string | null>(null)
-  const {  idSeance } = useParams()
+  const { idSeance } = useParams()
 
   return (
     <div className="flex h-full">
-      <div className={`${idSeance && "max-md:hidden"} lg:w-2/3 px-4 w-full md:w-1/2`}>
+      <div className={`${lastState === "lister-seance" || "max-md:hidden"} ${lastState === "ajouter-exercice" ? "lg:w-1/3" : "lg:w-2/3"} px-4 w-full md:w-1/2`}>
         <H2Title>Mes séances</H2Title>
         <div className="grid grid-cols-responsive gap-4">
           <ListeSeance
@@ -76,13 +70,7 @@ const Trainings: FunctionComponent = () => {
           <CreerSeanceCard />
         </div>
       </div>
-      <div className={`${idSeance || "max-md:hidden"} flex flex-col justify-between w-full lg:w-1/3 px-4 h-full border-l border-gray-300`}>
-        {idSeance ? (
-          <Outlet context={{ idSeanceSelectionne: idSeance }}></Outlet>
-        ) : (
-          <H2Title>Aucune séance séléctionnée</H2Title>
-        )}
-      </div>
+      <Outlet context={{ idSeanceSelectionne: idSeance, lastState }}></Outlet>
     </div>
   )
 }

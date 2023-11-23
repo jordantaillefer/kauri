@@ -21,7 +21,7 @@ const updateClassNameLinkIfActive: NavLinkProps["className"] = props => {
   return `${
     props.isActive
       ? "bg-gray-50 text-main-kauri group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-      : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+      : "text-primary hover:text-indigo-600 hover:bg-gray-50 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
   }`
 }
 
@@ -125,7 +125,7 @@ export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authent
           <Bars3Icon className="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
-      <div className="hidden md:flex flex-col justify-between w-80 py-4 px-8 border-r border-gray-300 bg-background-main shadow-lg">
+      <div className="hidden md:flex fixed z-20 h-full flex-col justify-between w-80 py-4 px-8 border-r border-gray-300 bg-background-main shadow-lg">
         <div className="flex h-16 items-center justify-center md:space-x-6">
           <AccueilButton />
         </div>
