@@ -8,9 +8,9 @@ export const ListeSeance: FunctionComponent<{
   listeSeance: DetailSeanceContrat[]
   idSeanceSelectionne: string | null
   setIdSeanceSelectionne: Dispatch<SetStateAction<string | null>>
-}> = ({ listeSeance, idSeanceSelectionne, setIdSeanceSelectionne }) => {
+}> = ({ listeSeance, idSeanceSelectionne }) => {
   return listeSeance.map(seance => (
-    <Link to={seance.id} key={seance.id} onClick={() => setIdSeanceSelectionne(seance.id)}>
+    <Link to={seance.id} key={seance.id} >
       <SeanceCard
         name={seance.nomSeance}
         description={`${seance.exerciceSeances.length} exercice${seance.exerciceSeances.length > 1 ? "s" : ""}`}

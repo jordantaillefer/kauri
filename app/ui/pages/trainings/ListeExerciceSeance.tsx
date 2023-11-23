@@ -9,8 +9,8 @@ export const ListeExerciceSeance: FunctionComponent<{
   exerciceSeances: (DetailExerciceContrat | ExerciceEntrainementContrat)[]
 }> = ({ exerciceSeances }) => {
   return (
-    <div className="flow-root h-full overflow-y-scroll">
-      <ul className="-mb-8" key="liste-exercice-seance">
+    <div className="flow-root h-full overflow-auto">
+      <ul key="liste-exercice-seance">
         {exerciceSeances.map((exercice, exerciceItemIdx) => (
           <Fragment key={exerciceItemIdx}>
             <li key={`${exercice.nomExercice}-${exerciceItemIdx}`}>
