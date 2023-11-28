@@ -82,8 +82,8 @@ export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authent
                 </Transition.Child>
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col overflow-y-auto bg-gray-200 px-6 ring-1 ring-white/10">
-                  <div className="flex items-center h-20 shrink-0 justify-center w-full">
-                    <img className="h-6 w-auto" src={LogoKauri} alt="Your Company" />
+                  <div className="flex items-center h-10 pt-2 md:h-20 shrink-0 justify-center w-full">
+                    <img className="h-4 md:h-6 w-auto" src={LogoKauri} alt="Kauri" />
                   </div>
                   <nav className="flex flex-1 flex-col justify-between h-full">
                     <ul className="flex flex-1 flex-col gap-y-7">
@@ -119,9 +119,10 @@ export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authent
           </div>
         </Dialog>
       </Transition.Root>
-      <div className="md:hidden">
-        <button type="button" className="p-2.5 md:hidden text-gray-900" onClick={() => setIsSidebarOpen(true)}>
+      <div className="md:hidden border-b">
+        <button type="button" className="py-2.5 px-4 md:hidden text-gray-900 flex justify-between w-full items-center" onClick={() => setIsSidebarOpen(true)}>
           <span className="sr-only">Open sidebar</span>
+          <img className="h-3 w-auto" src={LogoKauri} alt="Kauri" />
           <Bars3Icon className="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
