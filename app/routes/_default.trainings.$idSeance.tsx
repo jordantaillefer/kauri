@@ -117,9 +117,7 @@ const TrainingSeance: FunctionComponent = () => {
                   </button>
                 )}
               </nomSeanceFetcher.Form>
-              <div className="pl-4">
-                <ListeExerciceSeance exerciceSeances={seanceSelectionne.exerciceSeances} />
-              </div>
+              <ListeExerciceSeance exerciceSeances={seanceSelectionne.exerciceSeances} />
             </div>
             <div className="w-full flex justify-center pb-4">
               {idSeanceSelectionne && (

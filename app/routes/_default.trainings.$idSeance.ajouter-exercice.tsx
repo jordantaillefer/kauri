@@ -1,8 +1,8 @@
-import { container, ExerciceContrat, ListeExerciceContrat } from "@/api";
+import { container, ExerciceContrat, ListeExerciceContrat } from "@/api"
 import { CATEGORIE } from "@/api/exercice/domain/categorie"
 import { ChevronRightIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/solid"
-import { ActionFunction, redirect } from "@remix-run/node";
-import { useFetcher, useOutletContext, useRouteLoaderData } from "@remix-run/react";
+import { ActionFunction, redirect } from "@remix-run/node"
+import { useFetcher, useOutletContext, useRouteLoaderData } from "@remix-run/react"
 import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { FunctionComponent, useState } from "react"
 
@@ -27,7 +27,6 @@ export const action: ActionFunction = async ({ request }) => {
       return redirect(`/trainings/${idSeance}`)
     }
   }
-
 }
 
 export const handle: AgnosticDataIndexRouteObject["handle"] = {
@@ -41,10 +40,11 @@ export const handle: AgnosticDataIndexRouteObject["handle"] = {
 }
 
 const AjouterExerciceSeance: FunctionComponent = () => {
-  const { idSeanceSelectionne, lastState } = useOutletContext<{ idSeanceSelectionne: string, lastState: string }>()
+  const { idSeanceSelectionne, lastState } = useOutletContext<{ idSeanceSelectionne: string; lastState: string }>()
 
   const [exerciceSelectionne, setExerciceSelectionne] = useState<ExerciceContrat | null>(null)
   const [listeSerie, setListeSerie] = useState<{ nombreRepetitions: number }[]>([{ nombreRepetitions: 1 }])
+  const [filtreExercice, setFiltreExercice] = useState<string>("")
 
   const ajouterSerie = () => {
     setListeSerie([...listeSerie, { nombreRepetitions: 1 }])
@@ -58,6 +58,7 @@ const AjouterExerciceSeance: FunctionComponent = () => {
 
   const sortedListeExercice = Object.values(data.listeExercice)
     .flatMap(exercices => exercices)
+    .filter(exercice => exercice.nomExercice.startsWith(filtreExercice))
     .sort((exercice1, exercice2) => exercice1.nomExercice.localeCompare(exercice2.nomExercice))
 
   return (
@@ -166,41 +167,51 @@ const AjouterExerciceSeance: FunctionComponent = () => {
           </div>
         </fetcher.Form>
       ) : (
-        <ul className="divide-y divide-gray-200 overflow-auto">
-          {sortedListeExercice.map(exercice => (
-            <li
-              key={exercice.id}
-              className="group relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6"
-            >
-              <div className="flex min-w-0 gap-x-4">
-                <img
-                  className="h-12 w-12 flex-none rounded-full bg-gray-50"
-                  src={AVAILABLE_MUSCLE[exercice.categorie as CATEGORIE]}
-                  alt=""
-                />
-                <div className="min-w-0 flex-auto">
-                  <p className="text-sm font-semibold leading-6 text-gray-900">
-                    <button className="flex text-left" onClick={() => setExerciceSelectionne(exercice)}>
-                      <span className="absolute inset-x-0 -top-px bottom-0" />
-                      {exercice.nomExercice}
-                    </button>
-                  </p>
-                  <p className="mt-1 flex text-xs leading-5 text-gray-500">
-                    <span className="relative truncate hover:underline">{exercice.categorie}</span>
-                  </p>
+        <>
+          <input
+            type="filtreExercice"
+            name="filtreExercice"
+            id="filtreExercice"
+            onChange={event => setFiltreExercice(event.target.value)}
+            className="block w-full rounded-md border-0 py-1.5 pl-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            placeholder="Rechercher un exercice..."
+          />
+          <ul className="divide-y divide-gray-200 overflow-auto">
+            {sortedListeExercice.map(exercice => (
+              <li
+                key={exercice.id}
+                className="group relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6"
+              >
+                <div className="flex min-w-0 gap-x-4">
+                  <img
+                    className="h-12 w-12 flex-none rounded-full bg-gray-50"
+                    src={AVAILABLE_MUSCLE[exercice.categorie as CATEGORIE]}
+                    alt=""
+                  />
+                  <div className="min-w-0 flex-auto">
+                    <p className="text-sm font-semibold leading-6 text-gray-900">
+                      <button className="flex text-left" onClick={() => setExerciceSelectionne(exercice)}>
+                        <span className="absolute inset-x-0 -top-px bottom-0" />
+                        {exercice.nomExercice}
+                      </button>
+                    </p>
+                    <p className="mt-1 flex text-xs leading-5 text-gray-500">
+                      <span className="relative truncate hover:underline">{exercice.categorie}</span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex shrink-0 items-center gap-x-4">
-                <div className="hidden sm:flex sm:flex-col sm:items-end">
-                  <p className="text-background-main group-hover:text-primary text-sm leading-6 text-gray-900">
-                    Ajouter
-                  </p>
+                <div className="flex shrink-0 items-center gap-x-4">
+                  <div className="hidden sm:flex sm:flex-col sm:items-end">
+                    <p className="text-background-main group-hover:text-primary text-sm leading-6 text-gray-900">
+                      Ajouter
+                    </p>
+                  </div>
+                  <ChevronRightIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
                 </div>
-                <ChevronRightIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </div>
   )

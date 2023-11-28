@@ -21,7 +21,7 @@ export const DefaultLayout = () => {
 
 const MainContent: FunctionComponent<PropsWithChildren<{}>> = ({ children }) => {
   return (
-    <div className="relative w-full flex flex-col bg-white md:ml-80">
+    <div className="relative w-full flex flex-col bg-background-main md:ml-80">
       <div
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
         aria-hidden="true"
