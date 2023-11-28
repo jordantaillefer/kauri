@@ -7,11 +7,11 @@ type CardProps = PropsWithChildren<{ active?: boolean }> & HTMLAttributes<HTMLDi
 
 export const Card: FunctionComponent<CardProps> = ({ active = false, className, ...props }) => {
   const defaultClasses = clsx(
-    "bg-gray-100",
+    "bg-white",
     "relative",
+    "rounded-lg",
     "flex flex-col",
-    "shadow-md",
-    "border border-gray-300",
+    "shadow",
     "hover:border-gray-400 hover:shadow-lg",
     "px-6 py-5",
     "min-h-[6rem]",
