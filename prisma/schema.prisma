@@ -38,7 +38,6 @@ model ExerciceSeance {
   nomExercice          String
   categorie            String
   ordre                Int
-  tempsRepos           Int
 }
 
 model SerieExerciceSeance {
@@ -46,6 +45,7 @@ model SerieExerciceSeance {
   exerciceSeance   ExerciceSeance @relation(fields: [idExerciceSeance], references: [id], onDelete: Cascade)
   idExerciceSeance String
   repetitions      Int
+  tempsRepos       Int
   ordre            Int
 }
 
@@ -61,7 +61,6 @@ model ExerciceEntrainement {
   entrainement       Entrainement        @relation(fields: [idEntrainement], references: [id], onDelete: Cascade)
   idEntrainement     String
   estRealise         Boolean
-  tempsRepos         Int
   nomExercice        String
   categorie          String
   ordre              Int
@@ -71,6 +70,7 @@ model ExerciceEntrainement {
 model SerieEntrainement {
   id                     String               @id
   exerciceEntrainement   ExerciceEntrainement @relation(fields: [idExerciceEntrainement], references: [id], onDelete: Cascade)
+  tempsRepos             Int
   idExerciceEntrainement String
   nombreRepetition       Int
   ordre                  Int

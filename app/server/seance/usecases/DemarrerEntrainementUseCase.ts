@@ -30,6 +30,7 @@ export class DemarrerEntrainementUseCase {
       const listeSerieEntrainement = detailExercice.listeDetailSerie.map(serie => {
         return SerieEntrainement.creerSerieEntrainement({
           nombreRepetition: serie.nombreRepetition,
+          tempsRepos: serie.tempsRepos,
           ordre: serie.ordre,
           estRealise: false
         })
@@ -37,7 +38,6 @@ export class DemarrerEntrainementUseCase {
 
       return ExerciceEntrainement.creerExerciceEntrainement({
         estRealise: false,
-        tempsRepos: detailExercice.tempsRepos,
         nomExercice: detailExercice.nomExercice,
         categorie: detailExercice.categorie,
         ordre: detailExercice.ordre,

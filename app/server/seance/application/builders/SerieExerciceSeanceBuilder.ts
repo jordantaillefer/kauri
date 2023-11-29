@@ -2,7 +2,8 @@ import { SerieExerciceSeance } from "../../domain/SerieExerciceSeance"
 
 export class SerieExerciceSeanceBuilder {
   private id: string = "idSerieExerciceSeance"
-  private repetitions: number = 0
+  private repetitions: number = 12
+  private tempsRepos: number = 45
   private ordre: number = 1
 
   withId(id: string): SerieExerciceSeanceBuilder {
@@ -12,6 +13,10 @@ export class SerieExerciceSeanceBuilder {
 
   withRepetitions(repetitions: number): SerieExerciceSeanceBuilder {
     this.repetitions = repetitions
+    return this
+  }
+  withTempsRepos(tempsRepos: number): SerieExerciceSeanceBuilder {
+    this.tempsRepos = tempsRepos
     return this
   }
 
@@ -24,6 +29,7 @@ export class SerieExerciceSeanceBuilder {
     return SerieExerciceSeance.creerSerieExerciceSeance({
       id: this.id,
       repetitions: this.repetitions,
+      tempsRepos: this.tempsRepos,
       ordre: this.ordre
     })
   }

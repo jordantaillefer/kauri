@@ -40,25 +40,27 @@ describe("EntrainementQuery", () => {
           const serieEntrainement1 = new SerieEntrainementBuilder()
             .withId(uuidSerieEntrainement1)
             .withNombreRepetition(8)
+            .withTempsRepos(45)
             .withOrdre(1)
             .withEstRealise(false)
             .build()
           const serieEntrainement2 = new SerieEntrainementBuilder()
             .withId(uuidSerieEntrainement2)
             .withNombreRepetition(10)
+            .withTempsRepos(50)
             .withOrdre(1)
             .withEstRealise(true)
             .build()
           const serieEntrainement3 = new SerieEntrainementBuilder()
             .withId(uuidSerieEntrainement3)
             .withNombreRepetition(12)
+            .withTempsRepos(55)
             .withOrdre(2)
             .withEstRealise(false)
             .build()
           const exerciceSeance1 = new ExerciceEntrainementBuilder()
             .withId(uuidExerciceEntrainement1)
             .withEstRealise(false)
-            .withTempsRepos(45)
             .withNomExercice("nomExercice 1")
             .withOrdre(1)
             .withCategorie(CATEGORIE.PECTORAUX)
@@ -67,7 +69,6 @@ describe("EntrainementQuery", () => {
           const exerciceSeance2 = new ExerciceEntrainementBuilder()
             .withId(uuidExerciceEntrainement2)
             .withEstRealise(true)
-            .withTempsRepos(55)
             .withNomExercice("nomExercice 2")
             .withOrdre(2)
             .withCategorie(CATEGORIE.ISCHIOJAMBIERS)
@@ -95,7 +96,6 @@ describe("EntrainementQuery", () => {
           expect(entrainementResult.listeExerciceEntrainement).toHaveLength(2)
           expect(entrainementResult.listeExerciceEntrainement.at(0)?.id).toEqual(uuidExerciceEntrainement1)
           expect(entrainementResult.listeExerciceEntrainement.at(0)?.estRealise).toEqual(false)
-          expect(entrainementResult.listeExerciceEntrainement.at(0)?.tempsRepos).toEqual(45)
           expect(entrainementResult.listeExerciceEntrainement.at(0)?.nomExercice).toEqual("nomExercice 1")
           expect(entrainementResult.listeExerciceEntrainement.at(0)?.ordre).toEqual(1)
           expect(entrainementResult.listeExerciceEntrainement.at(0)?.categorie).toEqual("Pectoraux")
@@ -106,13 +106,15 @@ describe("EntrainementQuery", () => {
           expect(
             entrainementResult.listeExerciceEntrainement.at(0)?.series.at(0)?.repetitions
           ).toEqual(8)
+          expect(
+            entrainementResult.listeExerciceEntrainement.at(0)?.series.at(0)?.tempsRepos
+          ).toEqual(45)
           expect(entrainementResult.listeExerciceEntrainement.at(0)?.series.at(0)?.ordre).toEqual(1)
           expect(entrainementResult.listeExerciceEntrainement.at(0)?.series.at(0)?.estRealise).toEqual(
             false
           )
           expect(entrainementResult.listeExerciceEntrainement.at(1)?.id).toEqual(uuidExerciceEntrainement2)
           expect(entrainementResult.listeExerciceEntrainement.at(1)?.estRealise).toEqual(true)
-          expect(entrainementResult.listeExerciceEntrainement.at(1)?.tempsRepos).toEqual(55)
           expect(entrainementResult.listeExerciceEntrainement.at(1)?.nomExercice).toEqual("nomExercice 2")
           expect(entrainementResult.listeExerciceEntrainement.at(1)?.ordre).toEqual(2)
           expect(entrainementResult.listeExerciceEntrainement.at(1)?.categorie).toEqual("Ischio-jambiers")
@@ -123,6 +125,9 @@ describe("EntrainementQuery", () => {
           expect(
             entrainementResult.listeExerciceEntrainement.at(1)?.series.at(0)?.repetitions
           ).toEqual(10)
+          expect(
+            entrainementResult.listeExerciceEntrainement.at(1)?.series.at(0)?.tempsRepos
+          ).toEqual(50)
           expect(entrainementResult.listeExerciceEntrainement.at(1)?.series.at(0)?.ordre).toEqual(1)
           expect(entrainementResult.listeExerciceEntrainement.at(1)?.series.at(0)?.estRealise).toEqual(
             true
@@ -133,6 +138,9 @@ describe("EntrainementQuery", () => {
           expect(
             entrainementResult.listeExerciceEntrainement.at(1)?.series.at(1)?.repetitions
           ).toEqual(12)
+          expect(
+            entrainementResult.listeExerciceEntrainement.at(1)?.series.at(1)?.tempsRepos
+          ).toEqual(55)
           expect(entrainementResult.listeExerciceEntrainement.at(1)?.series.at(1)?.ordre).toEqual(2)
           expect(entrainementResult.listeExerciceEntrainement.at(1)?.series.at(1)?.estRealise).toEqual(
             false

@@ -19,9 +19,7 @@ interface Dependencies {
 export class ExerciceSeanceController {
   private initialiserExerciceSeanceUseCase: InitialiserExerciceSeanceUseCase
 
-  constructor({
-    initialiserExerciceSeanceUseCase,
-  }: Dependencies) {
+  constructor({ initialiserExerciceSeanceUseCase }: Dependencies) {
     this.initialiserExerciceSeanceUseCase = initialiserExerciceSeanceUseCase
   }
 
@@ -30,21 +28,25 @@ export class ExerciceSeanceController {
   async creerExerciceSeance(
     serverRequest: ServerRequest<{
       idSeance: string
-      idExercice: string,
-      tempsRepos: number,
-      series: number[]
+      idExercice: string
+      series: { repetitions: number, tempsRepos: number }[]
     }>
   ): Promise<ServerResponse<ExerciceSeanceContrat>> {
     invariant(serverRequest.compteUtilisateurConnecte)
-    const { idSeance, idExercice, tempsRepos, series } = serverRequest.payload
-    const exerciceSeance = await this.initialiserExerciceSeanceUseCase.execute({ idSeance, idExercice, tempsRepos, series })
+    const { idSeance, idExercice, series } = serverRequest.payload
+    const exerciceSeance = await this.initialiserExerciceSeanceUseCase.execute({
+      idSeance,
+      idExercice,
+      series
+    })
     return created(presenterEnExerciceSeanceContrat(exerciceSeance))
   }
 }
 
 function presenterEnSerieExerciceSeanceContrat(serieExerciceSeance: SerieExerciceSeance): SerieExerciceSeanceContrat {
   return {
-    repetitions: serieExerciceSeance.repetitions
+    repetitions: serieExerciceSeance.repetitions,
+    tempsRepos: serieExerciceSeance.tempsRepos
   }
 }
 
@@ -55,7 +57,6 @@ function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): Exerc
     categorie: exerciceSeance.categorie,
     idExercice: exerciceSeance.idExercice,
     ordre: exerciceSeance.ordre,
-    tempsRepos: exerciceSeance.tempsRepos,
     listeSerieExerciceSeance: exerciceSeance.listeSerieExerciceSeance.map(presenterEnSerieExerciceSeanceContrat)
   }
 }

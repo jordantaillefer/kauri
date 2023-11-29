@@ -1,6 +1,7 @@
 export interface SerieEntrainementContrat {
   id: string
   repetitions: number
+  tempsRepos: number
   ordre: number
   estRealise: boolean
 }
@@ -8,7 +9,6 @@ export interface SerieEntrainementContrat {
 export interface ExerciceEntrainementContrat {
   id: string
   estRealise: boolean
-  tempsRepos: number
   nomExercice: string
   categorie: string
   ordre: number

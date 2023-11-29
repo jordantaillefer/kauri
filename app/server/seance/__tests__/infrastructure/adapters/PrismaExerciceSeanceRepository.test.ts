@@ -39,7 +39,6 @@ describe("PrismaExerciceSeanceRepository", () => {
           .withIdSeance(uuidSeance)
           .withIdExercice(uuidExercice)
           .withNomExercice("nomExercice")
-          .withTempsRepos(45)
           .withCategorie(CATEGORIE.ABDOMINAUX)
           .build()
         // Act
@@ -56,7 +55,6 @@ describe("PrismaExerciceSeanceRepository", () => {
         expect(listeExerciceSeanceResult.at(0)?.idSeance).toEqual(uuidSeance)
         expect(listeExerciceSeanceResult.at(0)?.idExercice).toEqual(uuidExercice)
         expect(listeExerciceSeanceResult.at(0)?.nomExercice).toEqual("nomExercice")
-        expect(listeExerciceSeanceResult.at(0)?.tempsRepos).toEqual(45)
         expect(listeExerciceSeanceResult.at(0)?.categorie).toEqual(CATEGORIE.ABDOMINAUX)
       })
     )
@@ -219,35 +217,6 @@ describe("PrismaExerciceSeanceRepository", () => {
           uuidExerciceSeance
         )
         expect(exerciceSeanceResult.listeSerieExerciceSeance).toHaveLength(0)
-      })
-    )
-  })
-
-  describe("#mettreAJourTempsRepos", () => {
-    it(
-      "doit mettre à jour le temps de repos d'un exercice d'une seance",
-      integrationTestFunction(async ({ testIdGenerator }) => {
-        // Arrange
-        const uuidSeance = testIdGenerator.getId()
-        const uuidExerciceSeance = testIdGenerator.getId()
-
-        const seance: Seance = new SeanceBuilder().withId(uuidSeance).build()
-        await prismaSeanceRepository.creerSeance(seance)
-
-        const exerciceSeance: ExerciceSeance = new ExerciceSeanceBuilder()
-          .withId(uuidExerciceSeance)
-          .withIdSeance(uuidSeance)
-          .withIdExercice(testIdGenerator.getId())
-          .withNomExercice("nomExercice")
-          .withTempsRepos(45)
-          .withCategorie(CATEGORIE.ABDOMINAUX)
-          .build()
-        await prismaExerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
-        // Act
-        await prismaExerciceSeanceRepository.mettreAJourTempsRepos(uuidExerciceSeance, 55)
-        // Assert
-        const exerciceSeanceUpdated = await prisma.exerciceSeance.findUnique({ where: { id: uuidExerciceSeance } })
-        expect(exerciceSeanceUpdated?.tempsRepos).toEqual(55)
       })
     )
   })

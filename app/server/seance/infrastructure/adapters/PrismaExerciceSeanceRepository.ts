@@ -1,4 +1,7 @@
-import type { ExerciceSeance as ExerciceSeanceModel, SerieExerciceSeance as SerieExerciceSeanceModel } from "@prisma/client"
+import type {
+  ExerciceSeance as ExerciceSeanceModel,
+  SerieExerciceSeance as SerieExerciceSeanceModel
+} from "@prisma/client"
 
 import { prisma } from "../../../db/prisma"
 import type { CATEGORIE } from "../../../exercice/domain/categorie"
@@ -7,11 +10,14 @@ import { SerieExerciceSeance } from "../../domain/SerieExerciceSeance"
 import { ExerciceSeanceNotFoundError } from "../../domain/errors/ExerciceSeanceNotFoundError"
 import type { ExerciceSeanceRepository } from "../../domain/ports/ExerciceSeanceRepository"
 
-function convertirSerieExerciceSeanceEnModel(serieExerciceSeance: SerieExerciceSeance): Omit<SerieExerciceSeanceModel, "idExerciceSeance"> {
+function convertirSerieExerciceSeanceEnModel(
+  serieExerciceSeance: SerieExerciceSeance
+): Omit<SerieExerciceSeanceModel, "idExerciceSeance"> {
   return {
     id: serieExerciceSeance.id,
     repetitions: serieExerciceSeance.repetitions,
-    ordre: serieExerciceSeance.ordre
+    ordre: serieExerciceSeance.ordre,
+    tempsRepos: serieExerciceSeance.tempsRepos
   }
 }
 
@@ -22,8 +28,7 @@ function convertirEnModel(exerciceSeance: ExerciceSeance): ExerciceSeanceModel {
     idExercice: exerciceSeance.idExercice,
     nomExercice: exerciceSeance.nomExercice,
     categorie: exerciceSeance.categorie,
-    ordre: exerciceSeance.ordre,
-    tempsRepos: exerciceSeance.tempsRepos
+    ordre: exerciceSeance.ordre
   }
 }
 
@@ -31,11 +36,14 @@ const convertirEnSerieExerciceSeance = (serieExerciceSeanceModel: SerieExerciceS
   return SerieExerciceSeance.creerSerieExerciceSeance({
     id: serieExerciceSeanceModel.id,
     repetitions: serieExerciceSeanceModel.repetitions,
-    ordre: serieExerciceSeanceModel.ordre
+    ordre: serieExerciceSeanceModel.ordre,
+    tempsRepos: serieExerciceSeanceModel.tempsRepos
   })
 }
 
-function convertirEnExerciceSeance(exerciceSeanceModel: ExerciceSeanceModel & { serieExerciceSeances: SerieExerciceSeanceModel[] }): ExerciceSeance {
+function convertirEnExerciceSeance(
+  exerciceSeanceModel: ExerciceSeanceModel & { serieExerciceSeances: SerieExerciceSeanceModel[] }
+): ExerciceSeance {
   return ExerciceSeance.creerExerciceSeance({
     id: exerciceSeanceModel.id,
     idSeance: exerciceSeanceModel.idSeance,
@@ -43,20 +51,11 @@ function convertirEnExerciceSeance(exerciceSeanceModel: ExerciceSeanceModel & { 
     nomExercice: exerciceSeanceModel.nomExercice,
     categorie: exerciceSeanceModel.categorie as CATEGORIE,
     ordre: exerciceSeanceModel.ordre,
-    tempsRepos: exerciceSeanceModel.tempsRepos,
     listeSerieExerciceSeance: exerciceSeanceModel.serieExerciceSeances.map(convertirEnSerieExerciceSeance)
   })
 }
 
 export class PrismaExerciceSeanceRepository implements ExerciceSeanceRepository {
-  async mettreAJourTempsRepos(idExerciceSeance: string, tempsRepos: number): Promise<void> {
-    await prisma.exerciceSeance.update({
-      where: { id: idExerciceSeance },
-      data: {
-        tempsRepos
-      }
-    })
-  }
   async creerExerciceSeance(exerciceSeance: ExerciceSeance): Promise<void> {
     const exerciceModel = convertirEnModel(exerciceSeance)
     await prisma.exerciceSeance.create({
@@ -65,7 +64,7 @@ export class PrismaExerciceSeanceRepository implements ExerciceSeanceRepository 
         serieExerciceSeances: {
           create: exerciceSeance.listeSerieExerciceSeance.map(convertirSerieExerciceSeanceEnModel)
         }
-      },
+      }
     })
   }
 
@@ -74,7 +73,6 @@ export class PrismaExerciceSeanceRepository implements ExerciceSeanceRepository 
       include: { serieExerciceSeances: true }
     })
     return listeExerciceSeanceModels.map(convertirEnExerciceSeance)
-
   }
 
   async recupererParIdSeanceEtParId(idSeance: string, idExerciceSeance: string): Promise<ExerciceSeance> {

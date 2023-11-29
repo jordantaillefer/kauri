@@ -47,7 +47,7 @@ describe("ExerciceSeanceController", () => {
             idSeance: uuidSeance1,
             idExercice: uuidExercice1,
             tempsRepos: 2,
-            series: [2, 1, 3]
+            series: [{ repetitions: 2, tempsRepos: 45}, { repetitions: 1, tempsRepos: 50}, { repetitions: 3, tempsRepos: 55}]
           }
 
           // Act
@@ -67,14 +67,16 @@ describe("ExerciceSeanceController", () => {
           expect(listeExerciceSeances.at(0)?.idExercice).toEqual(uuidExercice1)
           expect(listeExerciceSeances.at(0)?.nomExercice).toEqual("nomExercice")
           expect(listeExerciceSeances.at(0)?.categorie).toEqual(CATEGORIE.ABDOMINAUX)
-          expect(listeExerciceSeances.at(0)?.tempsRepos).toEqual(2)
           expect(listeExerciceSeances.at(0)?.serieExerciceSeances).toHaveLength(3)
           expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(0)?.ordre).toEqual(1)
           expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(0)?.repetitions).toEqual(2)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(0)?.tempsRepos).toEqual(45)
           expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(1)?.ordre).toEqual(2)
           expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(1)?.repetitions).toEqual(1)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(1)?.tempsRepos).toEqual(50)
           expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(2)?.ordre).toEqual(3)
           expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(2)?.repetitions).toEqual(3)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(2)?.tempsRepos).toEqual(55)
           const nouveauExerciceSeance = response.data as ExerciceSeanceContrat
           expect(nouveauExerciceSeance).toBeDefined()
           expect(nouveauExerciceSeance.nomExercice).toEqual("nomExercice")

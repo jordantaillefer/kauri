@@ -115,7 +115,6 @@ function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): Exerc
     categorie: exerciceSeance.categorie as CATEGORIE,
     idExercice: exerciceSeance.idExercice,
     ordre: exerciceSeance.ordre,
-    tempsRepos: exerciceSeance.tempsRepos,
     listeSerieExerciceSeance: []
   }
 }
@@ -131,6 +130,7 @@ function presenterEnSeanceContrat(seance: Seance & { exerciceSeances: ExerciceSe
 function presenterEnDetailSerieSeanceContrat(serieExerciceSeance: SerieExerciceSeance): DetailSerieContrat {
   return {
     repetitions: serieExerciceSeance.repetitions,
+    tempsRepos: serieExerciceSeance.tempsRepos,
     ordre: serieExerciceSeance.ordre
   }
 }
@@ -142,7 +142,6 @@ function presenterEnDetailExerciceSeanceContrat(
     nomExercice: exerciceSeance.nomExercice,
     categorie: exerciceSeance.categorie,
     ordre: exerciceSeance.ordre,
-    tempsRepos: exerciceSeance.tempsRepos,
     series: exerciceSeance.serieExerciceSeances.map(presenterEnDetailSerieSeanceContrat)
   }
 }

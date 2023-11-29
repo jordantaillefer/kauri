@@ -1,5 +1,6 @@
 export interface DetailSerieContrat {
   repetitions: number
+  tempsRepos: number
   ordre: number
 }
 
@@ -7,7 +8,6 @@ export interface DetailExerciceContrat {
   nomExercice: string,
   categorie: string
   ordre: number
-  tempsRepos: number
   series: DetailSerieContrat[]
 }
 

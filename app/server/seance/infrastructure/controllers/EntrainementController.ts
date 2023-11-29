@@ -81,16 +81,16 @@ function presenterEnExerciceEntrainementContrat(
     nomExercice: exerciceEntrainement.nomExercice,
     categorie: exerciceEntrainement.categorie,
     estRealise: exerciceEntrainement.estRealise,
-    tempsRepos: exerciceEntrainement.tempsRepos,
     ordre: exerciceEntrainement.ordre,
-    listeSerieEntrainement: exerciceEntrainement.listeSerieEntrainement.map(presenterEnSerieEntrainement)
+    series: exerciceEntrainement.listeSerieEntrainement.map(presenterEnSerieEntrainement)
   }
 }
 
 function presenterEnSerieEntrainement(serieEntrainement: SerieEntrainement): SerieEntrainementContrat {
   return {
     id: serieEntrainement.id,
-    nombreRepetition: serieEntrainement.nombreRepetition,
+    repetitions: serieEntrainement.nombreRepetition,
+    tempsRepos: serieEntrainement.tempsRepos,
     ordre: serieEntrainement.ordre,
     estRealise: serieEntrainement.estRealise
   }

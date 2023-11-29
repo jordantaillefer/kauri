@@ -4,10 +4,10 @@ import { useFetcher, useLoaderData } from "@remix-run/react"
 import { Dispatch, Fragment, SetStateAction, useState } from "react"
 
 import { JourPlanning } from "~/domain/JourPlanning"
-import { ListeSeance } from "~/ui/organisms/ListeSeance"
+import { SeanceCard } from "~/ui/organisms/SeanceCard"
 import { loader } from "~/ui/pages/Planning"
 import { useCalendar } from "~/ui/pages/planning/useCalendar"
-import { LISTE_HEURE } from "~/utils/ListeHeure";
+import { LISTE_HEURE } from "~/utils/ListeHeure"
 
 export const AjouterUneSeanceEvenementSideBar = ({
   isOpen,
@@ -54,7 +54,9 @@ export const AjouterUneSeanceEvenementSideBar = ({
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
                   <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl justify-between">
                     <ajouterSeanceEvenementFetcher.Form method="POST" className="h-full">
-                      { idSelectedSeanceEvenement && <input type="hidden" name="idSeance" value={idSelectedSeanceEvenement} /> }
+                      {idSelectedSeanceEvenement && (
+                        <input type="hidden" name="idSeance" value={idSelectedSeanceEvenement} />
+                      )}
                       <input type="hidden" name="selectedDay" value={selectedDay.date} />
                       <input type="hidden" name="_action" value="ajouter-seance-event" />
                       <div className="flex flex-col justify-between">
@@ -86,20 +88,26 @@ export const AjouterUneSeanceEvenementSideBar = ({
                               name="tempsEvenement"
                               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                             >
-                              {
-                                LISTE_HEURE.map(heure => (
-                                  <option key="heure" value={heure}>{heure}</option>
-                                ))
-                              }
+                              {LISTE_HEURE.map(heure => (
+                                <option key="heure" value={heure}>
+                                  {heure}
+                                </option>
+                              ))}
                             </select>
                           </div>
                         </div>
-                        <div className="relative mt-6 flex-1 px-4 sm:px-6 space-y-4 py-2 max-h-[75vh] overflow-y-scroll">
-                          <ListeSeance
-                            listeSeance={listeSeance}
-                            idSeanceSelectionne={idSelectedSeanceEvenement}
-                            setIdSeanceSelectionne={setIdSelectedSeanceEvenement}
-                          />
+                        <div className="relative mt-6 flex-1 px-4 sm:px-6 space-y-4 py-2 max-h-[75vh] overflow-y-scroll flex flex-col">
+                          {listeSeance.map(seance => (
+                            <button className="text-left" key={seance.id} type="button" onClick={() => setIdSelectedSeanceEvenement(seance.id)}>
+                              <SeanceCard
+                                name={seance.nomSeance}
+                                description={`${seance.exerciceSeances.length} exercice${
+                                  seance.exerciceSeances.length > 1 ? "s" : ""
+                                }`}
+                                active={seance.id === idSelectedSeanceEvenement}
+                              ></SeanceCard>
+                            </button>
+                          ))}
                         </div>
                       </div>
                       <div className="flex justify-center">

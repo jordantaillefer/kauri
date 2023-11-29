@@ -1,8 +1,6 @@
 import type { ExerciceSeance } from "../ExerciceSeance"
 
 export interface ExerciceSeanceRepository {
-  mettreAJourTempsRepos(idExerciceSeance: string, tempsRepos: number): Promise<void>
-
   creerExerciceSeance(exerciceSeance: ExerciceSeance): Promise<void>
 
   ajouterSerieExerciceSeance(exerciceSeance: ExerciceSeance): Promise<void>
