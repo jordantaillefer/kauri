@@ -12,6 +12,7 @@ import { PrismaSeanceRepository } from "../../../infrastructure/adapters/PrismaS
 import { prisma } from "~/server/db/prisma"
 import { CATEGORIE } from "~/server/exercice/domain/categorie"
 import { SeanceBuilder } from "~/server/testUtils/builders/SeanceBuilder"
+import exp from "constants";
 
 describe("PrismaExerciceSeanceRepository", () => {
   let prismaExerciceSeanceRepository: PrismaExerciceSeanceRepository
@@ -56,6 +57,54 @@ describe("PrismaExerciceSeanceRepository", () => {
         expect(listeExerciceSeanceResult.at(0)?.idExercice).toEqual(uuidExercice)
         expect(listeExerciceSeanceResult.at(0)?.nomExercice).toEqual("nomExercice")
         expect(listeExerciceSeanceResult.at(0)?.categorie).toEqual(CATEGORIE.ABDOMINAUX)
+      })
+    )
+  })
+
+  describe("#modifierExerciceSeance", () => {
+    it(
+      "doit modifier l'exercice d'une séance",
+      integrationTestFunction(async ({ testIdGenerator }) => {
+        // Arrange
+        const uuidSeance = testIdGenerator.getId()
+        const uuidExerciceSeance = testIdGenerator.getId()
+        const uuidExercice = testIdGenerator.getId()
+        const uuidExercice2 = testIdGenerator.getId()
+
+        const seance: Seance = new SeanceBuilder().withId(uuidSeance).build()
+        await prismaSeanceRepository.creerSeance(seance)
+
+        const exerciceSeance: ExerciceSeance = new ExerciceSeanceBuilder()
+          .withId(uuidExerciceSeance)
+          .withIdSeance(uuidSeance)
+          .withIdExercice(uuidExercice)
+          .withNomExercice("nomExercice")
+          .withCategorie(CATEGORIE.ABDOMINAUX)
+          .build()
+        await prismaExerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
+
+        const exerciceSeanceModifie: ExerciceSeance = new ExerciceSeanceBuilder()
+          .withId(uuidExerciceSeance)
+          .withIdSeance(uuidSeance)
+          .withIdExercice(uuidExercice2)
+          .withNomExercice("nouveau nom exercice")
+          .withCategorie(CATEGORIE.PECTORAUX)
+          .build()
+        // Act
+        await prismaExerciceSeanceRepository.modifierExerciceSeance(exerciceSeanceModifie)
+
+        // Assert
+        const listeExerciceSeanceResult = await prisma.exerciceSeance.findMany({
+          where: {
+            idSeance: uuidSeance
+          }
+        })
+        expect(listeExerciceSeanceResult).toHaveLength(1)
+        expect(listeExerciceSeanceResult.at(0)?.id).toEqual(uuidExerciceSeance)
+        expect(listeExerciceSeanceResult.at(0)?.idSeance).toEqual(uuidSeance)
+        expect(listeExerciceSeanceResult.at(0)?.idExercice).toEqual(uuidExercice2)
+        expect(listeExerciceSeanceResult.at(0)?.nomExercice).toEqual("nouveau nom exercice")
+        expect(listeExerciceSeanceResult.at(0)?.categorie).toEqual(CATEGORIE.PECTORAUX)
       })
     )
   })
@@ -187,7 +236,7 @@ describe("PrismaExerciceSeanceRepository", () => {
 
   describe("#supprimerSerieExerciceSeance", () => {
     it(
-      "doit ajouter les series à un exercice de séance",
+      "doit supprimer les series de l'exercice de séance",
       integrationTestFunction(async ({ testIdGenerator }) => {
         // Arrange
         const uuidSerieExerciceSeance1 = testIdGenerator.getId()
@@ -217,6 +266,46 @@ describe("PrismaExerciceSeanceRepository", () => {
           uuidExerciceSeance
         )
         expect(exerciceSeanceResult.listeSerieExerciceSeance).toHaveLength(0)
+      })
+    )
+  })
+
+  describe("#supprimerExerciceSeance", () => {
+    it(
+      "doit supprimer l'exercice de séance",
+      integrationTestFunction(async ({ testIdGenerator }) => {
+        // Arrange
+        expect.assertions(1)
+        const uuidSerieExerciceSeance1 = testIdGenerator.getId()
+        const uuidSerieExerciceSeance2 = testIdGenerator.getId()
+        const uuidSeance = testIdGenerator.getId()
+        const uuidExerciceSeance = testIdGenerator.getId()
+        const serieExerciceSeance1 = new SerieExerciceSeanceBuilder()
+          .withId(uuidSerieExerciceSeance1)
+          .withRepetitions(10)
+          .build()
+        const serieExerciceSeance2 = new SerieExerciceSeanceBuilder()
+          .withId(uuidSerieExerciceSeance2)
+          .withRepetitions(12)
+          .build()
+
+        const seance = new SeanceBuilder().withId(uuidSeance).build()
+        const exerciceSeance = new ExerciceSeanceBuilder().withId(uuidExerciceSeance).withIdSeance(uuidSeance).build()
+        await prismaSeanceRepository.creerSeance(seance)
+        await prismaExerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
+        exerciceSeance.definirSerie([serieExerciceSeance1, serieExerciceSeance2])
+        await prismaExerciceSeanceRepository.ajouterSerieExerciceSeance(exerciceSeance)
+        // Act
+        await prismaExerciceSeanceRepository.supprimerExerciceSeance(uuidExerciceSeance)
+        // Assert
+        try {
+          await prismaExerciceSeanceRepository.recupererParIdSeanceEtParId(
+            uuidSeance,
+            uuidExerciceSeance
+          )
+        } catch (error: unknown) {
+          expect(true).toEqual(true)
+        }
       })
     )
   })

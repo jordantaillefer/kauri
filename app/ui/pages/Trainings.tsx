@@ -2,7 +2,7 @@ import { container, ListeExerciceContrat } from "@/api";
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import type { ActionFunction, LoaderFunctionArgs } from "@remix-run/node"
 import { json, redirect } from "@remix-run/node"
-import { Outlet, UIMatch, useLoaderData, useMatches, useParams } from "@remix-run/react";
+import { Outlet, UIMatch, useLoaderData, useMatches } from "@remix-run/react";
 import { ReasonPhrases } from "http-status-codes"
 import { FunctionComponent, useState } from "react"
 
@@ -55,11 +55,10 @@ const Trainings: FunctionComponent = () => {
   const lastState = lastMatch.handle.breadcrumb(lastMatch).state
 
   const [idSeanceSelectionne, setIdSeanceSelectionne] = useState<string | null>(null)
-  const { idSeance } = useParams()
 
   return (
     <div className="flex h-full">
-      <div className={`${lastState === "lister-seance" || "max-md:hidden"} ${lastState === "ajouter-exercice" ? "lg:w-1/3" : "lg:w-2/3"} px-4 w-full md:w-1/2`}>
+      <div className={`${lastState === "lister-seance" || "max-md:hidden"} ${lastState === "ajouter-exercice" || lastState === "modifier-exercice" ? "lg:w-1/3" : "lg:w-2/3"} px-4 w-full md:w-1/2`}>
         <H2Title>Mes séances</H2Title>
         <div className="grid grid-cols-responsive gap-4">
           <ListeSeance
@@ -70,7 +69,7 @@ const Trainings: FunctionComponent = () => {
           <CreerSeanceCard />
         </div>
       </div>
-      <Outlet context={{ idSeanceSelectionne: idSeance, lastState }}></Outlet>
+      <Outlet context={{ lastState }}></Outlet>
     </div>
   )
 }

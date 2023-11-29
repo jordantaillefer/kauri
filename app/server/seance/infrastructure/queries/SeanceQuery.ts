@@ -81,31 +81,6 @@ export class SeanceQuery {
     }
     return success(presenterEnSeanceContrat(seanceModel))
   }
-
-  @DoitEtreAuthentifie()
-  @ProduceServerResponse()
-  async recupererDetailSeanceParId(
-    serverRequest: ServerRequest<{ idSeance: string }>
-  ): Promise<ServerResponse<DetailSeanceContrat>> {
-    invariant(serverRequest.compteUtilisateurConnecte)
-    const { idSeance } = serverRequest.payload
-    const detailSeanceModel = await prisma.seance.findUnique({
-      where: { id: idSeance },
-      include: {
-        exerciceSeances: {
-          orderBy: { ordre: "asc" },
-          include: {
-            serieExerciceSeances: { orderBy: { ordre: "asc" } }
-          }
-        }
-      }
-    })
-    if (detailSeanceModel === null) {
-      throw new SeanceNotFoundError()
-    }
-
-    return success(presenterEnDetailSeanceContrat(detailSeanceModel))
-  }
 }
 
 function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): ExerciceSeanceContrat {
@@ -139,6 +114,8 @@ function presenterEnDetailExerciceSeanceContrat(
   exerciceSeance: ExerciceSeance & { serieExerciceSeances: SerieExerciceSeance[] }
 ): DetailExerciceContrat {
   return {
+    id: exerciceSeance.id,
+    idExercice: exerciceSeance.idExercice,
     nomExercice: exerciceSeance.nomExercice,
     categorie: exerciceSeance.categorie,
     ordre: exerciceSeance.ordre,

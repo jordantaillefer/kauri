@@ -1,8 +1,9 @@
 import { container, ExerciceContrat, ListeExerciceContrat } from "@/api"
+import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import { CATEGORIE } from "@/api/exercice/domain/categorie"
 import { ChevronRightIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/solid"
 import { ActionFunction, redirect } from "@remix-run/node"
-import { useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@remix-run/react";
+import { useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@remix-run/react"
 import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { FunctionComponent, useState } from "react"
 
@@ -14,19 +15,20 @@ export const action: ActionFunction = async ({ request }) => {
   const { _action } = Object.fromEntries(formData)
 
   switch (_action) {
-    case "ajouter-exercice": {
-      const { idExercice, idSeance } = Object.fromEntries(formData)
+    case "modifier-exercice": {
+      const { idExercice, idSeance, idExerciceSeance } = Object.fromEntries(formData)
       const inputSeries = formData.getAll("inputSerie")
       const tempsRepos = formData.getAll("tempsRepos")
       const payload = {
         idSeance: idSeance?.toString(),
+        idExerciceSeance: idExerciceSeance?.toString(),
         idExercice: idExercice?.toString(),
         series: inputSeries.map((inputSerie, index) => ({
           repetitions: Number(inputSerie.toString()),
           tempsRepos: Number(tempsRepos.at(index)?.toString() || 45)
         }))
       }
-      await container.resolve("exerciceSeanceController").creerExerciceSeance({ request, payload })
+      await container.resolve("exerciceSeanceController").modifierExerciceSeance({ request, payload })
       return redirect(`/trainings/${idSeance}`)
     }
   }
@@ -35,22 +37,44 @@ export const action: ActionFunction = async ({ request }) => {
 export const handle: AgnosticDataIndexRouteObject["handle"] = {
   breadcrumb: ({ params }: { params: { idSeance: string } }) => {
     return {
-      to: `/trainings/${params.idSeance}/ajouter-exercice`,
-      label: "Ajouter un exercice",
-      state: "ajouter-exercice"
+      to: `/trainings/${params.idSeance}/modifier-exercice`,
+      label: "Modifier l'exercice",
+      state: "modifier-exercice"
     }
   }
 }
 
-const AjouterExerciceSeance: FunctionComponent = () => {
-  const { lastState } = useOutletContext<{ lastState: string }>()
-  const { idSeance: idSeanceSelectionne } = useParams()
+const ModifierExerciceSeance: FunctionComponent = () => {
+  const data = useRouteLoaderData<{ listeExercice: ListeExerciceContrat; listeSeance: DetailSeanceContrat[] }>(
+    "routes/_default.trainings"
+  )
 
-  const [exerciceSelectionne, setExerciceSelectionne] = useState<ExerciceContrat | null>(null)
-  const [listeSerie, setListeSerie] = useState<{ id: number; tempsRepos: number; nombreRepetitions: number }[]>([
-    { id: 0, tempsRepos: 45, nombreRepetitions: 12 }
-  ])
+  const { lastState } = useOutletContext<{ idSeanceSelectionne: string; lastState: string }>()
+  const { idSeance: idSeanceSelectionne, idExerciceSeance: idExerciceSeanceSelectionne } = useParams()
+
   const [filtreExercice, setFiltreExercice] = useState<string>("")
+
+  const sortedListeExercice = Object.values(data!.listeExercice)
+    .flatMap(exercices => exercices)
+    .filter(exercice => exercice.nomExercice.startsWith(filtreExercice))
+    .sort((exercice1, exercice2) => exercice1.nomExercice.localeCompare(exercice2.nomExercice))
+
+  const seanceSelectionne = data!.listeSeance.find(seance => seance.id === idSeanceSelectionne)
+  const exerciceSeanceSelectionne = seanceSelectionne!.exerciceSeances.find(
+    exerciceSeance => exerciceSeance.id === idExerciceSeanceSelectionne
+  )
+
+  const [exerciceSelectionne, setExerciceSelectionne] = useState<ExerciceContrat | null>(
+    sortedListeExercice.find(exercice => exercice.id === exerciceSeanceSelectionne!.idExercice) || null
+  )
+
+  const [listeSerie, setListeSerie] = useState<{ id: number; tempsRepos: number; nombreRepetitions: number }[]>(
+    exerciceSeanceSelectionne!.series.map((serie, id) => ({
+      id,
+      tempsRepos: serie.tempsRepos,
+      nombreRepetitions: serie.repetitions
+    }))
+  )
 
   const ajouterSerie = () => {
     setListeSerie([
@@ -63,28 +87,19 @@ const AjouterExerciceSeance: FunctionComponent = () => {
     ])
   }
 
-  const data = useRouteLoaderData<{ listeExercice: ListeExerciceContrat }>("routes/_default.trainings")
-
-  const fetcher = useFetcher<{ nbSerie: number }>({ key: "ajouter-exercice" })
-
-  if (!data) return null
-
-  const sortedListeExercice = Object.values(data.listeExercice)
-    .flatMap(exercices => exercices)
-    .filter(exercice => exercice.nomExercice.startsWith(filtreExercice))
-    .sort((exercice1, exercice2) => exercice1.nomExercice.localeCompare(exercice2.nomExercice))
+  const fetcher = useFetcher<{ nbSerie: number }>({ key: "modifier-exercice" })
 
   return (
     <div
       className={`${
-        lastState === "ajouter-exercice" ? "" : "max-md:hidden"
+        lastState === "modifier-exercice" ? "" : "max-md:hidden"
       } flex flex-col w-full lg:w-1/3 px-4 h-full border-l border-gray-300 divide-y divide-gray-200`}
     >
-      <H2Title>Ajouter un exercice</H2Title>
+      <H2Title>Modifier l'exercice</H2Title>
       {exerciceSelectionne ? (
-        <fetcher.Form method="POST">
-          <input type="hidden" name="_action" value="ajouter-exercice" />
+        <fetcher.Form method="PUT">
           <input type="hidden" name="idSeance" value={idSeanceSelectionne} />
+          <input type="hidden" name="idExerciceSeance" value={idExerciceSeanceSelectionne} />
           <input type="hidden" name="idExercice" value={exerciceSelectionne.id} />
           <div
             key={exerciceSelectionne.id}
@@ -94,7 +109,7 @@ const AjouterExerciceSeance: FunctionComponent = () => {
               <img
                 className="h-12 w-12 flex-none rounded-full bg-gray-50"
                 src={AVAILABLE_MUSCLE[exerciceSelectionne.categorie as CATEGORIE]}
-                alt=""
+                alt="de la catégorie du muscle de l'exercice"
               />
               <div className="min-w-0 flex-auto">
                 <p className="text-sm font-semibold leading-6 text-gray-900">
@@ -181,9 +196,11 @@ const AjouterExerciceSeance: FunctionComponent = () => {
           <div className="w-full flex justify-center mt-4">
             <button
               type="submit"
+              name="_action"
+              value="modifier-exercice"
               className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
             >
-              Confirmer la création
+              Confirmer la modification
             </button>
           </div>
         </fetcher.Form>
@@ -237,4 +254,4 @@ const AjouterExerciceSeance: FunctionComponent = () => {
     </div>
   )
 }
-export default AjouterExerciceSeance
+export default ModifierExerciceSeance
