@@ -1,7 +1,7 @@
 import { container } from "@/api"
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import { ActionFunction } from "@remix-run/node"
-import { NavLink, Outlet, useFetcher, useOutletContext, useRouteLoaderData } from "@remix-run/react"
+import { NavLink, Outlet, useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@remix-run/react";
 import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { FunctionComponent, useEffect, useRef, useState } from "react"
 import { flushSync } from "react-dom"
@@ -24,6 +24,15 @@ export const action: ActionFunction = async ({ request }) => {
       await container.resolve("seanceController").mettreAJourNomSeance({ request, payload })
       break
     }
+    case "supprimer-exercice": {
+      const { idExerciceSeance } = Object.fromEntries(formData)
+
+      const payload = {
+        idExerciceSeance: idExerciceSeance.toString(),
+      }
+      await container.resolve("exerciceSeanceController").supprimerExerciceSeance({ request, payload })
+      break
+    }
   }
 
   return null
@@ -43,7 +52,9 @@ export const handle: AgnosticDataIndexRouteObject["handle"] = {
 const TrainingSeance: FunctionComponent = () => {
   const data = useRouteLoaderData<{ listeSeance: DetailSeanceContrat[] }>("routes/_default.trainings")
 
-  const { idSeanceSelectionne, lastState } = useOutletContext<{ idSeanceSelectionne: string, lastState: string }>()
+  const { lastState } = useOutletContext<{ idSeanceSelectionne: string, lastState: string }>()
+
+  const { idSeance: idSeanceSelectionne, idExerciceSeance: idExerciceSeanceSelectionne } = useParams()
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
@@ -134,7 +145,7 @@ const TrainingSeance: FunctionComponent = () => {
           <H2Title>Aucune séance séléctionnée</H2Title>
         )}
       </div>
-      <Outlet context={{ idSeanceSelectionne, lastState }} />
+      <Outlet context={{ lastState }} key={idExerciceSeanceSelectionne} />
     </>
   )
 }

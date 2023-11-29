@@ -7,6 +7,10 @@ export interface ExerciceSeanceRepository {
 
   supprimerSerieExerciceSeance(idExerciceSeance: string): Promise<void>
 
+  supprimerExerciceSeance(idExerciceSeance: string): Promise<void>
+
+  modifierExerciceSeance(exerciceSeance: ExerciceSeance): Promise<void>
+
   recupererTout(): Promise<ExerciceSeance[]>
 
   recupererParIdSeanceEtParId(idSeance: string, idExerciceSeance: string): Promise<ExerciceSeance>

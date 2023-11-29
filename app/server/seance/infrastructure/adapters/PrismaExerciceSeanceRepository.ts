@@ -68,6 +68,21 @@ export class PrismaExerciceSeanceRepository implements ExerciceSeanceRepository 
     })
   }
 
+  async modifierExerciceSeance(exerciceSeance: ExerciceSeance): Promise<void> {
+    const exerciceModel = convertirEnModel(exerciceSeance)
+    await prisma.exerciceSeance.update({
+      where: {
+        id: exerciceSeance.id
+      },
+      data: {
+        ...exerciceModel,
+        serieExerciceSeances: {
+          create: exerciceSeance.listeSerieExerciceSeance.map(convertirSerieExerciceSeanceEnModel)
+        }
+      }
+    })
+  }
+
   async recupererTout(): Promise<ExerciceSeance[]> {
     const listeExerciceSeanceModels = await prisma.exerciceSeance.findMany({
       include: { serieExerciceSeances: true }
@@ -101,6 +116,11 @@ export class PrismaExerciceSeanceRepository implements ExerciceSeanceRepository 
   async supprimerSerieExerciceSeance(idExerciceSeance: string): Promise<void> {
     await prisma.serieExerciceSeance.deleteMany({
       where: { idExerciceSeance }
+    })
+  }
+  async supprimerExerciceSeance(idExerciceSeance: string): Promise<void> {
+    await prisma.exerciceSeance.deleteMany({
+      where: { id: idExerciceSeance }
     })
   }
 }

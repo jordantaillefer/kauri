@@ -12,6 +12,9 @@ import { prisma } from "~/server/db/prisma"
 import { CATEGORIE } from "~/server/exercice/domain/categorie"
 import { creerRequest, creerRequestPourCompteUtilisateur } from "~/server/testUtils/RequestUtils"
 import { SeanceBuilder } from "~/server/testUtils/builders/SeanceBuilder"
+import type { ExerciceSeance } from "@/api/seance/domain/ExerciceSeance";
+import { ExerciceSeanceBuilder } from "@/api/seance/application/builders/ExerciceSeanceBuilder";
+import { SerieExerciceSeanceBuilder } from "@/api/seance/application/builders/SerieExerciceSeanceBuilder";
 
 describe("ExerciceSeanceController", () => {
   let exerciceSeanceController: ExerciceSeanceController
@@ -93,6 +96,180 @@ describe("ExerciceSeanceController", () => {
 
           // Act
           const response = await exerciceSeanceController.creerExerciceSeance({ request, payload })
+
+          // Assert
+          expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
+        })
+      )
+    })
+  })
+
+  describe("#modifierExerciceSeance", () => {
+    describe("Cas OK", () => {
+      it(
+        "doit modifier l'exercice pour une séance",
+        integrationTestFunction(async ({ testIdGenerator }) => {
+          // Arrange
+          const uuidExerciceSeance = testIdGenerator.getId()
+          const uuidExercice1 = testIdGenerator.getId()
+          const uuidExercice2 = testIdGenerator.getId()
+          const uuidSeance1 = testIdGenerator.getId()
+          const uuidUtilisateur = testIdGenerator.getId()
+
+          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const serieExerciceSeance = new SerieExerciceSeanceBuilder().withRepetitions(12).withTempsRepos(30).build()
+
+          const exerciceSeance: ExerciceSeance = new ExerciceSeanceBuilder()
+            .withId(uuidExerciceSeance)
+            .withIdSeance(uuidSeance1)
+            .withIdExercice(uuidExercice1)
+            .withNomExercice("nomExercice")
+            .withCategorie(CATEGORIE.ABDOMINAUX)
+            .withListeSerieExerciceSeance(serieExerciceSeance)
+            .build()
+          const seance = new SeanceBuilder()
+            .withId(uuidSeance1)
+            .build()
+          const exercice = new ExerciceBuilder()
+            .withId(uuidExercice1)
+            .withNomExercice("nomExercice")
+            .withCategorie(CATEGORIE.ABDOMINAUX)
+            .build()
+          const exercice2 = new ExerciceBuilder()
+            .withId(uuidExercice2)
+            .withNomExercice("nomExercice 2")
+            .withCategorie(CATEGORIE.PECTORAUX)
+            .build()
+          await seanceExerciceRepository.creerExercice(exercice)
+          await seanceExerciceRepository.creerExercice(exercice2)
+          await seanceRepository.creerSeance(seance)
+          await seanceRepository.ajouterExerciceSeanceASeance(uuidSeance1, exerciceSeance);
+          const payload = {
+            idSeance: uuidSeance1,
+            idExerciceSeance: uuidExerciceSeance,
+            idExercice: uuidExercice2,
+            series: [{ repetitions: 2, tempsRepos: 45}, { repetitions: 1, tempsRepos: 50}, { repetitions: 3, tempsRepos: 55}]
+          }
+
+          // Act
+          const response = await exerciceSeanceController.modifierExerciceSeance({ request, payload })
+
+          // Assert
+          const listeExerciceSeances = await prisma.exerciceSeance.findMany({
+            include: {
+              serieExerciceSeances: true
+            },
+            where: {
+              idSeance: uuidSeance1
+            }
+          })
+          expect(response.reasonPhrase).toEqual(ReasonPhrases.NO_CONTENT)
+          expect(listeExerciceSeances.at(0)?.idSeance).toEqual(uuidSeance1)
+          expect(listeExerciceSeances.at(0)?.idExercice).toEqual(uuidExercice2)
+          expect(listeExerciceSeances.at(0)?.nomExercice).toEqual("nomExercice 2")
+          expect(listeExerciceSeances.at(0)?.categorie).toEqual(CATEGORIE.PECTORAUX)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances).toHaveLength(3)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(0)?.ordre).toEqual(1)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(0)?.repetitions).toEqual(2)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(0)?.tempsRepos).toEqual(45)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(1)?.ordre).toEqual(2)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(1)?.repetitions).toEqual(1)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(1)?.tempsRepos).toEqual(50)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(2)?.ordre).toEqual(3)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(2)?.repetitions).toEqual(3)
+          expect(listeExerciceSeances.at(0)?.serieExerciceSeances.at(2)?.tempsRepos).toEqual(55)
+        })
+      )
+    })
+    describe("Cas KO", () => {
+      it(
+        "Quand l'utilisateur n'est pas connecté, erreur Unauthorized",
+        integrationTestFunction(async ({ testIdGenerator }) => {
+          // Arrange
+          const request = creerRequest()
+          const payload = { idSeance: testIdGenerator.getId(), idExerciceSeance: testIdGenerator.getId(), idExercice: testIdGenerator.getId(), tempsRepos: 2, series: [] }
+
+          // Act
+          const response = await exerciceSeanceController.modifierExerciceSeance({ request, payload })
+
+          // Assert
+          expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
+        })
+      )
+    })
+  })
+
+  describe("#supprimerExerciceSeance", () => {
+    describe("Cas OK", () => {
+      it(
+        "doit supprimer l'exercice pour une séance",
+        integrationTestFunction(async ({ testIdGenerator }) => {
+          // Arrange
+          const uuidExerciceSeance = testIdGenerator.getId()
+          const uuidExercice1 = testIdGenerator.getId()
+          const uuidExercice2 = testIdGenerator.getId()
+          const uuidSeance1 = testIdGenerator.getId()
+          const uuidUtilisateur = testIdGenerator.getId()
+
+          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const serieExerciceSeance = new SerieExerciceSeanceBuilder().withRepetitions(12).withTempsRepos(30).build()
+
+          const exerciceSeance: ExerciceSeance = new ExerciceSeanceBuilder()
+            .withId(uuidExerciceSeance)
+            .withIdSeance(uuidSeance1)
+            .withIdExercice(uuidExercice1)
+            .withNomExercice("nomExercice")
+            .withCategorie(CATEGORIE.ABDOMINAUX)
+            .withListeSerieExerciceSeance(serieExerciceSeance)
+            .build()
+          const seance = new SeanceBuilder()
+            .withId(uuidSeance1)
+            .build()
+          const exercice = new ExerciceBuilder()
+            .withId(uuidExercice1)
+            .withNomExercice("nomExercice")
+            .withCategorie(CATEGORIE.ABDOMINAUX)
+            .build()
+          const exercice2 = new ExerciceBuilder()
+            .withId(uuidExercice2)
+            .withNomExercice("nomExercice 2")
+            .withCategorie(CATEGORIE.PECTORAUX)
+            .build()
+          await seanceExerciceRepository.creerExercice(exercice)
+          await seanceExerciceRepository.creerExercice(exercice2)
+          await seanceRepository.creerSeance(seance)
+          await seanceRepository.ajouterExerciceSeanceASeance(uuidSeance1, exerciceSeance);
+          const payload = {
+            idExerciceSeance: uuidExerciceSeance,
+          }
+
+          // Act
+          const response = await exerciceSeanceController.supprimerExerciceSeance({ request, payload })
+
+          // Assert
+          const listeExerciceSeances = await prisma.exerciceSeance.findMany({
+            include: {
+              serieExerciceSeances: true
+            },
+            where: {
+              idSeance: uuidSeance1
+            }
+          })
+          expect(response.reasonPhrase).toEqual(ReasonPhrases.NO_CONTENT)
+          expect(listeExerciceSeances).toHaveLength(0)
+        })
+      )
+    })
+    describe("Cas KO", () => {
+      it(
+        "Quand l'utilisateur n'est pas connecté, erreur Unauthorized",
+        integrationTestFunction(async ({ testIdGenerator }) => {
+          // Arrange
+          const request = creerRequest()
+          const payload = { idExerciceSeance: testIdGenerator.getId() }
+
+          // Act
+          const response = await exerciceSeanceController.supprimerExerciceSeance({ request, payload })
 
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
