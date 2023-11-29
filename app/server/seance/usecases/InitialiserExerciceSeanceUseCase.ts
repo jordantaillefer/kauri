@@ -20,13 +20,11 @@ export class InitialiserExerciceSeanceUseCase {
   async execute({
     idSeance,
     idExercice,
-    tempsRepos,
     series
   }: {
     idSeance: string
     idExercice: string
-    tempsRepos: number
-    series: number[]
+    series: { repetitions: number, tempsRepos: number }[]
   }): Promise<ExerciceSeance> {
     const exercice = await this.seanceExerciceRepository.recupererParId(idExercice)
     const seance = await this.seanceRepository.recupererParId(idSeance)
@@ -37,9 +35,8 @@ export class InitialiserExerciceSeanceUseCase {
       nomExercice: exercice.nomExercice,
       ordre: (seance.exerciceSeances.at(-1)?.ordre || 0) + 1,
       categorie: exercice.categorie,
-      tempsRepos,
       listeSerieExerciceSeance: series.map((serie, index) => {
-        return SerieExerciceSeance.creerSerieExerciceSeance({ repetitions: serie, ordre: index + 1 })
+        return SerieExerciceSeance.creerSerieExerciceSeance({ repetitions: serie.repetitions, tempsRepos: serie.tempsRepos, ordre: index + 1 })
       })
     })
 

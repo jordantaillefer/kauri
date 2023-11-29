@@ -47,7 +47,7 @@ describe("InitialiserExerciceSeanceUseCase", () => {
     exerciceRepository.recupererParId.mockResolvedValue(exercice)
     seanceRepository.recupererParId.mockResolvedValue(seance)
     // Act
-    const nouvelExerciceSeance = await initialiserExerciceSeanceUseCase.execute({ idSeance: uuidSeance, idExercice: uuidExercice, tempsRepos: 2, series: [] })
+    const nouvelExerciceSeance = await initialiserExerciceSeanceUseCase.execute({ idSeance: uuidSeance, idExercice: uuidExercice, series: [] })
     // Assert
     expect(seanceRepository.ajouterExerciceSeanceASeance).toHaveBeenNthCalledWith(1, uuidSeance, ajouterExerciceSeanceCaptor)
     const exerciceSeanceAAjouter = ajouterExerciceSeanceCaptor.value
@@ -57,7 +57,6 @@ describe("InitialiserExerciceSeanceUseCase", () => {
     expect(nouvelExerciceSeance.ordre).toEqual(1)
     expect(nouvelExerciceSeance.idExercice).toEqual(uuidExercice)
     expect(nouvelExerciceSeance.nomExercice).toEqual("nomExercice")
-    expect(nouvelExerciceSeance.tempsRepos).toEqual(2)
     expect(nouvelExerciceSeance.categorie).toEqual(CATEGORIE.ABDOMINAUX)
   })
   it("quand il existe déjà un exercice, doit ajouter l'exercice à la liste pour une séance", async () => {
@@ -86,7 +85,7 @@ describe("InitialiserExerciceSeanceUseCase", () => {
     exerciceRepository.recupererParId.mockResolvedValue(exercice)
     seanceRepository.recupererParId.mockResolvedValue(seance)
     // Act
-    const nouvelExerciceSeance = await initialiserExerciceSeanceUseCase.execute({ idSeance: uuidSeance, idExercice: uuidExercice, tempsRepos: 0, series: [] })
+    const nouvelExerciceSeance = await initialiserExerciceSeanceUseCase.execute({ idSeance: uuidSeance, idExercice: uuidExercice, series: [] })
     // Assert
     expect(seanceRepository.ajouterExerciceSeanceASeance).toHaveBeenNthCalledWith(1, uuidSeance, ajouterExerciceSeanceCaptor)
     expect(nouvelExerciceSeance.ordre).toEqual(2)

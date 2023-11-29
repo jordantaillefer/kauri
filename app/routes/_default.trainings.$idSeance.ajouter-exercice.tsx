@@ -15,13 +15,16 @@ export const action: ActionFunction = async ({ request }) => {
 
   switch (_action) {
     case "ajouter-exercice": {
-      const { idExercice, tempsRepos, idSeance } = Object.fromEntries(formData)
+      const { idExercice, idSeance } = Object.fromEntries(formData)
       const inputSeries = formData.getAll("inputSerie")
+      const tempsRepos = formData.getAll("tempsRepos")
       const payload = {
         idSeance: idSeance?.toString(),
         idExercice: idExercice?.toString(),
-        tempsRepos: Number(tempsRepos.toString()),
-        series: inputSeries.map(inputSerie => Number(inputSerie.toString()))
+        series: inputSeries.map((inputSerie, index) => ({
+          repetitions: Number(inputSerie.toString()),
+          tempsRepos: Number(tempsRepos.at(index)?.toString() || 45)
+        }))
       }
       await container.resolve("exerciceSeanceController").creerExerciceSeance({ request, payload })
       return redirect(`/trainings/${idSeance}`)
@@ -43,11 +46,20 @@ const AjouterExerciceSeance: FunctionComponent = () => {
   const { idSeanceSelectionne, lastState } = useOutletContext<{ idSeanceSelectionne: string; lastState: string }>()
 
   const [exerciceSelectionne, setExerciceSelectionne] = useState<ExerciceContrat | null>(null)
-  const [listeSerie, setListeSerie] = useState<{ nombreRepetitions: number }[]>([{ nombreRepetitions: 1 }])
+  const [listeSerie, setListeSerie] = useState<{ id: number; tempsRepos: number; nombreRepetitions: number }[]>([
+    { id: 0, tempsRepos: 45, nombreRepetitions: 12 }
+  ])
   const [filtreExercice, setFiltreExercice] = useState<string>("")
 
   const ajouterSerie = () => {
-    setListeSerie([...listeSerie, { nombreRepetitions: 1 }])
+    setListeSerie([
+      ...listeSerie,
+      {
+        id: listeSerie.length,
+        tempsRepos: 45,
+        nombreRepetitions: listeSerie.at(listeSerie.length - 1)?.nombreRepetitions || 12
+      }
+    ])
   }
 
   const data = useRouteLoaderData<{ listeExercice: ListeExerciceContrat }>("routes/_default.trainings")
@@ -103,16 +115,6 @@ const AjouterExerciceSeance: FunctionComponent = () => {
             </div>
           </div>
           <div className="flow-root space-y-4">
-            <input
-              type="number"
-              name="tempsRepos"
-              id="tempsRepos"
-              pattern="\d*"
-              inputMode="numeric"
-              placeholder="Temps de repos entre chaque répétitions"
-              defaultValue={30}
-              className="block w-full rounded-md border-0 mt-4 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
             <ul className="my-4 space-y-4">
               {listeSerie.map((serie, serieId) => (
                 <li key={serieId}>
@@ -126,15 +128,33 @@ const AjouterExerciceSeance: FunctionComponent = () => {
                           {serieId + 1}
                         </span>
                       </div>
-                      <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                      <div className="relative flex w-1/4 rounded-md shadow-sm">
                         <input
                           type="number"
                           name="inputSerie"
                           id="nbRepetition"
                           placeholder="Nombre de répétition"
                           defaultValue={serie.nombreRepetitions}
-                          className="block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                          reps
+                        </div>
+                      </div>
+                      <div className="relative rounded-md shadow-sm w-1/4">
+                        <input
+                          type="number"
+                          name="tempsRepos"
+                          id="tempsRepos"
+                          pattern="\d*"
+                          inputMode="numeric"
+                          placeholder="Temps de repos entre chaque répétitions"
+                          defaultValue={serie.tempsRepos}
+                          className="block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                          secs
+                        </div>
                       </div>
                     </div>
                   </div>

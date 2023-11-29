@@ -39,8 +39,7 @@ function convertirEnExerciceSeance(exerciceSeanceModel: ExerciceSeanceModel): Ex
     idExercice: exerciceSeanceModel.idExercice,
     nomExercice: exerciceSeanceModel.nomExercice,
     ordre: exerciceSeanceModel.ordre,
-    categorie: exerciceSeanceModel.categorie as CATEGORIE,
-    tempsRepos: exerciceSeanceModel.tempsRepos
+    categorie: exerciceSeanceModel.categorie as CATEGORIE
   })
 }
 
@@ -53,6 +52,7 @@ function convertirEnDetailSerie(serieExerciceSeanceModel: SerieExerciceSeanceMod
   return DetailSerie.creerDetailSerie({
     id: serieExerciceSeanceModel.id,
     nombreRepetition: serieExerciceSeanceModel.repetitions,
+    tempsRepos: serieExerciceSeanceModel.tempsRepos,
     ordre: serieExerciceSeanceModel.ordre
   })
 }
@@ -63,7 +63,6 @@ function convertirEnDetailExerciceSeance(detailExerciceModel: DetailExerciceMode
     nomExercice: detailExerciceModel.nomExercice,
     categorie: detailExerciceModel.categorie as CATEGORIE,
     ordre: detailExerciceModel.ordre,
-    tempsRepos: detailExerciceModel.tempsRepos,
     listeDetailSerie: detailExerciceModel.serieExerciceSeances.map(convertirEnDetailSerie)
   })
 }
@@ -82,8 +81,7 @@ function convertirEnExerciceSeanceModel(exerciceSeance: ExerciceSeance): Omit<Ex
     idExercice: exerciceSeance.idExercice,
     nomExercice: exerciceSeance.nomExercice,
     categorie: exerciceSeance.categorie,
-    ordre: exerciceSeance.ordre,
-    tempsRepos: exerciceSeance.tempsRepos
+    ordre: exerciceSeance.ordre
   }
 }
 
@@ -92,7 +90,8 @@ const convertirEnSerieModel = (
 ): Omit<SerieExerciceSeanceModel, "idExerciceSeance"> => ({
   id: serieExerciceSeance.id,
   ordre: serieExerciceSeance.ordre,
-  repetitions: serieExerciceSeance.repetitions
+  repetitions: serieExerciceSeance.repetitions,
+  tempsRepos: serieExerciceSeance.tempsRepos
 })
 
 export class PrismaSeanceRepository implements SeanceRepository {

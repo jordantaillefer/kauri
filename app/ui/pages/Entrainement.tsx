@@ -68,10 +68,10 @@ const Entrainement: FunctionComponent = () => {
     <div className="px-4">
       <H2Title>Entrainement</H2Title>
       <div className="flex justify-center w-full h-full">
-        <Card className="relative w-full sm:w-3/5 md:w-1/2 lg:w-1/3 h-full min-h-[90vh] md:min-h-[80vh] p-0">
+        <Card className="relative w-full sm:w-3/5 md:w-1/2 lg:w-1/3 h-full min-h-[90vh] md:min-h-[80vh] p-0 bg-gray-100">
           {!isEntrainementDemarre ? (
             <div className="p-4">
-              Récapitulatif de la séance {entrainement.nomSeance}
+              <span>Récapitulatif de la séance {entrainement.nomSeance}</span>
               <div className="flex w-full">
                 <ListeExerciceSeance exerciceSeances={entrainement.listeExerciceEntrainement} />
               </div>

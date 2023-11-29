@@ -1,3 +1,4 @@
+import { container } from "@/api";
 import { CheckIcon } from "@heroicons/react/20/solid"
 import {
   ArrowPathIcon,
@@ -5,7 +6,9 @@ import {
   FingerPrintIcon,
   LockClosedIcon,
 } from "@heroicons/react/24/outline"
+import { json, LoaderFunction, redirect } from "@remix-run/node";
 import { Form } from "@remix-run/react"
+import { ReasonPhrases } from "http-status-codes";
 import { SocialsProvider } from "remix-auth-socials"
 
 import ImageFitnessRoom from "~/images/fitness-room.jpg"
@@ -119,7 +122,17 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ")
 }
 
-const HomePage = () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  const response = await container.resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
+  if (response.reasonPhrase === ReasonPhrases.OK) {
+    return redirect("/trainings")
+  }
+  return json({
+    authenticated: !!response.data
+  })
+}
+
+export const HomePage = () => {
   return (
     <div className="bg-white">
       <header className="absolute inset-x-0 top-0 z-50">
@@ -505,5 +518,3 @@ const HomePage = () => {
     </div>
   )
 }
-
-export default HomePage

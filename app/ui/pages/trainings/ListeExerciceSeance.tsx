@@ -13,7 +13,7 @@ export const ListeExerciceSeance: FunctionComponent<{
         {exerciceSeances.map((exercice, exerciceItemIdx) => (
           <li key={`${exercice.nomExercice}-${exerciceItemIdx}`} className="bg-white rounded-lg shadow px-4 pt-4 mb-4">
             <div className="relative pb-4">
-              <div className="relative flex items-start space-x-4">
+              <div className="relative flex items-start space-x-4 items-center">
                 <div className="relative z-[2]">
                   <ImageMuscle categorie={exercice.categorie} />
                 </div>
@@ -21,7 +21,6 @@ export const ListeExerciceSeance: FunctionComponent<{
                   <div className="text-sm">
                     <p className="font-medium text-gray-900 overflow-ellipsis overflow-hidden max-w-full whitespace-nowrap">{exercice.nomExercice}</p>
                   </div>
-                  <p className="mt-0.5 text-sm text-gray-500">Repos: {exercice.tempsRepos} secondes</p>
                 </div>
               </div>
             </div>
@@ -35,8 +34,7 @@ export const ListeExerciceSeance: FunctionComponent<{
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-sm text-gray-500">
-                        <span className="font-medium text-gray-900">Série n°{serie.ordre}</span> ⬝ Reps :{" "}
-                        {serie.repetitions}
+                        <span className="font-medium text-gray-900">Série n°{serie.ordre}</span> ⬝ Reps : {serie.repetitions} ⬝ Repos : { serie.tempsRepos } secs
                       </div>
                     </div>
                   </div>

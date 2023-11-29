@@ -2,6 +2,7 @@ import type { CATEGORIE } from "../../exercice/domain/categorie"
 
 export interface SerieExerciceSeanceContrat {
   repetitions: number
+  tempsRepos: number
 }
 
 export interface ExerciceSeanceContrat {
@@ -10,7 +11,6 @@ export interface ExerciceSeanceContrat {
   nomExercice: string
   categorie: CATEGORIE
   ordre: number
-  tempsRepos: number
   listeSerieExerciceSeance: SerieExerciceSeanceContrat[]
 }
 

@@ -9,28 +9,24 @@ export class DetailExercice {
   private readonly _categorie: CATEGORIE
   private readonly _ordre: number
   private readonly _listeDetailSerie: DetailSerie[]
-  private readonly _tempsRepos: number
 
   constructor({
     id,
     nomExercice,
     categorie,
     ordre,
-    tempsRepos,
     listeDetailSerie
   }: {
     id: string
     nomExercice: string
     categorie: CATEGORIE
     ordre: number
-    tempsRepos: number
     listeDetailSerie: DetailSerie[]
   }) {
     this._id = id
     this._nomExercice = nomExercice
     this._categorie = categorie
     this._ordre = ordre
-    this._tempsRepos = tempsRepos
     this._listeDetailSerie = listeDetailSerie
   }
 
@@ -50,10 +46,6 @@ export class DetailExercice {
     return this._ordre
   }
 
-  get tempsRepos(): number {
-    return this._tempsRepos
-  }
-
   get listeDetailSerie(): DetailSerie[] {
     return this._listeDetailSerie
   }
@@ -63,16 +55,14 @@ export class DetailExercice {
     nomExercice,
     categorie,
     ordre,
-    tempsRepos,
     listeDetailSerie
   }: {
     id?: string
     nomExercice: string
     categorie: CATEGORIE
     ordre: number
-    tempsRepos: number
     listeDetailSerie: DetailSerie[]
   }) {
-    return new DetailExercice({ id: id || randomUUID(), nomExercice, categorie, ordre, tempsRepos, listeDetailSerie })
+    return new DetailExercice({ id: id || randomUUID(), nomExercice, categorie, ordre, listeDetailSerie })
   }
 }

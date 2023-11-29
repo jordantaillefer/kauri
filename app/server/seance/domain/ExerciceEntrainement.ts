@@ -6,7 +6,6 @@ import type { CATEGORIE } from "~/server/exercice/domain/categorie"
 export class ExerciceEntrainement {
   private readonly _id: string
   private _estRealise: boolean
-  private readonly _tempsRepos: number
   private readonly _nomExercice: string
   private readonly _categorie: CATEGORIE
   private readonly _listeSerieEntrainement: SerieEntrainement[]
@@ -15,7 +14,6 @@ export class ExerciceEntrainement {
   private constructor({
     id,
     estRealise,
-    tempsRepos,
     nomExercice,
     categorie,
     ordre,
@@ -23,7 +21,6 @@ export class ExerciceEntrainement {
   }: {
     id: string
     estRealise: boolean
-    tempsRepos: number
     nomExercice: string
     categorie: CATEGORIE
     ordre: number
@@ -31,7 +28,6 @@ export class ExerciceEntrainement {
   }) {
     this._id = id
     this._estRealise = estRealise
-    this._tempsRepos = tempsRepos
     this._nomExercice = nomExercice
     this._categorie = categorie
     this._ordre = ordre
@@ -44,10 +40,6 @@ export class ExerciceEntrainement {
 
   get estRealise(): boolean {
     return this._estRealise
-  }
-
-  get tempsRepos(): number {
-    return this._tempsRepos
   }
 
   get nomExercice(): string {
@@ -81,7 +73,6 @@ export class ExerciceEntrainement {
   static creerExerciceEntrainement({
     id,
     estRealise,
-    tempsRepos,
     nomExercice,
     categorie,
     ordre,
@@ -89,7 +80,6 @@ export class ExerciceEntrainement {
   }: {
     id?: string
     estRealise: boolean
-    tempsRepos: number
     nomExercice: string
     categorie: CATEGORIE
     ordre: number
@@ -98,7 +88,6 @@ export class ExerciceEntrainement {
     return new ExerciceEntrainement({
       id: id || randomUUID(),
       estRealise,
-      tempsRepos,
       nomExercice,
       categorie,
       ordre,

@@ -60,7 +60,6 @@ function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): Exerc
     categorie: exerciceSeance.categorie,
     idExercice: exerciceSeance.idExercice,
     ordre: exerciceSeance.ordre,
-    tempsRepos: exerciceSeance.tempsRepos,
     listeSerieExerciceSeance: []
   }
 }

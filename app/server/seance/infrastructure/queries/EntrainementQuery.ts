@@ -89,7 +89,6 @@ const presenterEnExerciceEntrainementContrat = (
     nomExercice: exerciceEntrainement.nomExercice,
     categorie: exerciceEntrainement.categorie,
     estRealise: exerciceEntrainement.estRealise,
-    tempsRepos: exerciceEntrainement.tempsRepos,
     ordre: exerciceEntrainement.ordre,
     series: exerciceEntrainement.serieEntrainements.map(presenterEnSerieEntrainement)
   }
@@ -99,6 +98,7 @@ const presenterEnSerieEntrainement = (serieEntrainement: SerieEntrainement): Ser
   return {
     id: serieEntrainement.id,
     repetitions: serieEntrainement.nombreRepetition,
+    tempsRepos: serieEntrainement.tempsRepos,
     ordre: serieEntrainement.ordre,
     estRealise: serieEntrainement.estRealise
   }

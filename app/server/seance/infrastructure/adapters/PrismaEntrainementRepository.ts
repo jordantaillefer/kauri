@@ -27,7 +27,6 @@ function convertirExerciceEntrainementEnModel(
     id: exerciceEntrainement.id,
     nomExercice: exerciceEntrainement.nomExercice,
     categorie: exerciceEntrainement.categorie,
-    tempsRepos: exerciceEntrainement.tempsRepos,
     ordre: exerciceEntrainement.ordre,
     estRealise: exerciceEntrainement.estRealise
   }
@@ -39,6 +38,7 @@ function convertirSerieEntrainementEnModel(
   return {
     id: serieEntrainement.id,
     nombreRepetition: serieEntrainement.nombreRepetition,
+    tempsRepos: serieEntrainement.tempsRepos,
     ordre: serieEntrainement.ordre,
     estRealise: serieEntrainement.estRealise
   }
@@ -51,7 +51,6 @@ function convertirEnExerciceEntrainement(
     id: exerciceEntrainementModel.id,
     nomExercice: exerciceEntrainementModel.nomExercice,
     categorie: exerciceEntrainementModel.categorie as CATEGORIE,
-    tempsRepos: exerciceEntrainementModel.tempsRepos,
     estRealise: exerciceEntrainementModel.estRealise,
     ordre: exerciceEntrainementModel.ordre,
     listeSerieEntrainement: exerciceEntrainementModel.serieEntrainements.map(convertirEnSerieEntrainement)
@@ -62,6 +61,7 @@ function convertirEnSerieEntrainement(serieEntrainementModel: SerieEntrainementM
   return SerieEntrainement.creerSerieEntrainement({
     id: serieEntrainementModel.id,
     nombreRepetition: serieEntrainementModel.nombreRepetition,
+    tempsRepos: serieEntrainementModel.tempsRepos,
     ordre: serieEntrainementModel.ordre,
     estRealise: serieEntrainementModel.estRealise
   })
