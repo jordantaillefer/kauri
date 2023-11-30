@@ -36,7 +36,8 @@
     --color-primary-transparent: theme("colors.teal.600/75%");
     --color-primary: theme("colors.gray.600");
     --color-secondary: #b2dedb;
-    --color-main-kaury: #009A64;
+    --color-main-kauri: #009A64;
+    --color-main-kauri-lighter: #BED6BB;
     --color-secondary-lighter: theme("colors.gray.200");
     --color-secondary-darker: theme("colors.gray.200");
     --color-primary-darker: theme("colors.emerald.700");
@@ -46,6 +47,8 @@
   [data-theme="focus"] {
     --color-primary-transparent: theme("colors.gray.200/25");
     --color-primary: theme("colors.gray.200");
+    --color-main-kauri: #009A64;
+    --color-main-kauri-lighter: #BED6BB;
     --color-secondary: #b2dedb;
     --color-secondary-lighter: theme("colors.white");
     --color-secondary-darker: theme("colors.teal.600");

@@ -1,5 +1,5 @@
-import Day, { loader, action } from "~/ui/pages/Day";
+import Day, { loader, action, handle } from "~/ui/pages/Day";
 
-export { loader, action }
+export { loader, action, handle }
 
 export default Day

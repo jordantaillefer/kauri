@@ -89,7 +89,7 @@ export const AjouterUneSeanceEvenementSideBar = ({
                               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                             >
                               {LISTE_HEURE.map(heure => (
-                                <option key="heure" value={heure}>
+                                <option key={heure} value={heure}>
                                   {heure}
                                 </option>
                               ))}
@@ -113,6 +113,7 @@ export const AjouterUneSeanceEvenementSideBar = ({
                       <div className="flex justify-center">
                         <button
                           type="submit"
+                          onClick={() => { setIsOpen(false) }}
                           className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
                         >
                           Ajouter cette séance

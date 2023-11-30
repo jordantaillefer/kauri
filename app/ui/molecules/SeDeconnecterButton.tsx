@@ -1,15 +1,17 @@
+import { UsersIcon } from "@heroicons/react/24/solid"
 import { Form } from "@remix-run/react"
-import { FunctionComponent } from "react"
-
-import { RoundedButton } from "~/ui/atoms/RoundedButton"
+import React, { FunctionComponent } from "react"
 
 export const SeDeconnecterButton: FunctionComponent = () => {
   return (
-    <Form className="inline-flex justify-center" method="post" action={"/authentication/logout"}>
-      <RoundedButton type="submit">
-        <img className="w-4 md:hidden" src="/assets/icons/account.png" alt="Se connecter" />
-        <span className="hidden md:block">Se déconnecter</span>
-      </RoundedButton>
+    <Form method="post" action={"/authentication/logout"}>
+      <button
+        type="submit"
+        className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-main-kauri"
+      >
+        <UsersIcon className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-main-kauri" aria-hidden="true" />
+        Se déconnecter
+      </button>
     </Form>
   )
 }

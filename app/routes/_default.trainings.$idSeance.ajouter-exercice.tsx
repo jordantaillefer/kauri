@@ -181,7 +181,7 @@ const AjouterExerciceSeance: FunctionComponent = () => {
           <div className="w-full flex justify-center mt-4">
             <button
               type="submit"
-              className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+              className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Confirmer la création
             </button>
@@ -197,11 +197,11 @@ const AjouterExerciceSeance: FunctionComponent = () => {
             className="block w-full rounded-md border-0 py-1.5 pl-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             placeholder="Rechercher un exercice..."
           />
-          <ul className="divide-y divide-gray-200 overflow-auto">
+          <ul className="divide-y divide-main-kauri-lighter overflow-auto">
             {sortedListeExercice.map(exercice => (
               <li
                 key={exercice.id}
-                className="group relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6"
+                className="group relative flex justify-between gap-x-6 py-3 hover:bg-gray-50"
               >
                 <div className="flex min-w-0 gap-x-4">
                   <img
@@ -227,7 +227,7 @@ const AjouterExerciceSeance: FunctionComponent = () => {
                       Ajouter
                     </p>
                   </div>
-                  <ChevronRightIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
+                  <ChevronRightIcon className="h-5 w-5 flex-none text-main-kauri-lighter" aria-hidden="true" />
                 </div>
               </li>
             ))}

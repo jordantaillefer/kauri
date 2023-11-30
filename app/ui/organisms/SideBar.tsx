@@ -5,37 +5,53 @@ import {
   DocumentDuplicateIcon,
   CalendarDaysIcon,
   SunIcon,
-  UsersIcon,
   ChatBubbleLeftEllipsisIcon,
   PresentationChartLineIcon,
   XMarkIcon
 } from "@heroicons/react/24/solid"
 import { NavLink } from "@remix-run/react"
-import React, { Fragment, FunctionComponent, useState } from "react"
+import React, { Dispatch, Fragment, FunctionComponent, SetStateAction, useState } from "react";
 import { NavLinkProps } from "react-router-dom"
 
 import LogoKauri from "~/images/logo-kauri-dark.png"
 import { AccueilButton } from "~/ui/molecules/AccueilButton"
+import { SeDeconnecterButton } from "~/ui/molecules/SeDeconnecterButton";
 
 const updateClassNameLinkIfActive: NavLinkProps["className"] = props => {
   return `${
     props.isActive
-      ? "bg-gray-50 text-main-kauri group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-      : "text-primary hover:text-indigo-600 hover:bg-gray-50 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+      ? "bg-gray-50 text-teal-600 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+      : "hover:text-teal-600 hover:bg-gray-50 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
   }`
 }
 
-const navigation = [
-  { name: "Ma journée", to: "day", icon: SunIcon },
-  { name: "Mes séances", to: "trainings", icon: DocumentDuplicateIcon },
-  { name: "Mes statistiques", to: "statistiques", icon: PresentationChartLineIcon },
-  { name: "Planning d'entrainement", to: "planning", icon: CalendarDaysIcon },
-  { name: "Explorer les programmes", to: "explore", icon: CalendarIcon },
-  { name: "Discussions", to: "chat", icon: ChatBubbleLeftEllipsisIcon }
-]
+const MenuNavigation: FunctionComponent<{ navigation: { name: string, to: string, active: boolean, icon: any }[], setIsSidebarOpen: Dispatch<SetStateAction<boolean>>}> = ({ navigation, setIsSidebarOpen}) => {
+  return (
+    <ul className="-mx-2 space-y-1">
+      {navigation.map(item => (
+        <li key={item.name}>
+          <NavLink to={item.to} className={updateClassNameLinkIfActive} onClick={() => setIsSidebarOpen(false)}>
+            <item.icon className={"h-6 w-6 shrink-0"} aria-hidden="true" />
+            <span>{item.name}</span>
+          </NavLink>
+        </li>
+      ))}
+    </ul>
+  )
+}
 
 export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authenticated }) => {
+  const navigation = [
+    { name: "Ma journée", to: "day", icon: SunIcon, active: true },
+    { name: "Mes séances", to: "trainings", icon: DocumentDuplicateIcon, active: true },
+    { name: "Mes statistiques", to: "statistiques", icon: PresentationChartLineIcon, active: false },
+    { name: "Planning d'entrainement", to: "planning", icon: CalendarDaysIcon, active: true },
+    { name: "Explorer les programmes", to: "explore", icon: CalendarIcon, active: false },
+    { name: "Discussions", to: "chat", icon: ChatBubbleLeftEllipsisIcon, active: false }
+  ]
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
+  const activeNavigation = navigation.filter(link => link.active)
 
   return (
     <>
@@ -88,28 +104,10 @@ export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authent
                   <nav className="flex flex-1 flex-col justify-between h-full">
                     <ul className="flex flex-1 flex-col gap-y-7">
                       <li>
-                        <ul className="-mx-2 space-y-1">
-                          {navigation.map(item => (
-                            <li key={item.name}>
-                              <NavLink to={item.to} className={updateClassNameLinkIfActive}>
-                                <item.icon className={"h-6 w-6 shrink-0"} aria-hidden="true" />
-                                {item.name}
-                              </NavLink>
-                            </li>
-                          ))}
-                        </ul>
+                        <MenuNavigation navigation={activeNavigation} setIsSidebarOpen={setIsSidebarOpen} />
                       </li>
                       <li className="mt-auto">
-                        <a
-                          href="/"
-                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-main-kauri"
-                        >
-                          <UsersIcon
-                            className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-main-kauri"
-                            aria-hidden="true"
-                          />
-                          Se déconnecter
-                        </a>
+                        <SeDeconnecterButton />
                       </li>
                     </ul>
                   </nav>
@@ -123,7 +121,7 @@ export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authent
         <button type="button" className="py-2.5 px-4 md:hidden text-gray-900 flex justify-between w-full items-center" onClick={() => setIsSidebarOpen(true)}>
           <span className="sr-only">Open sidebar</span>
           <img className="h-3 w-auto" src={LogoKauri} alt="Kauri" />
-          <Bars3Icon className="h-5 w-5" aria-hidden="true" />
+          <Bars3Icon className="h-5 w-5 text-main-kauri" aria-hidden="true" />
         </button>
       </div>
       <div className="hidden md:flex fixed z-20 h-full flex-col justify-between w-80 py-4 px-8 border-r border-gray-300 bg-background-main shadow-lg">
@@ -133,25 +131,10 @@ export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authent
         <nav className="flex flex-1 flex-col justify-between h-full">
           <ul className="flex flex-1 flex-col gap-y-7">
             <li>
-              <ul className="-mx-2 space-y-1">
-                {navigation.map(item => (
-                  <li key={item.name}>
-                    <NavLink to={item.to} className={updateClassNameLinkIfActive}>
-                      <item.icon className={"h-6 w-6 shrink-0"} aria-hidden="true" />
-                      {item.name}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
+              <MenuNavigation navigation={activeNavigation} setIsSidebarOpen={setIsSidebarOpen} />
             </li>
             <li className="mt-auto">
-              <a
-                href="/"
-                className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-main-kauri"
-              >
-                <UsersIcon className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-main-kauri" aria-hidden="true" />
-                Se déconnecter
-              </a>
+              <SeDeconnecterButton />
             </li>
           </ul>
         </nav>

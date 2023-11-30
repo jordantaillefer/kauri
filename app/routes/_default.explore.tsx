@@ -2,6 +2,9 @@ import { FunctionComponent } from "react"
 
 import { H2Title } from "~/ui/atoms/H2Title"
 
+export const handle = {
+  breadcrumb: () => ({ to: "/explore", label: "Explorer les programmes", state: "explorer-programme" })
+}
 const Explore: FunctionComponent = () => {
   return (
     <div className="px-4">
