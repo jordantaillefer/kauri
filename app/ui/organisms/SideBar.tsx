@@ -42,10 +42,10 @@ const MenuNavigation: FunctionComponent<{ navigation: { name: string, to: string
 
 export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authenticated }) => {
   const navigation = [
-    { name: "Ma journée", to: "day", icon: SunIcon, active: true },
+    { name: "Ma journée", to: "day", icon: SunIcon, active: false },
     { name: "Mes séances", to: "trainings", icon: DocumentDuplicateIcon, active: true },
     { name: "Mes statistiques", to: "statistiques", icon: PresentationChartLineIcon, active: false },
-    { name: "Planning d'entrainement", to: "planning", icon: CalendarDaysIcon, active: true },
+    { name: "Planning d'entrainement", to: "planning", icon: CalendarDaysIcon, active: false },
     { name: "Explorer les programmes", to: "explore", icon: CalendarIcon, active: false },
     { name: "Discussions", to: "chat", icon: ChatBubbleLeftEllipsisIcon, active: false }
   ]

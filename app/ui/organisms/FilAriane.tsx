@@ -18,7 +18,7 @@ export const FilAriane = () => {
       <ol className="flex items-center space-x-1 md:space-x-2">
         <li className="pl-1 md:pl-4">
           <div>
-            <Link to={"/day"}>
+            <Link to={"/training"}>
               <HomeIcon className="h-5 w-5 flex-shrink-0 text-main-kauri" aria-hidden="true" />
               <span className="sr-only text-xs font-medium text-gray-100 hover:text-gray-100">Home</span>
             </Link>

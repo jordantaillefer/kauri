@@ -81,7 +81,7 @@ const Trainings: FunctionComponent = () => {
               }`}
             >
               <NavLink className="w-full" to={seance.id}>
-                <div className="flex items-center justify-between border-b border-gray-900/5 bg-gray-50 p-6">
+                <div className="flex items-center justify-between border-b border-gray-900/5 bg-white p-3 md:p-4">
                   <div className="flex items-center gap-x-4">
                     <p
                       style={{ backgroundColor: `${randomBgColor(seance.nomSeance)}` }}
@@ -95,7 +95,7 @@ const Trainings: FunctionComponent = () => {
                   </div>
                   <PencilIcon className="h-4 w-4 text-gray-400" />
                 </div>
-                <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+                <dl className="-mt-1 divide-y divide-gray-100 px-6 py-2 text-sm leading-6 bg-gray-50">
                   <div className="flex justify-between gap-x-4 py-3">
                     <dt className="text-gray-500">Nombre d'exercice</dt>
                     <dd className="text-gray-700">
