@@ -1,5 +1,6 @@
 import { container } from "@/api"
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
+import { PencilIcon } from "@heroicons/react/24/solid";
 import { ActionFunction } from "@remix-run/node"
 import { NavLink, Outlet, useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@remix-run/react";
 import { AgnosticDataIndexRouteObject } from "@remix-run/router"
@@ -43,7 +44,7 @@ export const handle: AgnosticDataIndexRouteObject["handle"] = {
     if (data) {
       const seanceSelectionne = data.listeSeance.find(seance => seance.id === params.idSeance) as DetailSeanceContrat
 
-      return { to: `/trainings/${params.idSeance}`, label: seanceSelectionne.nomSeance, state: "consulter-seance" }
+      return { to: `/trainings/${params.idSeance}`, label: seanceSelectionne.nomSeance, state: "consulter-seance", isDynamic: true }
     }
     return { to: `/trainings/${params.idSeance}`, label: "Aucune séance", state: "consulter-seance" }
   }
@@ -123,8 +124,11 @@ const TrainingSeance: FunctionComponent = () => {
                     className="block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 ) : (
-                  <button className="text-lg font-bold mb-4" onClick={toogle} ref={buttonRef}>
+                  <button className="text-lg font-bold mb-4 flex items-center" onClick={toogle} ref={buttonRef}>
                     {seanceSelectionne.nomSeance}
+                    <span className="pl-4">
+                      <PencilIcon className="h-4 w-4 flex-none text-gray-400"/>
+                    </span>
                   </button>
                 )}
               </nomSeanceFetcher.Form>
@@ -134,7 +138,7 @@ const TrainingSeance: FunctionComponent = () => {
               {idSeanceSelectionne && (
                 <NavLink
                   to="ajouter-exercice"
-                  className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+                  className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Ajouter un exercice
                 </NavLink>

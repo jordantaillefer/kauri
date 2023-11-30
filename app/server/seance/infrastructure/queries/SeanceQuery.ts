@@ -25,6 +25,9 @@ export class SeanceQuery {
     invariant(serverRequest.compteUtilisateurConnecte)
     const listeDeSeanceModels = await prisma.seance.findMany({
       where: { idUtilisateur: serverRequest.compteUtilisateurConnecte.id },
+      orderBy: {
+        nomSeance: 'asc'
+      },
       include: {
         exerciceSeances: {
           orderBy: { ordre: "asc" },

@@ -3,6 +3,7 @@ import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import { SportifEvenementContrat } from "@/api/app/contrats/SportifEvenementContrat"
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
+import { AgnosticDataIndexRouteObject } from "@remix-run/router";
 import { FunctionComponent, useState } from "react"
 
 import { EvenementPlanning } from "~/domain/EvenementPlanning"
@@ -80,6 +81,10 @@ export function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ")
 }
 
+export const handle = {
+  breadcrumb: () => ({ to: "/planning", label: "Mon planning", state: "consulter-planning" })
+}
+
 const Planning: FunctionComponent = () => {
   const { isSelected, nextMonth, previousMonth, selectDay, actualDate, selectedDay, setSelectedDay, days } =
     useCalendar()
@@ -111,7 +116,7 @@ const Planning: FunctionComponent = () => {
             setSelectedDay={setSelectedDay}
           />
         </div>
-        {selectedDay && <CalendarUserEvent selectedDay={selectedDay} />}
+        {selectedDay && <CalendarUserEvent selectedDay={selectedDay} key={selectedDay?.evenements.length} />}
       </div>
       {selectedDay && (
         <AjouterUneSeanceEvenementSideBar isOpen={isOpen} setIsOpen={setIsOpen} selectedDay={selectedDay} />

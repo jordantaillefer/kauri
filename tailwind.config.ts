@@ -27,7 +27,8 @@ export default {
         "primary-lighter": colors.teal["500"],
         "primary-darker": "var(--color-primary-darker)",
         "danger-darker": "hsl(345,96%,19%)",
-        "main-kauri": "var(--color-main-kaury)",
+        "main-kauri": "var(--color-main-kauri)",
+        "main-kauri-lighter": "var(--color-main-kauri-lighter)",
         danger: "hsl(345, 86%, 56%)",
         "danger-lighter": "hsl(345, 86%, 80%)"
       },

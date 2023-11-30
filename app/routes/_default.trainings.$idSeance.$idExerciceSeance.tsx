@@ -123,7 +123,7 @@ const ModifierExerciceSeance: FunctionComponent = () => {
                 </p>
               </div>
             </div>
-            <div className="flex shrink-0 items-center gap-x-4">
+            <div className="flex shrink-0 items-center gap-x-2">
               <div className="hidden sm:flex sm:flex-col sm:items-end">
                 <p className="text-background-main group-hover:text-primary text-sm leading-6 text-gray-900">Annuler</p>
               </div>
@@ -198,7 +198,7 @@ const ModifierExerciceSeance: FunctionComponent = () => {
               type="submit"
               name="_action"
               value="modifier-exercice"
-              className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+              className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Confirmer la modification
             </button>
@@ -218,7 +218,7 @@ const ModifierExerciceSeance: FunctionComponent = () => {
             {sortedListeExercice.map(exercice => (
               <li
                 key={exercice.id}
-                className="group relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6"
+                className="group relative flex justify-between gap-x-6 py-3 hover:bg-gray-50"
               >
                 <div className="flex min-w-0 gap-x-4">
                   <img
@@ -238,7 +238,7 @@ const ModifierExerciceSeance: FunctionComponent = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex shrink-0 items-center gap-x-4">
+                <div className="flex shrink-0 items-center gap-x-2">
                   <div className="hidden sm:flex sm:flex-col sm:items-end">
                     <p className="text-background-main group-hover:text-primary text-sm leading-6 text-gray-900">
                       Ajouter

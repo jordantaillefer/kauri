@@ -7,7 +7,6 @@ import { SeanceCard } from "~/ui/organisms/SeanceCard";
 export const ListeSeance: FunctionComponent<{
   listeSeance: DetailSeanceContrat[]
   idSeanceSelectionne: string | null
-  setIdSeanceSelectionne: Dispatch<SetStateAction<string | null>>
 }> = ({ listeSeance, idSeanceSelectionne }) => {
   return listeSeance.map(seance => (
     <Link to={seance.id} key={seance.id} >

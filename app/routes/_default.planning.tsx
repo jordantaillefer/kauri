@@ -1,5 +1,5 @@
-import Planning, { action, loader } from "~/ui/pages/Planning";
+import Planning, { action, loader, handle } from "~/ui/pages/Planning";
 
-export { action, loader}
+export { action, loader, handle }
 
 export default Planning
