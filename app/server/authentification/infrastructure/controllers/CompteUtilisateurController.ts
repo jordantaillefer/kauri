@@ -55,7 +55,8 @@ export class CompteUtilisateurController {
   @ProduceServerResponse()
   async creerCompteUtilisateur(request: Request): Promise<ServerResponse<void>> {
     const session = await this.sessionManager.get(request)
-    await this.creerCompteUtilisateurUseCase.execute(session.get("user").id)
+    const user = session.get('user') as { id: string, name: { familyName: string, givenName: string }}
+    await this.creerCompteUtilisateurUseCase.execute({ idUtilisateur: user.id, nom: user.name.familyName, prenom: user.name.givenName })
     return created()
   }
 

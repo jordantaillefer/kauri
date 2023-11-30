@@ -1,45 +1,44 @@
-import type { User as UserModel } from "@prisma/client";
+import type { User as UserModel } from "@prisma/client"
 
-import { prisma } from "../../../db/prisma";
-import { CompteUtilisateur } from "../../domain/CompteUtilisateur";
-import { LUtilisateurNExistePasError } from "../../domain/errors/LUtilisateurNExistePasError";
-import type { CompteUtilisateurRepository } from "../../domain/ports/CompteUtilisateurRepository";
+import { prisma } from "../../../db/prisma"
+import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
+import { LUtilisateurNExistePasError } from "../../domain/errors/LUtilisateurNExistePasError"
+import type { CompteUtilisateurRepository } from "../../domain/ports/CompteUtilisateurRepository"
 
-export class PrismaCompteUtilisateurRepository
-  implements CompteUtilisateurRepository
-{
-  async creerCompteUtilisateur(
-    compteUtilisateur: CompteUtilisateur
-  ): Promise<CompteUtilisateur> {
-    const compteUtilisateurASauvegarder =
-      convertirEnCompteUtilisateurModel(compteUtilisateur);
+export class PrismaCompteUtilisateurRepository implements CompteUtilisateurRepository {
+  async creerCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Promise<CompteUtilisateur> {
+    const compteUtilisateurASauvegarder = convertirEnCompteUtilisateurModel(compteUtilisateur)
     const compteUtilisateurModel = await prisma.user.create({
-      data: compteUtilisateurASauvegarder,
-    });
-    return convertirEnCompteUtilisateur(compteUtilisateurModel);
+      data: compteUtilisateurASauvegarder
+    })
+    return convertirEnCompteUtilisateur(compteUtilisateurModel)
   }
 
-  async recupererCompteUtilisateurParId(
-    compteUtilisateurId: string
-  ): Promise<CompteUtilisateur> {
+  async recupererCompteUtilisateurParId(compteUtilisateurId: string): Promise<CompteUtilisateur> {
     const compteUtilisateurModel = await prisma.user.findUnique({
-      where: { id: compteUtilisateurId },
-    });
+      where: { id: compteUtilisateurId }
+    })
     if (compteUtilisateurModel === null) {
-      throw new LUtilisateurNExistePasError();
+      throw new LUtilisateurNExistePasError()
     }
-    return convertirEnCompteUtilisateur(compteUtilisateurModel);
+    return convertirEnCompteUtilisateur(compteUtilisateurModel)
   }
 }
 
-function convertirEnCompteUtilisateurModel(
-  compteUtilisateur: CompteUtilisateur
-): UserModel {
-  return { id: compteUtilisateur.id, createdAt: null, updatedAt: null }; // move this to domain
+function convertirEnCompteUtilisateurModel(compteUtilisateur: CompteUtilisateur): UserModel {
+  return {
+    id: compteUtilisateur.id,
+    nom: compteUtilisateur.nom,
+    prenom: compteUtilisateur.prenom,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
 }
 
 function convertirEnCompteUtilisateur(compteUtilisateurModel: UserModel) {
   return CompteUtilisateur.creerCompteUtilisateur({
     id: compteUtilisateurModel.id,
-  });
+    nom: compteUtilisateurModel.nom,
+    prenom: compteUtilisateurModel.prenom
+  })
 }
