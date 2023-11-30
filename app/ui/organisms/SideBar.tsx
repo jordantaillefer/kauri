@@ -1,3 +1,4 @@
+import { CompteUtilisateurContrat } from "@/api/app/contrats/CompteUtilisateurContrat";
 import { Dialog, Transition } from "@headlessui/react"
 import { Bars3Icon } from "@heroicons/react/20/solid"
 import {
@@ -9,7 +10,7 @@ import {
   PresentationChartLineIcon,
   XMarkIcon
 } from "@heroicons/react/24/solid"
-import { NavLink } from "@remix-run/react"
+import { NavLink, useMatches, useRouteLoaderData } from "@remix-run/react";
 import React, { Dispatch, Fragment, FunctionComponent, SetStateAction, useState } from "react";
 import { NavLinkProps } from "react-router-dom"
 
@@ -41,6 +42,8 @@ const MenuNavigation: FunctionComponent<{ navigation: { name: string, to: string
 }
 
 export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authenticated }) => {
+  const data = useRouteLoaderData<{ authenticated: boolean, user: CompteUtilisateurContrat }>("root");
+
   const navigation = [
     { name: "Ma journée", to: "day", icon: SunIcon, active: false },
     { name: "Mes séances", to: "trainings", icon: DocumentDuplicateIcon, active: true },
@@ -121,7 +124,11 @@ export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authent
         <button type="button" className="py-2.5 px-4 md:hidden text-gray-900 flex justify-between w-full items-center" onClick={() => setIsSidebarOpen(true)}>
           <span className="sr-only">Open sidebar</span>
           <img className="h-3 w-auto" src={LogoKauri} alt="Kauri" />
-          <Bars3Icon className="h-5 w-5 text-main-kauri" aria-hidden="true" />
+
+          <div className="flex items-center space-x-3">
+            <span>{ data?.user.prenom } { data?.user.nom }</span>
+            <Bars3Icon className="h-5 w-5 text-main-kauri" aria-hidden="true" />
+          </div>
         </button>
       </div>
       <div className="hidden md:flex fixed z-20 h-full flex-col justify-between w-80 py-4 px-8 border-r border-gray-300 bg-background-main shadow-lg">

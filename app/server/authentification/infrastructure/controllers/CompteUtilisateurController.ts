@@ -5,12 +5,13 @@ import type { RecupererCompteUtilisateurUseCase } from "../../usecases/Recuperer
 import type { SeConnecterUseCase } from "../../usecases/SeConnecterUseCase"
 import type { SeDeconnecterUseCase } from "../../usecases/SeDeconnecterUseCase"
 import type { ServerRequest } from "~/server/app/ServerRequest"
-import type { ServerResponse} from "~/server/app/ServerResponse";
+import type { ServerResponse } from "~/server/app/ServerResponse"
 import { created, success } from "~/server/app/ServerResponse"
 import { Controller } from "~/server/app/decorators/ControllerDecorator"
 import { DoitEtreAuthentifie } from "~/server/app/decorators/DoitEtreAuthentifieDecorator"
 import { ProduceServerResponse } from "~/server/app/decorators/ProduceServerResponseDecorator"
 import type { SessionManager } from "~/server/app/session.server"
+import type { CompteUtilisateurContrat } from "@/api/app/contrats/CompteUtilisateurContrat"
 
 interface Dependencies {
   creerCompteUtilisateurUseCase: CreerCompteUtilisateurUseCase
@@ -65,9 +66,9 @@ export class CompteUtilisateurController {
   }
 
   @ProduceServerResponse()
-  async recupererCompteUtilisateurConnecte(request: Request): Promise<ServerResponse<CompteUtilisateur>> {
+  async recupererCompteUtilisateurConnecte(request: Request): Promise<ServerResponse<CompteUtilisateurContrat>> {
     const compteUtilisateur = await this.recupererCompteUtilisateurConnecteUseCase.execute(request)
-    return success(compteUtilisateur)
+    return success(convertirEnContrat(compteUtilisateur))
   }
 
   @DoitEtreAuthentifie()
@@ -75,3 +76,9 @@ export class CompteUtilisateurController {
     return this.seDeconnecterUseCase.execute(request.request)
   }
 }
+
+const convertirEnContrat = (compteUtilisateur: CompteUtilisateur): CompteUtilisateurContrat => ({
+  id: compteUtilisateur.id,
+  nom: compteUtilisateur.nom,
+  prenom: compteUtilisateur.prenom
+})
