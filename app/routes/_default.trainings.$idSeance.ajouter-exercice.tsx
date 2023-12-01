@@ -2,11 +2,12 @@ import { container, ExerciceContrat, ListeExerciceContrat } from "@/api"
 import { CATEGORIE } from "@/api/exercice/domain/categorie"
 import { ChevronRightIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/solid"
 import { ActionFunction, redirect } from "@remix-run/node"
-import { useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@remix-run/react";
+import { useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@remix-run/react"
 import { AgnosticDataIndexRouteObject } from "@remix-run/router"
-import { FunctionComponent, useState } from "react"
+import { Fragment, FunctionComponent, useState } from "react"
 
 import { H2Title } from "~/ui/atoms/H2Title"
+import { Select } from "~/ui/molecules/Select"
 import { AVAILABLE_MUSCLE } from "~/utils/AvailableMuscle"
 
 export const action: ActionFunction = async ({ request }) => {
@@ -42,6 +43,7 @@ export const handle: AgnosticDataIndexRouteObject["handle"] = {
   }
 }
 
+const MessageDefautAucuneCategorie = "Filtrer par catégorie";
 const AjouterExerciceSeance: FunctionComponent = () => {
   const { lastState } = useOutletContext<{ lastState: string }>()
   const { idSeance: idSeanceSelectionne } = useParams()
@@ -51,6 +53,7 @@ const AjouterExerciceSeance: FunctionComponent = () => {
     { id: 0, tempsRepos: 45, nombreRepetitions: 12 }
   ])
   const [filtreExercice, setFiltreExercice] = useState<string>("")
+  const [filtreCategorie, setFiltreCategorie] = useState<string>(MessageDefautAucuneCategorie)
 
   const ajouterSerie = () => {
     setListeSerie([
@@ -63,16 +66,20 @@ const AjouterExerciceSeance: FunctionComponent = () => {
     ])
   }
 
-  const data = useRouteLoaderData<{ listeExercice: ListeExerciceContrat }>("routes/_default.trainings")
+  const data = useRouteLoaderData<{ listeExercice: ListeExerciceContrat, listeCategorie: string[] }>("routes/_default.trainings")
 
   const fetcher = useFetcher<{ nbSerie: number }>({ key: "ajouter-exercice" })
 
   if (!data) return null
 
-  const sortedListeExercice = Object.values(data.listeExercice)
-    .flatMap(exercices => exercices)
+  const listeExercice = Object.values(data.listeExercice).flatMap(exercices => exercices)
+  const sortedListeByCategorie = filtreCategorie !== MessageDefautAucuneCategorie ? listeExercice.filter(exercice => exercice.categorie === filtreCategorie) : listeExercice
+
+  const sortedListeExercice = sortedListeByCategorie
     .filter(exercice => exercice.nomExercice.startsWith(filtreExercice))
     .sort((exercice1, exercice2) => exercice1.nomExercice.localeCompare(exercice2.nomExercice))
+
+ const listeCategorie = [MessageDefautAucuneCategorie, ...data.listeCategorie]
 
   return (
     <div
@@ -189,14 +196,19 @@ const AjouterExerciceSeance: FunctionComponent = () => {
         </fetcher.Form>
       ) : (
         <>
-          <input
-            type="filtreExercice"
-            name="filtreExercice"
-            id="filtreExercice"
-            onChange={event => setFiltreExercice(event.target.value)}
-            className="block w-full rounded-md border-0 py-1.5 pl-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            placeholder="Rechercher un exercice..."
-          />
+          <div className="w-full py-2">
+            <Select itemSelectionne={filtreCategorie} setItemSelectionne={setFiltreCategorie} listeItem={listeCategorie}/>
+          </div>
+          <div className="w-full py-2">
+            <input
+              type="filtreExercice"
+              name="filtreExercice"
+              id="filtreExercice"
+              onChange={event => setFiltreExercice(event.target.value)}
+              className="block w-full rounded-md border-0 py-2 pl-1.5 my-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="Rechercher un exercice..."
+            />
+          </div>
           <ul className="divide-y divide-main-kauri-lighter overflow-auto">
             {sortedListeExercice.map(exercice => (
               <li
