@@ -9,6 +9,7 @@ import { Fragment, FunctionComponent, useState } from "react"
 import { H2Title } from "~/ui/atoms/H2Title"
 import { Select } from "~/ui/molecules/Select"
 import { AVAILABLE_MUSCLE } from "~/utils/AvailableMuscle"
+import { removeAccents } from "~/utils/RemoveAccents";
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
@@ -76,7 +77,7 @@ const AjouterExerciceSeance: FunctionComponent = () => {
   const sortedListeByCategorie = filtreCategorie !== MessageDefautAucuneCategorie ? listeExercice.filter(exercice => exercice.categorie === filtreCategorie) : listeExercice
 
   const sortedListeExercice = sortedListeByCategorie
-    .filter(exercice => exercice.nomExercice.startsWith(filtreExercice))
+    .filter(exercice => removeAccents(exercice.nomExercice).toLowerCase().includes(removeAccents(filtreExercice).toLowerCase()))
     .sort((exercice1, exercice2) => exercice1.nomExercice.localeCompare(exercice2.nomExercice))
 
  const listeCategorie = [MessageDefautAucuneCategorie, ...data.listeCategorie]

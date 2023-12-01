@@ -71,7 +71,7 @@ const ModifierExerciceSeance: FunctionComponent = () => {
       : listeExercice
 
   const sortedListeExercice = sortedListeByCategorie
-    .filter(exercice => exercice.nomExercice.startsWith(filtreExercice))
+    .filter(exercice => removeAccents(exercice.nomExercice).toLowerCase().includes(removeAccents(filtreExercice).toLowerCase()))
     .sort((exercice1, exercice2) => exercice1.nomExercice.localeCompare(exercice2.nomExercice))
 
   const seanceSelectionne = data.listeSeance.find(seance => seance.id === idSeanceSelectionne)
