@@ -11,6 +11,7 @@ import invariant from "tiny-invariant"
 import { H2Title } from "~/ui/atoms/H2Title"
 import { Select } from "~/ui/molecules/Select"
 import { AVAILABLE_MUSCLE } from "~/utils/AvailableMuscle"
+import { removeAccents } from "~/utils/RemoveAccents";
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
@@ -234,7 +235,7 @@ const ModifierExerciceSeance: FunctionComponent = () => {
               name="filtreExercice"
               id="filtreExercice"
               onChange={event => setFiltreExercice(event.target.value)}
-              className="block w-full rounded-md border-0 py-1.5 pl-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="Rechercher un exercice..."
             />
           </div>
