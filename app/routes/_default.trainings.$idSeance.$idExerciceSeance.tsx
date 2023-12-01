@@ -6,8 +6,10 @@ import { ActionFunction, redirect } from "@remix-run/node"
 import { useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@remix-run/react"
 import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { FunctionComponent, useState } from "react"
+import invariant from "tiny-invariant"
 
 import { H2Title } from "~/ui/atoms/H2Title"
+import { Select } from "~/ui/molecules/Select"
 import { AVAILABLE_MUSCLE } from "~/utils/AvailableMuscle"
 
 export const action: ActionFunction = async ({ request }) => {
@@ -44,22 +46,35 @@ export const handle: AgnosticDataIndexRouteObject["handle"] = {
   }
 }
 
-const ModifierExerciceSeance: FunctionComponent = () => {
-  const data = useRouteLoaderData<{ listeExercice: ListeExerciceContrat; listeSeance: DetailSeanceContrat[] }>(
-    "routes/_default.trainings"
-  )
+const MessageDefautAucuneCategorie = "Filtrer par catégorie"
 
+const ModifierExerciceSeance: FunctionComponent = () => {
+  const fetcher = useFetcher<{ nbSerie: number }>({ key: "modifier-exercice" })
   const { lastState } = useOutletContext<{ idSeanceSelectionne: string; lastState: string }>()
   const { idSeance: idSeanceSelectionne, idExerciceSeance: idExerciceSeanceSelectionne } = useParams()
 
   const [filtreExercice, setFiltreExercice] = useState<string>("")
+  const [filtreCategorie, setFiltreCategorie] = useState<string>(MessageDefautAucuneCategorie)
 
-  const sortedListeExercice = Object.values(data!.listeExercice)
-    .flatMap(exercices => exercices)
+  const data = useRouteLoaderData<{
+    listeExercice: ListeExerciceContrat
+    listeSeance: DetailSeanceContrat[]
+    listeCategorie: string[]
+  }>("routes/_default.trainings")
+
+  invariant(data)
+
+  const listeExercice = Object.values(data.listeExercice).flatMap(exercices => exercices)
+  const sortedListeByCategorie =
+    filtreCategorie !== MessageDefautAucuneCategorie
+      ? listeExercice.filter(exercice => exercice.categorie === filtreCategorie)
+      : listeExercice
+
+  const sortedListeExercice = sortedListeByCategorie
     .filter(exercice => exercice.nomExercice.startsWith(filtreExercice))
     .sort((exercice1, exercice2) => exercice1.nomExercice.localeCompare(exercice2.nomExercice))
 
-  const seanceSelectionne = data!.listeSeance.find(seance => seance.id === idSeanceSelectionne)
+  const seanceSelectionne = data.listeSeance.find(seance => seance.id === idSeanceSelectionne)
   const exerciceSeanceSelectionne = seanceSelectionne!.exerciceSeances.find(
     exerciceSeance => exerciceSeance.id === idExerciceSeanceSelectionne
   )
@@ -87,7 +102,7 @@ const ModifierExerciceSeance: FunctionComponent = () => {
     ])
   }
 
-  const fetcher = useFetcher<{ nbSerie: number }>({ key: "modifier-exercice" })
+  const listeCategorie = [MessageDefautAucuneCategorie, ...data.listeCategorie]
 
   return (
     <div
@@ -206,20 +221,26 @@ const ModifierExerciceSeance: FunctionComponent = () => {
         </fetcher.Form>
       ) : (
         <>
-          <input
-            type="filtreExercice"
-            name="filtreExercice"
-            id="filtreExercice"
-            onChange={event => setFiltreExercice(event.target.value)}
-            className="block w-full rounded-md border-0 py-1.5 pl-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            placeholder="Rechercher un exercice..."
-          />
+          <div className="w-full py-2">
+            <Select
+              itemSelectionne={filtreCategorie}
+              setItemSelectionne={setFiltreCategorie}
+              listeItem={listeCategorie}
+            />
+          </div>
+          <div className="w-full py-2">
+            <input
+              type="filtreExercice"
+              name="filtreExercice"
+              id="filtreExercice"
+              onChange={event => setFiltreExercice(event.target.value)}
+              className="block w-full rounded-md border-0 py-1.5 pl-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="Rechercher un exercice..."
+            />
+          </div>
           <ul className="divide-y divide-gray-200 overflow-auto">
             {sortedListeExercice.map(exercice => (
-              <li
-                key={exercice.id}
-                className="group relative flex justify-between gap-x-6 py-3 hover:bg-gray-50"
-              >
+              <li key={exercice.id} className="group relative flex justify-between gap-x-6 py-3 hover:bg-gray-50">
                 <div className="flex min-w-0 gap-x-4">
                   <img
                     className="h-12 w-12 flex-none rounded-full bg-gray-50"

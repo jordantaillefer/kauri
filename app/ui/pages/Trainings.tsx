@@ -65,7 +65,7 @@ const Trainings: FunctionComponent = () => {
   const { idSeance } = useParams()
 
   return (
-    <div className="flex h-full">
+    <div className="flex">
       <div
         className={`${lastState === "lister-seance" || "max-md:hidden"} ${
           lastState === "ajouter-exercice" || lastState === "modifier-exercice" ? "lg:w-1/3" : "lg:w-2/3"
