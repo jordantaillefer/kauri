@@ -1,9 +1,9 @@
-export const RandomBgColor = [
+const RandomBgColor = [
   "#4DCCBD",
   "#FF8484",
   "#231651",
   "#F0544F",
-  "#C6D8D3",
+  "#34D172",
   "#3A3335",
   "#D81E5B",
   "#44633F",
@@ -16,8 +16,16 @@ export const RandomBgColor = [
   "#C1839F",
   "#3C3C3C",
   "#B0D7FF",
-  "#EAE8FF",
-  "#D8D5DB",
+  "#44A3FF",
+  "#76E489",
   "#4B1D3F",
   "#D62246",
 ]
+
+export const randomBgColor = (nomSeance: string) => {
+  const randomNumber = nomSeance.split("").reduce((acc, value) => {
+    return acc + value.charCodeAt(0)
+  }, 0)
+  return `${RandomBgColor[randomNumber % RandomBgColor.length]}`
+}
+

@@ -40,6 +40,7 @@ import { SportifQuery } from "~/server/sportif/infrastructure/queries/SportifQue
 import { AjouterEvenementUseCase } from "~/server/sportif/usecases/AjouterEvenementUseCase";
 import { ModifierExerciceSeanceUseCase } from "@/api/seance/usecases/ModifierExerciceSeanceUseCase";
 import { SupprimerExerciceSeanceUseCase } from "@/api/seance/usecases/SupprimerExerciceSeanceUseCase";
+import { SeanceExplorationQuery } from "@/api/exploration/infrastructure/queries/SeanceExplorationQuery";
 
 type ApplicationDependencies = {
   sessionManager: SessionManager
@@ -61,6 +62,7 @@ type SeanceDependencies = {
   initialiserSeanceUseCase: InitialiserSeanceUseCase
   seanceController: SeanceController
   seanceQuery: SeanceQuery
+  seanceExplorationQuery: SeanceExplorationQuery
   entrainementController: EntrainementController
   entrainementQuery: EntrainementQuery
   seanceRepository: SeanceRepository
@@ -129,6 +131,7 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
     seanceRepository: asClass(PrismaSeanceRepository),
     seanceController: asClass(SeanceController),
     seanceQuery: asClass(SeanceQuery),
+    seanceExplorationQuery: asClass(SeanceExplorationQuery),
     entrainementController: asClass(EntrainementController),
     entrainementQuery: asClass(EntrainementQuery),
     exerciceSeanceController: asClass(ExerciceSeanceController),

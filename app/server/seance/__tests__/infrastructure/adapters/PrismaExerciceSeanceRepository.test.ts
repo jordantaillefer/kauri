@@ -12,7 +12,6 @@ import { PrismaSeanceRepository } from "../../../infrastructure/adapters/PrismaS
 import { prisma } from "~/server/db/prisma"
 import { CATEGORIE } from "~/server/exercice/domain/categorie"
 import { SeanceBuilder } from "~/server/testUtils/builders/SeanceBuilder"
-import exp from "constants";
 
 describe("PrismaExerciceSeanceRepository", () => {
   let prismaExerciceSeanceRepository: PrismaExerciceSeanceRepository
@@ -32,7 +31,7 @@ describe("PrismaExerciceSeanceRepository", () => {
         const uuidExerciceSeance = testIdGenerator.getId()
         const uuidExercice = testIdGenerator.getId()
 
-        const seance: Seance = new SeanceBuilder().withId(uuidSeance).build()
+        const seance: Seance = new SeanceBuilder().withId(uuidSeance).withIdUtilisateur(testIdGenerator.getId()).build()
         await prismaSeanceRepository.creerSeance(seance)
 
         const exerciceSeance: ExerciceSeance = new ExerciceSeanceBuilder()
@@ -71,7 +70,7 @@ describe("PrismaExerciceSeanceRepository", () => {
         const uuidExercice = testIdGenerator.getId()
         const uuidExercice2 = testIdGenerator.getId()
 
-        const seance: Seance = new SeanceBuilder().withId(uuidSeance).build()
+        const seance: Seance = new SeanceBuilder().withId(uuidSeance).withIdUtilisateur(testIdGenerator.getId()).build()
         await prismaSeanceRepository.creerSeance(seance)
 
         const exerciceSeance: ExerciceSeance = new ExerciceSeanceBuilder()
@@ -117,7 +116,7 @@ describe("PrismaExerciceSeanceRepository", () => {
         const uuidSeance = testIdGenerator.getId()
         const uuidExerciceSeance = testIdGenerator.getId()
         const uuidExercice = testIdGenerator.getId()
-        const seance: Seance = new SeanceBuilder().withId(uuidSeance).build()
+        const seance: Seance = new SeanceBuilder().withId(uuidSeance).withIdUtilisateur(testIdGenerator.getId()).build()
         await prismaSeanceRepository.creerSeance(seance)
 
         const exerciceSeance: ExerciceSeance = new ExerciceSeanceBuilder()
@@ -150,7 +149,10 @@ describe("PrismaExerciceSeanceRepository", () => {
         expect.assertions(2)
         try {
           // Act
-          await prismaExerciceSeanceRepository.recupererParIdSeanceEtParId(testIdGenerator.getId(), testIdGenerator.getId())
+          await prismaExerciceSeanceRepository.recupererParIdSeanceEtParId(
+            testIdGenerator.getId(),
+            testIdGenerator.getId()
+          )
         } catch (error: unknown) {
           // Assert
           expect(error).toBeInstanceOf(ExerciceSeanceNotFoundError)
@@ -167,9 +169,12 @@ describe("PrismaExerciceSeanceRepository", () => {
         const uuidExerciceSeance = testIdGenerator.getId()
 
         expect.assertions(2)
-        const seance1: Seance = new SeanceBuilder().withId(uuidSeance).build()
+        const seance1: Seance = new SeanceBuilder()
+          .withId(uuidSeance)
+          .withIdUtilisateur(testIdGenerator.getId())
+          .build()
         await prismaSeanceRepository.creerSeance(seance1)
-        const seance2: Seance = new SeanceBuilder().withId(uuidSeance2).build()
+        const seance2: Seance = new SeanceBuilder().withId(uuidSeance2).withIdUtilisateur(testIdGenerator.getId()).build()
         await prismaSeanceRepository.creerSeance(seance2)
 
         const exerciceSeance: ExerciceSeance = new ExerciceSeanceBuilder()
@@ -213,7 +218,7 @@ describe("PrismaExerciceSeanceRepository", () => {
           .withRepetitions(12)
           .withOrdre(2)
           .build()
-        const seance = new SeanceBuilder().withId(uuidSeance).build()
+        const seance = new SeanceBuilder().withId(uuidSeance).withIdUtilisateur(testIdGenerator.getId()).build()
         const exerciceSeance = new ExerciceSeanceBuilder().withId(uuidExerciceSeance).withIdSeance(uuidSeance).build()
         await prismaSeanceRepository.creerSeance(seance)
         await prismaExerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
@@ -252,7 +257,7 @@ describe("PrismaExerciceSeanceRepository", () => {
           .withRepetitions(12)
           .build()
 
-        const seance = new SeanceBuilder().withId(uuidSeance).build()
+        const seance = new SeanceBuilder().withId(uuidSeance).withIdUtilisateur(testIdGenerator.getId()).build()
         const exerciceSeance = new ExerciceSeanceBuilder().withId(uuidExerciceSeance).withIdSeance(uuidSeance).build()
         await prismaSeanceRepository.creerSeance(seance)
         await prismaExerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
@@ -289,7 +294,7 @@ describe("PrismaExerciceSeanceRepository", () => {
           .withRepetitions(12)
           .build()
 
-        const seance = new SeanceBuilder().withId(uuidSeance).build()
+        const seance = new SeanceBuilder().withId(uuidSeance).withIdUtilisateur(testIdGenerator.getId()).build()
         const exerciceSeance = new ExerciceSeanceBuilder().withId(uuidExerciceSeance).withIdSeance(uuidSeance).build()
         await prismaSeanceRepository.creerSeance(seance)
         await prismaExerciceSeanceRepository.creerExerciceSeance(exerciceSeance)
@@ -299,10 +304,7 @@ describe("PrismaExerciceSeanceRepository", () => {
         await prismaExerciceSeanceRepository.supprimerExerciceSeance(uuidExerciceSeance)
         // Assert
         try {
-          await prismaExerciceSeanceRepository.recupererParIdSeanceEtParId(
-            uuidSeance,
-            uuidExerciceSeance
-          )
+          await prismaExerciceSeanceRepository.recupererParIdSeanceEtParId(uuidSeance, uuidExerciceSeance)
         } catch (error: unknown) {
           expect(true).toEqual(true)
         }

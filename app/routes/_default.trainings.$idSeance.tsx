@@ -132,7 +132,7 @@ const TrainingSeance: FunctionComponent = () => {
                   </button>
                 )}
               </nomSeanceFetcher.Form>
-              <ListeExerciceSeance exerciceSeances={seanceSelectionne.exerciceSeances} />
+              <ListeExerciceSeance exerciceSeances={seanceSelectionne.exerciceSeances} editable/>
             </div>
             <div className="w-full flex justify-center pb-4">
               {idSeanceSelectionne && (

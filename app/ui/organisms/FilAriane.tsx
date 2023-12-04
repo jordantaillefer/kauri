@@ -9,7 +9,7 @@ const BreadcrumbLink: FunctionComponent<{ to: string, label: string, isDynamic?:
 }
 
 export const FilAriane = () => {
-  const matches = useMatches() as UIMatch<any, { breadcrumb: (match: UIMatch) => { to: string, label: string, isDynamic?: boolean } }>[]
+  const matches = useMatches() as UIMatch<any, { breadcrumb: (parentMatch: UIMatch, currentMatch: UIMatch) => { to: string, label: string, isDynamic?: boolean } }>[]
 
   const parentMatch = matches[2]
   if (!parentMatch) return;
@@ -30,7 +30,7 @@ export const FilAriane = () => {
             <li key={index}>
               <div className="flex items-center">
                 <ChevronRightIcon className="h-5 w-5 flex-shrink-0 text-main-kauri" aria-hidden="true" />
-                <BreadcrumbLink to={match.handle.breadcrumb(parentMatch).to} label={match.handle.breadcrumb(parentMatch).label} isDynamic={match.handle.breadcrumb(parentMatch).isDynamic} />
+                <BreadcrumbLink to={match.handle.breadcrumb(parentMatch, match).to} label={match.handle.breadcrumb(parentMatch, match).label} isDynamic={match.handle.breadcrumb(parentMatch, match).isDynamic} />
               </div>
             </li>
           ))}

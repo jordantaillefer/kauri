@@ -2,10 +2,10 @@ import { ReasonPhrases } from "http-status-codes"
 import { describe, expect } from "vitest"
 
 import { integrationTestFunction } from "../../../../../../test/setup-test-env"
-import { CompteUtilisateur } from "../../../domain/CompteUtilisateur"
 import { LUtilisateurNExistePasError } from "../../../domain/errors/LUtilisateurNExistePasError"
 import { PrismaCompteUtilisateurRepository } from "../../../infrastructure/adapters/PrismaCompteUtilisateurRepository"
 import { TestFailedError } from "~/server/testUtils/errors/TestFailedError"
+import { CompteUtilisateurBuilder } from "@/api/testUtils/builders/CompteUtilisateurBuilder";
 
 describe("PrismaCompteUtilisateurRepository", () => {
   let prismaCompteUtilisateurRepository: PrismaCompteUtilisateurRepository
@@ -19,7 +19,7 @@ describe("PrismaCompteUtilisateurRepository", () => {
       integrationTestFunction(async ({ testIdGenerator }) => {
         // Arrange
         const uuidUtilisateur = testIdGenerator.getId()
-        const compteUtilisateur = CompteUtilisateur.creerCompteUtilisateur({ id: uuidUtilisateur })
+        const compteUtilisateur = new CompteUtilisateurBuilder().withId(uuidUtilisateur).build()
         // Act
         const compteUtilisateurResult =
           await prismaCompteUtilisateurRepository.creerCompteUtilisateur(compteUtilisateur)
@@ -35,7 +35,7 @@ describe("PrismaCompteUtilisateurRepository", () => {
       integrationTestFunction(async ({ testIdGenerator }) => {
         // Arrange
         const uuidUtilisateur = testIdGenerator.getId()
-        const compteUtilisateur = CompteUtilisateur.creerCompteUtilisateur({ id: uuidUtilisateur })
+        const compteUtilisateur = new CompteUtilisateurBuilder().withId(uuidUtilisateur).build()
         await prismaCompteUtilisateurRepository.creerCompteUtilisateur(compteUtilisateur)
         // Act
         const compteUtilisateurResult =

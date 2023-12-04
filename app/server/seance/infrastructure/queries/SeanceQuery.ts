@@ -23,6 +23,7 @@ export class SeanceQuery {
   @ProduceServerResponse()
   async listerSeance(serverRequest: ServerRequestWithoutPayload): Promise<ServerResponse<DetailSeanceContrat[]>> {
     invariant(serverRequest.compteUtilisateurConnecte)
+
     const listeDeSeanceModels = await prisma.seance.findMany({
       where: { idUtilisateur: serverRequest.compteUtilisateurConnecte.id },
       orderBy: {
@@ -68,21 +69,26 @@ export class SeanceQuery {
   @ProduceServerResponse()
   async recupererSeanceParId(
     serverRequest: ServerRequest<{ idSeance: string }>
-  ): Promise<ServerResponse<SeanceContrat>> {
+  ): Promise<ServerResponse<DetailSeanceContrat>> {
     invariant(serverRequest.compteUtilisateurConnecte)
     const { idSeance } = serverRequest.payload
     const seanceModel = await prisma.seance.findUnique({
-      where: { id: idSeance },
+      where: {
+        id: idSeance
+      },
       include: {
         exerciceSeances: {
-          orderBy: { ordre: "asc" }
+          orderBy: { ordre: "asc" },
+          include: {
+            serieExerciceSeances: { orderBy: { ordre: "asc" } }
+          }
         }
       }
     })
     if (seanceModel === null) {
       throw new SeanceNotFoundError()
     }
-    return success(presenterEnSeanceContrat(seanceModel))
+    return success(presenterEnDetailSeanceContrat(seanceModel))
   }
 }
 
@@ -94,14 +100,6 @@ function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): Exerc
     idExercice: exerciceSeance.idExercice,
     ordre: exerciceSeance.ordre,
     listeSerieExerciceSeance: []
-  }
-}
-
-function presenterEnSeanceContrat(seance: Seance & { exerciceSeances: ExerciceSeance[] }): SeanceContrat {
-  return {
-    id: seance.id,
-    nomSeance: seance.nomSeance,
-    exerciceSeances: seance.exerciceSeances.map(presenterEnExerciceSeanceContrat)
   }
 }
 

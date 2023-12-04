@@ -1,15 +1,15 @@
-import { container, ListeExerciceContrat } from "@/api";
+import { container, ListeExerciceContrat } from "@/api"
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
-import { PencilIcon } from "@heroicons/react/24/solid";
+import { PencilIcon } from "@heroicons/react/24/solid"
 import type { ActionFunction, LoaderFunctionArgs } from "@remix-run/node"
 import { json, redirect } from "@remix-run/node"
-import { NavLink, Outlet, UIMatch, useLoaderData, useMatches, useParams } from "@remix-run/react";
+import { NavLink, Outlet, UIMatch, useLoaderData, useMatches, useParams } from "@remix-run/react"
 import { ReasonPhrases } from "http-status-codes"
 import { FunctionComponent } from "react"
 
 import { H2Title } from "~/ui/atoms/H2Title"
 import { CreerSeanceCard } from "~/ui/organisms/CreerSeanceCard"
-import { RandomBgColor } from "~/utils/RandomBgColor";
+import { randomBgColor } from "~/utils/RandomBgColor"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const resultListerSeance = await container.resolve("seanceQuery").listerSeance({ request })
@@ -46,13 +46,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const handle = {
   breadcrumb: () => ({ to: "/trainings", label: "Mes séances", state: "lister-seance" })
-}
-
-const randomBgColor = (nomSeance: string) => {
-  const randomNumber = nomSeance.split("").reduce((acc, value) => {
-    return acc + value.charCodeAt(0);
-    }, 0)
-  return  `${RandomBgColor[randomNumber % RandomBgColor.length]}`
 }
 
 const Trainings: FunctionComponent = () => {

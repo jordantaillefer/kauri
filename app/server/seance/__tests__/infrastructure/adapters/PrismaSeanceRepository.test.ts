@@ -19,14 +19,18 @@ describe("PrismaSeanceRepository", () => {
       integrationTestFunction(async ({ testIdGenerator }) => {
         // Arrange
         const uuidSeance = testIdGenerator.getId()
-        const seance: Seance = new SeanceBuilder().withId(uuidSeance).build()
+        const uuidUtilisateur = testIdGenerator.getId()
+        const seance: Seance = new SeanceBuilder()
+          .withId(uuidSeance)
+          .withIdUtilisateur(uuidUtilisateur)
+          .build()
         // Act
         await prismaSeanceRepository.creerSeance(seance)
         // Assert
         const seanceResult = await prismaSeanceRepository.recupererParId(uuidSeance)
         expect(seanceResult).toBeDefined()
         expect(seanceResult?.id).toEqual(uuidSeance)
-        expect(seanceResult?.idUtilisateur).toEqual("idUtilisateur")
+        expect(seanceResult?.idUtilisateur).toEqual(uuidUtilisateur)
         expect(seanceResult?.nomSeance).toEqual("nomSeance")
       })
     )
@@ -49,7 +53,11 @@ describe("PrismaSeanceRepository", () => {
           .withId(uuidExerciceSeanceAAjouter)
           .withOrdre(2)
           .build()
-        const seance: Seance = new SeanceBuilder().withId(uuidSeance).withListeExerciceSeance(exerciceSeance).build()
+        const seance: Seance = new SeanceBuilder()
+          .withId(uuidSeance)
+          .withIdUtilisateur(testIdGenerator.getId())
+          .withListeExerciceSeance(exerciceSeance)
+          .build()
         await prismaSeanceRepository.creerSeance(seance)
         // Act
         await prismaSeanceRepository.ajouterExerciceSeanceASeance(uuidSeance, exerciceSeance)
@@ -69,7 +77,11 @@ describe("PrismaSeanceRepository", () => {
       integrationTestFunction(async ({ testIdGenerator }) => {
         // Arrange
         const uuidSeance = testIdGenerator.getId()
-        const seance1: Seance = new SeanceBuilder().withId(uuidSeance).withNomSeance("nom Seance").build()
+        const seance1: Seance = new SeanceBuilder()
+          .withId(uuidSeance)
+          .withIdUtilisateur(testIdGenerator.getId())
+          .withNomSeance("nom Seance")
+          .build()
         await prismaSeanceRepository.creerSeance(seance1)
         // Act
         await prismaSeanceRepository.modifierNomSeance(uuidSeance, "nouveau nom séance")

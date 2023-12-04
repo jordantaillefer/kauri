@@ -49,7 +49,7 @@ export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authent
     { name: "Mes séances", to: "trainings", icon: DocumentDuplicateIcon, active: true },
     { name: "Mes statistiques", to: "statistiques", icon: PresentationChartLineIcon, active: false },
     { name: "Planning d'entrainement", to: "planning", icon: CalendarDaysIcon, active: false },
-    { name: "Explorer les programmes", to: "explore", icon: CalendarIcon, active: false },
+    { name: "Explorer les séances", to: "explore", icon: CalendarIcon, active: true },
     { name: "Discussions", to: "chat", icon: ChatBubbleLeftEllipsisIcon, active: false }
   ]
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)

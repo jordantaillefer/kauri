@@ -8,7 +8,8 @@ import { ExerciceSeancePopover } from "~/ui/organisms/ExerciceSeancePopover";
 
 export const ListeExerciceSeance: FunctionComponent<{
   exerciceSeances: (DetailExerciceContrat | ExerciceEntrainementContrat)[]
-}> = ({ exerciceSeances }) => {
+  editable?: boolean
+}> = ({ exerciceSeances, editable = false }) => {
   const fetcher = useFetcher({ key: "supprimer-seance"})
   
   return (
@@ -28,17 +29,21 @@ export const ListeExerciceSeance: FunctionComponent<{
                     </p>
                   </div>
                 </div>
-                <ExerciceSeancePopover>
-                  <fetcher.Form method="DELETE">
-                    <input type="hidden" name="idExerciceSeance" value={exercice.id} />
-                    <button type="submit" name="_action" value="supprimer-exercice" className="relative rounded-lg p-4 hover:bg-gray-50 flex justify-center w-full">
-                      <span className="font-semibold text-red-800">Supprimer l'exercice</span>
-                    </button>
-                  </fetcher.Form>
-                  <NavLink to={exercice.id} className="relative rounded-lg p-4 hover:bg-gray-50 flex justify-center">
-                    <span className="font-semibold text-gray-900">Modifier l'exercice</span>
-                  </NavLink>
-                </ExerciceSeancePopover>
+                {
+                  editable && (
+                    <ExerciceSeancePopover>
+                      <fetcher.Form method="DELETE">
+                        <input type="hidden" name="idExerciceSeance" value={exercice.id} />
+                        <button type="submit" name="_action" value="supprimer-exercice" className="relative rounded-lg p-4 hover:bg-gray-50 flex justify-center w-full">
+                          <span className="font-semibold text-red-800">Supprimer l'exercice</span>
+                        </button>
+                      </fetcher.Form>
+                      <NavLink to={exercice.id} className="relative rounded-lg p-4 hover:bg-gray-50 flex justify-center">
+                        <span className="font-semibold text-gray-900">Modifier l'exercice</span>
+                      </NavLink>
+                    </ExerciceSeancePopover>
+                  )
+                }
               </div>
             </div>
             {exercice.series.map((serie, idSerie) => (

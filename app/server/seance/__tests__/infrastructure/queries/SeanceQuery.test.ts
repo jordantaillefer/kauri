@@ -2,7 +2,6 @@ import { ReasonPhrases } from "http-status-codes"
 import { describe, expect, it } from "vitest"
 
 import { ExerciceSeanceBuilder } from "../../../application/builders/ExerciceSeanceBuilder"
-import { SerieExerciceSeanceBuilder } from "../../../application/builders/SerieExerciceSeanceBuilder"
 import type { Seance } from "../../../domain/Seance"
 import type { ExerciceSeanceRepository } from "../../../domain/ports/ExerciceSeanceRepository"
 import type { SeanceRepository } from "../../../domain/ports/SeanceRepository"
@@ -11,7 +10,6 @@ import type { SeanceContrat } from "app/server";
 import { container } from "app/server"
 import { integrationTestFunction } from "../../../../../../test/setup-test-env"
 import type { DetailSeanceContrat } from "~/server/app/contrats/DetailSeanceContrat"
-import { CATEGORIE } from "~/server/exercice/domain/categorie"
 import { creerRequest, creerRequestPourCompteUtilisateur } from "~/server/testUtils/RequestUtils"
 import { SeanceBuilder } from "~/server/testUtils/builders/SeanceBuilder"
 
@@ -174,8 +172,7 @@ describe("SeanceQuery", () => {
           const listeSeance = response.data as DetailSeanceContrat[]
           expect(listeSeance).toBeDefined()
           expect(listeSeance).toHaveLength(2)
-          expect(listeSeance.at(0)?.id).toEqual(uuidSeance1)
-          expect(listeSeance.at(1)?.id).toEqual(uuidSeance3)
+          expect(listeSeance.map(seance => seance.id)).toEqual([uuidSeance1, uuidSeance3])
         })
       )
 

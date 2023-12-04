@@ -77,6 +77,7 @@ describe("CompteUtilisateurController", () => {
         await compteUtilisateurController.creerCompteUtilisateur(request)
         // Act
         const response = await compteUtilisateurController.creerCompteUtilisateur(request)
+
         // Assert
         const compteUtilisateurResult = await compteUtilisateurRepository.recupererCompteUtilisateurParId(uuid)
         expect(compteUtilisateurResult).toBeDefined()

@@ -52,6 +52,7 @@ describe("EntrainementController", () => {
             .build()
           const seance = new SeanceBuilder()
             .withId(uuidSeance)
+            .withIdUtilisateur(testIdGenerator.getId())
             .withNomSeance("nomSeance 1")
             .withListeExerciceSeance(exercice1, exercice2)
             .build()

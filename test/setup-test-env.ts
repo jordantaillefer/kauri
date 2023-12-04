@@ -50,7 +50,7 @@ export const integrationTestFunction = (
     await prisma.user.deleteMany(whereStartId)
     await prisma.serieExerciceSeance.deleteMany(whereStartId)
     await prisma.exerciceSeance.deleteMany(whereStartId)
-    await prisma.seance.deleteMany(whereStartId)
+    await prisma.seance.deleteMany(whereStartIdUtilisateur)
     await prisma.exercice.deleteMany(whereStartId)
     await prisma.serieEntrainement.deleteMany(whereStartId)
     await prisma.exerciceEntrainement.deleteMany(whereStartId)
