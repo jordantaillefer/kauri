@@ -60,7 +60,7 @@ const Explore: FunctionComponent = () => {
                     </th>
                     <th
                       scope="col"
-                      className="hidden sm:block px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      className="max-sm:hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
                       Nombre d'exercice
                     </th>
@@ -90,7 +90,7 @@ const Explore: FunctionComponent = () => {
                       <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                         <div className="text-gray-900">{seance.nomSeance}</div>
                       </td>
-                      <td className="hidden sm:block whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                      <td className="max-sm:hidden whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                         {seance.nombreExercicesSeance} exercices
                       </td>
                       <td className="whitespace-nowrap py-5 px-4 text-sm text-gray-500">
