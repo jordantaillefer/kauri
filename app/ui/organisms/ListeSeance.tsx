@@ -1,6 +1,6 @@
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat";
 import { Link } from "@remix-run/react";
-import { Dispatch, FunctionComponent, SetStateAction } from "react";
+import { FunctionComponent } from "react";
 
 import { SeanceCard } from "~/ui/organisms/SeanceCard";
 

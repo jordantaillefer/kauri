@@ -1,7 +1,6 @@
 import type { ExerciceSeance, Seance, SerieExerciceSeance } from "@prisma/client"
 import invariant from "tiny-invariant"
 
-import type { ExerciceSeanceContrat, SeanceContrat } from "app/server"
 import type { ServerRequest, ServerRequestWithoutPayload } from "~/server/app/ServerRequest"
 import type { ServerResponse } from "~/server/app/ServerResponse"
 import { success } from "~/server/app/ServerResponse"
@@ -14,7 +13,6 @@ import { Controller } from "~/server/app/decorators/ControllerDecorator"
 import { DoitEtreAuthentifie } from "~/server/app/decorators/DoitEtreAuthentifieDecorator"
 import { ProduceServerResponse } from "~/server/app/decorators/ProduceServerResponseDecorator"
 import { prisma } from "~/server/db/prisma"
-import type { CATEGORIE } from "~/server/exercice/domain/categorie"
 import { SeanceNotFoundError } from "~/server/seance/domain/errors/SeanceNotFoundError"
 
 @Controller()
@@ -89,17 +87,6 @@ export class SeanceQuery {
       throw new SeanceNotFoundError()
     }
     return success(presenterEnDetailSeanceContrat(seanceModel))
-  }
-}
-
-function presenterEnExerciceSeanceContrat(exerciceSeance: ExerciceSeance): ExerciceSeanceContrat {
-  return {
-    id: exerciceSeance.id,
-    nomExercice: exerciceSeance.nomExercice,
-    categorie: exerciceSeance.categorie as CATEGORIE,
-    idExercice: exerciceSeance.idExercice,
-    ordre: exerciceSeance.ordre,
-    listeSerieExerciceSeance: []
   }
 }
 

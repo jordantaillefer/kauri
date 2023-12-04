@@ -2,7 +2,7 @@ import { container } from "@/api";
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import { SeanceExplorationContrat } from "@/api/app/contrats/SeanceExplorationContrat";
 import { LoaderFunctionArgs } from "@remix-run/node";
-import { NavLink, useLoaderData, useOutletContext, useParams } from "@remix-run/react";
+import { useLoaderData, useOutletContext, useParams } from "@remix-run/react";
 import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { FunctionComponent } from "react"
 import invariant from "tiny-invariant";

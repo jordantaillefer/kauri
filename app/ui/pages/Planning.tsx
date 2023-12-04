@@ -3,7 +3,6 @@ import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import { SportifEvenementContrat } from "@/api/app/contrats/SportifEvenementContrat"
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import { AgnosticDataIndexRouteObject } from "@remix-run/router";
 import { FunctionComponent, useState } from "react"
 
 import { EvenementPlanning } from "~/domain/EvenementPlanning"
