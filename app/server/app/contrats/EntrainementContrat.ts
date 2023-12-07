@@ -1,6 +1,7 @@
 export interface SerieEntrainementContrat {
   id: string
   repetitions: number
+  poids: number
   tempsRepos: number
   ordre: number
   estRealise: boolean

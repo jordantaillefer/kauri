@@ -55,9 +55,9 @@ export const ListeExerciceSeance: FunctionComponent<{
                       <div className="h-1.5 w-1.5 rounded-full bg-main-kauri ring-1 ring-main-kauri-lighter" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm text-gray-500">
-                        <span className="font-medium text-gray-900">Série n°{serie.ordre}</span> ⬝ Reps :{" "}
-                        {serie.repetitions} ⬝ Repos : {serie.tempsRepos} secs
+                      <div className="text-xs text-gray-500">
+                        <span className="text-gray-900">Série {serie.ordre}</span> ⬝ Reps :{" "}
+                        {serie.repetitions} ⬝ Repos : {serie.tempsRepos}s ⬝ Poids : {serie.poids}kg
                       </div>
                     </div>
                   </div>

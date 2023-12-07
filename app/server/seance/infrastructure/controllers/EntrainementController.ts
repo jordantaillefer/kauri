@@ -89,6 +89,7 @@ function presenterEnExerciceEntrainementContrat(
 function presenterEnSerieEntrainement(serieEntrainement: SerieEntrainement): SerieEntrainementContrat {
   return {
     id: serieEntrainement.id,
+    poids: 0,
     repetitions: serieEntrainement.nombreRepetition,
     tempsRepos: serieEntrainement.tempsRepos,
     ordre: serieEntrainement.ordre,

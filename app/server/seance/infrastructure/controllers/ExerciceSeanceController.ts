@@ -37,7 +37,7 @@ export class ExerciceSeanceController {
     serverRequest: ServerRequest<{
       idSeance: string
       idExercice: string
-      series: { repetitions: number, tempsRepos: number }[]
+      series: { repetitions: number, tempsRepos: number, poids: number }[]
     }>
   ): Promise<ServerResponse<ExerciceSeanceContrat>> {
     invariant(serverRequest.compteUtilisateurConnecte)
@@ -56,7 +56,7 @@ export class ExerciceSeanceController {
       idSeance: string
       idExerciceSeance: string
       idExercice: string
-      series: { repetitions: number, tempsRepos: number }[]
+      series: { repetitions: number, tempsRepos: number, poids: number }[]
     }>
   ): Promise<ServerResponse<void>> {
     invariant(serverRequest.compteUtilisateurConnecte)
