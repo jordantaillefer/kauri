@@ -46,6 +46,7 @@ model SerieExerciceSeance {
   id               String         @id
   exerciceSeance   ExerciceSeance @relation(fields: [idExerciceSeance], references: [id], onDelete: Cascade)
   idExerciceSeance String
+  poids            Int
   repetitions      Int
   tempsRepos       Int
   ordre            Int

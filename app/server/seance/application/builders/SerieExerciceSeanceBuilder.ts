@@ -3,6 +3,7 @@ import { SerieExerciceSeance } from "../../domain/SerieExerciceSeance"
 export class SerieExerciceSeanceBuilder {
   private id: string = "idSerieExerciceSeance"
   private repetitions: number = 12
+  private poids: number = 20
   private tempsRepos: number = 45
   private ordre: number = 1
 
@@ -20,6 +21,11 @@ export class SerieExerciceSeanceBuilder {
     return this
   }
 
+  withPoids(poids: number): SerieExerciceSeanceBuilder {
+    this.poids = poids
+    return this
+  }
+
   withOrdre(ordre: number) {
     this.ordre = ordre
     return this
@@ -29,6 +35,7 @@ export class SerieExerciceSeanceBuilder {
     return SerieExerciceSeance.creerSerieExerciceSeance({
       id: this.id,
       repetitions: this.repetitions,
+      poids: this.poids,
       tempsRepos: this.tempsRepos,
       ordre: this.ordre
     })

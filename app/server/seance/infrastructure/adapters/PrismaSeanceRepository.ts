@@ -91,6 +91,7 @@ const convertirEnSerieModel = (
   id: serieExerciceSeance.id,
   ordre: serieExerciceSeance.ordre,
   repetitions: serieExerciceSeance.repetitions,
+  poids: serieExerciceSeance.poids,
   tempsRepos: serieExerciceSeance.tempsRepos
 })
 

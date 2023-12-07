@@ -6,7 +6,6 @@ import type { Seance } from "../../../domain/Seance"
 import type { ExerciceSeanceRepository } from "../../../domain/ports/ExerciceSeanceRepository"
 import type { SeanceRepository } from "../../../domain/ports/SeanceRepository"
 import type { SeanceQuery } from "../../../infrastructure/queries/SeanceQuery"
-import type { SeanceContrat } from "app/server";
 import { container } from "app/server"
 import { integrationTestFunction } from "../../../../../../test/setup-test-env"
 import type { DetailSeanceContrat } from "~/server/app/contrats/DetailSeanceContrat"
@@ -270,7 +269,7 @@ describe("SeanceQuery", () => {
           const response = await seanceQuery.recupererSeanceParId({ request, payload })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
-          const seanceResult = response.data as SeanceContrat
+          const seanceResult = response.data as DetailSeanceContrat
           expect(seanceResult).toBeDefined()
           expect(seanceResult.id).toEqual(seanceUtilisateur1.id)
         })
@@ -316,7 +315,7 @@ describe("SeanceQuery", () => {
           const response = await seanceQuery.recupererSeanceParId({ request, payload })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
-          const seanceResult = response.data as SeanceContrat
+          const seanceResult = response.data as DetailSeanceContrat
           expect(seanceResult).toBeDefined()
           expect(seanceResult.exerciceSeances.at(0)?.id).toEqual(exerciceSeance1.id)
           expect(seanceResult.exerciceSeances.at(0)?.ordre).toEqual(1)

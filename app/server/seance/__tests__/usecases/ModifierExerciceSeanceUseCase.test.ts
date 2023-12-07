@@ -43,15 +43,16 @@ describe("ModifierExerciceSeanceUseCase", () => {
       .build()
 
 
-    const serieExerciceSeance1 = new SerieExerciceSeanceBuilder().withRepetitions(8).build()
-    const serieExerciceSeance2 = new SerieExerciceSeanceBuilder().withRepetitions(10).build()
-    const serieExerciceSeance3 = new SerieExerciceSeanceBuilder().withRepetitions(12).build()
+    const serieExerciceSeance1 = new SerieExerciceSeanceBuilder().withRepetitions(8).withPoids(20).build()
+    const serieExerciceSeance2 = new SerieExerciceSeanceBuilder().withRepetitions(10).withPoids(22).build()
+    const serieExerciceSeance3 = new SerieExerciceSeanceBuilder().withRepetitions(12).withPoids(24).build()
 
     const exerciceSeance1 = new ExerciceSeanceBuilder()
       .withId(uuidExerciceSeance)
       .withIdExercice(randomUUID())
       .withNomExercice("nomExercice 1")
       .withCategorie(CATEGORIE.PECTORAUX)
+      .withOrdre(1)
       .withListeSerieExerciceSeance(serieExerciceSeance1)
       .build()
 
@@ -71,7 +72,7 @@ describe("ModifierExerciceSeanceUseCase", () => {
     exerciceRepository.recupererParId.mockResolvedValue(exercice)
     seanceRepository.recupererParId.mockResolvedValue(seance)
     // Act
-    const exerciceSeanceModifie = await modifierExerciceSeanceUseCase.execute({ idSeance: uuidSeance, idExerciceSeance: uuidExerciceSeance, idExercice: uuidExercice, series: [{ repetitions: 10, tempsRepos: 45}] })
+    const exerciceSeanceModifie = await modifierExerciceSeanceUseCase.execute({ idSeance: uuidSeance, idExerciceSeance: uuidExerciceSeance, idExercice: uuidExercice, series: [{ repetitions: 10, tempsRepos: 45, poids: 26}] })
     // Assert
     expect(exerciceSeanceRepository.supprimerSerieExerciceSeance).toHaveBeenNthCalledWith(1, uuidExerciceSeance)
     expect(exerciceSeanceRepository.modifierExerciceSeance).toHaveBeenNthCalledWith(1, modifierExerciceSeanceCaptor)
@@ -84,5 +85,6 @@ describe("ModifierExerciceSeanceUseCase", () => {
     expect(exerciceSeanceModifie.listeSerieExerciceSeance).toHaveLength(1)
     expect(exerciceSeanceModifie.listeSerieExerciceSeance.at(0)?.tempsRepos).toEqual(45)
     expect(exerciceSeanceModifie.listeSerieExerciceSeance.at(0)?.repetitions).toEqual(10)
+    expect(exerciceSeanceModifie.listeSerieExerciceSeance.at(0)?.poids).toEqual(26)
   })
 })

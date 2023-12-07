@@ -94,7 +94,8 @@ function presenterEnDetailSerieSeanceContrat(serieExerciceSeance: SerieExerciceS
   return {
     repetitions: serieExerciceSeance.repetitions,
     tempsRepos: serieExerciceSeance.tempsRepos,
-    ordre: serieExerciceSeance.ordre
+    ordre: serieExerciceSeance.ordre,
+    poids: serieExerciceSeance.poids,
   }
 }
 

@@ -1,5 +1,6 @@
 export interface DetailSerieContrat {
   repetitions: number
+  poids: number
   tempsRepos: number
   ordre: number
 }

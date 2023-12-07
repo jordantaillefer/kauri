@@ -16,6 +16,7 @@ function convertirSerieExerciceSeanceEnModel(
   return {
     id: serieExerciceSeance.id,
     repetitions: serieExerciceSeance.repetitions,
+    poids: serieExerciceSeance.poids,
     ordre: serieExerciceSeance.ordre,
     tempsRepos: serieExerciceSeance.tempsRepos
   }
@@ -36,6 +37,7 @@ const convertirEnSerieExerciceSeance = (serieExerciceSeanceModel: SerieExerciceS
   return SerieExerciceSeance.creerSerieExerciceSeance({
     id: serieExerciceSeanceModel.id,
     repetitions: serieExerciceSeanceModel.repetitions,
+    poids: serieExerciceSeanceModel.poids,
     ordre: serieExerciceSeanceModel.ordre,
     tempsRepos: serieExerciceSeanceModel.tempsRepos
   })
