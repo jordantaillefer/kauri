@@ -1,14 +1,12 @@
 import { Seance } from "../domain/Seance"
 import type { SeanceRepository } from "../domain/ports/SeanceRepository"
 
-export interface InitialiserSeanceRepository extends Pick<SeanceRepository, "creerSeance"> {}
-
 interface Dependencies {
-  seanceRepository: InitialiserSeanceRepository
+  seanceRepository: SeanceRepository
 }
 
 export class InitialiserSeanceUseCase {
-  private initialiserSeanceRepository: InitialiserSeanceRepository
+  private initialiserSeanceRepository: SeanceRepository
 
   constructor({ seanceRepository }: Dependencies) {
     this.initialiserSeanceRepository = seanceRepository

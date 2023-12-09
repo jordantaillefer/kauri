@@ -4,20 +4,14 @@ import { SerieEntrainement } from "../domain/SerieEntrainement"
 import type { EntrainementRepository } from "../domain/ports/EntrainementRepository"
 import type { SeanceRepository } from "../domain/ports/SeanceRepository"
 
-export interface CreerEntrainementRepository extends EntrainementRepository {
-}
-
-export interface RecupererDetailSeanceParIdRepository extends Pick<SeanceRepository, "recupererDetailParId"> {
-}
-
 interface Dependencies {
-  seanceRepository: RecupererDetailSeanceParIdRepository
-  entrainementRepository: CreerEntrainementRepository
+  seanceRepository: SeanceRepository
+  entrainementRepository: EntrainementRepository
 }
 
 export class DemarrerEntrainementUseCase {
-  private seanceRepository: RecupererDetailSeanceParIdRepository
-  private entrainementRepository: CreerEntrainementRepository
+  private seanceRepository: SeanceRepository
+  private entrainementRepository: EntrainementRepository
 
   constructor({ seanceRepository, entrainementRepository }: Dependencies) {
     this.seanceRepository = seanceRepository
@@ -25,7 +19,7 @@ export class DemarrerEntrainementUseCase {
   }
 
   async execute({ idSeance, idUtilisateur }: { idSeance: string; idUtilisateur: string }): Promise<Entrainement> {
-    const detailSeance = await this.seanceRepository.recupererDetailParId(idUtilisateur, idSeance)
+    const detailSeance = await this.seanceRepository.recupererDetailParId(idSeance)
     const listeExerciceEntrainement = detailSeance.listeDetailExercice.map(detailExercice => {
       const listeSerieEntrainement = detailExercice.listeDetailSerie.map(serie => {
         return SerieEntrainement.creerSerieEntrainement({

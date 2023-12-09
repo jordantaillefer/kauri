@@ -51,6 +51,7 @@ type DetailExerciceModel = ExerciceSeanceModel & { serieExerciceSeances: SerieEx
 function convertirEnDetailSerie(serieExerciceSeanceModel: SerieExerciceSeanceModel): DetailSerie {
   return DetailSerie.creerDetailSerie({
     id: serieExerciceSeanceModel.id,
+    poids: serieExerciceSeanceModel.poids,
     nombreRepetition: serieExerciceSeanceModel.repetitions,
     tempsRepos: serieExerciceSeanceModel.tempsRepos,
     ordre: serieExerciceSeanceModel.ordre
@@ -60,6 +61,7 @@ function convertirEnDetailSerie(serieExerciceSeanceModel: SerieExerciceSeanceMod
 function convertirEnDetailExerciceSeance(detailExerciceModel: DetailExerciceModel): DetailExercice {
   return DetailExercice.creerDetailExercice({
     id: detailExerciceModel.id,
+    idExercice: detailExerciceModel.idExercice,
     nomExercice: detailExerciceModel.nomExercice,
     categorie: detailExerciceModel.categorie as CATEGORIE,
     ordre: detailExerciceModel.ordre,
@@ -122,7 +124,7 @@ export class PrismaSeanceRepository implements SeanceRepository {
     return convertirEnSeance(seanceModel)
   }
 
-  async recupererDetailParId(idUtilisateur: string, idSeance: string): Promise<DetailSeance> {
+  async recupererDetailParId(idSeance: string): Promise<DetailSeance> {
     const detailSeanceModel = await prisma.seance.findUnique({
       where: { id: idSeance },
       include: {

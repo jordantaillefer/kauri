@@ -3,15 +3,15 @@ import type { CaptorMatcher, MockProxy } from "vitest-mock-extended";
 import { captor, mock } from "vitest-mock-extended"
 
 import type { Seance } from "../../domain/Seance"
-import type { InitialiserSeanceRepository} from "../../usecases/InitialiserSeanceUseCase";
 import { InitialiserSeanceUseCase } from "../../usecases/InitialiserSeanceUseCase"
+import type { SeanceRepository } from "@/api/seance/domain/ports/SeanceRepository";
 
 describe("InitialiserSeanceUseCase", () => {
-  let seanceRepository: MockProxy<InitialiserSeanceRepository>
+  let seanceRepository: MockProxy<SeanceRepository>
   let initialiserSeanceUseCase: InitialiserSeanceUseCase
 
   beforeEach(() => {
-    seanceRepository = mock<InitialiserSeanceRepository>()
+    seanceRepository = mock<SeanceRepository>()
     initialiserSeanceUseCase = new InitialiserSeanceUseCase({ seanceRepository })
   })
   it("doit créer la séance", async () => {

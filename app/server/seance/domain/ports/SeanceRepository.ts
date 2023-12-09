@@ -5,7 +5,7 @@ import type { IdSeance, Seance } from "../Seance"
 export interface SeanceRepository {
   creerSeance: (seance: Seance) => Promise<void>
 
-  recupererDetailParId(idUtilisateur: string, idSeance: string): Promise<DetailSeance>
+  recupererDetailParId(idSeance: string): Promise<DetailSeance>
 
   recupererParId(idSeance: IdSeance): Promise<Seance>
 

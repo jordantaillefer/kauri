@@ -11,21 +11,26 @@ import { created, updated } from "~/server/app/ServerResponse";
 import { Controller } from "~/server/app/decorators/ControllerDecorator"
 import { DoitEtreAuthentifie } from "~/server/app/decorators/DoitEtreAuthentifieDecorator"
 import { ProduceServerResponse } from "~/server/app/decorators/ProduceServerResponseDecorator"
+import type { DupliquerSeanceUseCase } from "@/api/seance/usecases/DupliquerSeanceUseCase";
 
 interface Dependencies {
+  dupliquerSeanceUseCase: DupliquerSeanceUseCase
   initialiserSeanceUseCase: InitialiserSeanceUseCase
   modifierNomSeanceUseCase: ModifierNomSeanceUseCase
 }
 
 @Controller()
 export class SeanceController {
+  private dupliquerSeanceUseCase: DupliquerSeanceUseCase
   private initialiserSeanceUseCase: InitialiserSeanceUseCase
   private modifierNomSeanceUseCase: ModifierNomSeanceUseCase
 
   constructor({
+    dupliquerSeanceUseCase,
     initialiserSeanceUseCase,
     modifierNomSeanceUseCase
   }: Dependencies) {
+    this.dupliquerSeanceUseCase = dupliquerSeanceUseCase
     this.initialiserSeanceUseCase = initialiserSeanceUseCase
     this.modifierNomSeanceUseCase = modifierNomSeanceUseCase
   }
@@ -35,6 +40,19 @@ export class SeanceController {
   async initialiserSeance(serverRequest: ServerRequestWithoutPayload): Promise<ServerResponse<SeanceContrat>> {
     invariant(serverRequest.compteUtilisateurConnecte)
     const nouvelleSeance = await this.initialiserSeanceUseCase.execute(serverRequest.compteUtilisateurConnecte.id)
+    return created(presenterEnSeanceContrat(nouvelleSeance))
+  }
+
+  @DoitEtreAuthentifie()
+  @ProduceServerResponse()
+  async dupliquerSeance(
+    serverRequest: ServerRequest<{ idSeance: string }>
+  ): Promise<ServerResponse<SeanceContrat>> {
+    invariant(serverRequest.compteUtilisateurConnecte)
+    const nouvelleSeance = await this.dupliquerSeanceUseCase.execute({
+      idSeance: serverRequest.payload.idSeance,
+      idUtilisateur: serverRequest.compteUtilisateurConnecte.id
+    })
     return created(presenterEnSeanceContrat(nouvelleSeance))
   }
 
