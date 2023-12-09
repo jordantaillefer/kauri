@@ -3,8 +3,8 @@ import { Seance } from "../../seance/domain/Seance"
 
 export class SeanceBuilder {
   private id: string = "id"
-  private idUtilisateur: string = "idUtilisateur2"
-  private nomSeance: string = "nomSeance2"
+  private idUtilisateur: string = "idUtilisateur"
+  private nomSeance: string = "nomSeance"
   private exerciceSeances: ExerciceSeance[] = []
 
   withId(id: string): SeanceBuilder {

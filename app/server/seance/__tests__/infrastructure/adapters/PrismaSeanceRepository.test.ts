@@ -22,6 +22,7 @@ describe("PrismaSeanceRepository", () => {
         const uuidUtilisateur = testIdGenerator.getId()
         const seance: Seance = new SeanceBuilder()
           .withId(uuidSeance)
+          .withNomSeance("nomSeance")
           .withIdUtilisateur(uuidUtilisateur)
           .build()
         // Act
