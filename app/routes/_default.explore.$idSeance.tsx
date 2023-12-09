@@ -75,6 +75,7 @@ const TrainingSeance: FunctionComponent = () => {
           <>
             <div>
               <H2Title>Résumé de la séance</H2Title>
+              <p className="text-lg font-bold mb-3">{seanceSelectionne.nomSeance}</p>
               <ListeExerciceSeance exerciceSeances={seanceSelectionne.exerciceSeances} />
             </div>
             <div className="w-full flex justify-center pb-4">
