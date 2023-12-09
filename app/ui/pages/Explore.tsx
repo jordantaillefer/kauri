@@ -87,8 +87,8 @@ const Explore: FunctionComponent = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                        <div className="text-gray-900">{seance.nomSeance}</div>
+                      <td className="whitespace-nowrap py-5 text-sm text-gray-500">
+                        <div className="text-gray-900 max-w-[40vw] md:max-w-full overflow-hidden overflow-ellipsis">{seance.nomSeance}</div>
                       </td>
                       <td className="max-sm:hidden whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                         {seance.nombreExercicesSeance} exercices
