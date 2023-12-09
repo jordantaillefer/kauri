@@ -41,6 +41,7 @@ import { AjouterEvenementUseCase } from "~/server/sportif/usecases/AjouterEvenem
 import { ModifierExerciceSeanceUseCase } from "@/api/seance/usecases/ModifierExerciceSeanceUseCase";
 import { SupprimerExerciceSeanceUseCase } from "@/api/seance/usecases/SupprimerExerciceSeanceUseCase";
 import { SeanceExplorationQuery } from "@/api/exploration/infrastructure/queries/SeanceExplorationQuery";
+import { DupliquerSeanceUseCase } from "@/api/seance/usecases/DupliquerSeanceUseCase";
 
 type ApplicationDependencies = {
   sessionManager: SessionManager
@@ -74,6 +75,7 @@ type SeanceDependencies = {
   seanceExerciceRepository: SeanceExerciceRepository
   demarrerEntrainementUseCase: DemarrerEntrainementUseCase
   realiserSerieUseCase: RealiserSerieUseCase
+  dupliquerSeanceUseCase: DupliquerSeanceUseCase
   entrainementRepository: EntrainementRepository
 }
 
@@ -141,6 +143,7 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
     supprimerExerciceSeanceUseCase: asClass(SupprimerExerciceSeanceUseCase),
     seanceExerciceRepository: asClass(PrismaSeanceExerciceRepository),
     demarrerEntrainementUseCase: asClass(DemarrerEntrainementUseCase),
+    dupliquerSeanceUseCase: asClass(DupliquerSeanceUseCase),
     realiserSerieUseCase: asClass(RealiserSerieUseCase),
     entrainementRepository: asClass(PrismaEntrainementRepository)
   })

@@ -5,10 +5,12 @@ import { integrationTestFunction } from "../../../../../../test/setup-test-env"
 import type { Seance } from "../../../domain/Seance"
 import type { SeanceRepository } from "../../../domain/ports/SeanceRepository"
 import type { SeanceController } from "../../../infrastructure/controllers/SeanceController"
-import type { SeanceContrat } from "app/server";
+import type { SeanceContrat } from "app/server"
 import { container } from "app/server"
 import { creerRequest, creerRequestPourCompteUtilisateur } from "~/server/testUtils/RequestUtils"
 import { SeanceBuilder } from "~/server/testUtils/builders/SeanceBuilder"
+import { ExerciceSeanceBuilder } from "@/api/seance/application/builders/ExerciceSeanceBuilder"
+import { prisma } from "@/api/db/prisma"
 
 describe("SeanceController", () => {
   let seanceController: SeanceController
@@ -23,7 +25,7 @@ describe("SeanceController", () => {
     describe("Cas OK", () => {
       it(
         "doit initialiser une seance",
-        integrationTestFunction(async ({ testIdGenerator}) => {
+        integrationTestFunction(async ({ testIdGenerator }) => {
           // Arrange
           const uuidUtilisateur = testIdGenerator.getId()
           const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
@@ -77,6 +79,45 @@ describe("SeanceController", () => {
           const response = await seanceController.mettreAJourNomSeance({ request, payload })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.NO_CONTENT)
+        })
+      )
+    })
+  })
+
+  describe("#dupliquerSeance", () => {
+    describe("Cas OK", () => {
+      it(
+        "doit dupliquer la séance",
+        integrationTestFunction(async ({ testIdGenerator }) => {
+          // Arrange
+          const uuidExerciceSeance = testIdGenerator.getId()
+          const uuidUtilisateur = testIdGenerator.getId()
+          const uuidUtilisateur2 = testIdGenerator.getId()
+          const uuidSeance = testIdGenerator.getId()
+
+          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+
+          const exerciceSeance = new ExerciceSeanceBuilder().withId(uuidExerciceSeance).withOrdre(1).build()
+          const seance: Seance = new SeanceBuilder()
+            .withId(uuidSeance)
+            .withNomSeance(uuidUtilisateur2)
+            .withIdUtilisateur(uuidUtilisateur2)
+            .withListeExerciceSeance(exerciceSeance)
+            .build()
+          await seanceRepository.creerSeance(seance)
+          // Act
+          const payload = { idSeance: uuidSeance }
+          const response = await seanceController.dupliquerSeance({ request, payload })
+          // Assert
+          expect(response.reasonPhrase).toEqual(ReasonPhrases.CREATED)
+          const listeSeanceResult = await prisma.seance.findMany({
+            where: {
+              idUtilisateur: uuidUtilisateur
+            }
+          })
+
+          expect(listeSeanceResult).toHaveLength(1)
+          expect(listeSeanceResult.at(0)?.nomSeance).toEqual(`Séance dupliqué depuis : ${seance.nomSeance}`)
         })
       )
     })

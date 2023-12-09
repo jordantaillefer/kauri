@@ -1,10 +1,11 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from "crypto"
 
 import type { DetailSerie } from "./DetailSerie"
 import type { CATEGORIE } from "~/server/exercice/domain/categorie"
 
 export class DetailExercice {
   private readonly _id: string
+  private readonly _idExercice: string
   private readonly _nomExercice: string
   private readonly _categorie: CATEGORIE
   private readonly _ordre: number
@@ -12,18 +13,21 @@ export class DetailExercice {
 
   constructor({
     id,
+    idExercice,
     nomExercice,
     categorie,
     ordre,
     listeDetailSerie
   }: {
     id: string
+    idExercice: string
     nomExercice: string
     categorie: CATEGORIE
     ordre: number
     listeDetailSerie: DetailSerie[]
   }) {
     this._id = id
+    this._idExercice = idExercice
     this._nomExercice = nomExercice
     this._categorie = categorie
     this._ordre = ordre
@@ -36,6 +40,10 @@ export class DetailExercice {
 
   get nomExercice() {
     return this._nomExercice
+  }
+
+  get idExercice() {
+    return this._idExercice
   }
 
   get categorie(): CATEGORIE {
@@ -52,17 +60,19 @@ export class DetailExercice {
 
   static creerDetailExercice({
     id,
+    idExercice,
     nomExercice,
     categorie,
     ordre,
     listeDetailSerie
   }: {
     id?: string
+    idExercice: string
     nomExercice: string
     categorie: CATEGORIE
     ordre: number
     listeDetailSerie: DetailSerie[]
   }) {
-    return new DetailExercice({ id: id || randomUUID(), nomExercice, categorie, ordre, listeDetailSerie })
+    return new DetailExercice({ id: id || randomUUID(), idExercice, nomExercice, categorie, ordre, listeDetailSerie })
   }
 }

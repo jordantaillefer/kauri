@@ -1,8 +1,8 @@
-import { container } from "@/api";
+import { container, SeanceContrat } from "@/api";
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import { SeanceExplorationContrat } from "@/api/app/contrats/SeanceExplorationContrat";
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, useOutletContext, useParams } from "@remix-run/react";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { useFetcher, useLoaderData, useOutletContext, useParams } from "@remix-run/react";
 import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { FunctionComponent } from "react"
 import invariant from "tiny-invariant";
@@ -26,6 +26,24 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   }
 }
 
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData()
+  const { _action } = Object.fromEntries(formData)
+
+  switch (_action) {
+    case "dupliquer-seance": {
+      const { idSeance } = Object.fromEntries(formData)
+
+      const payload = {
+        idSeance: idSeance.toString(),
+      }
+      const result = await container.resolve("seanceController").dupliquerSeance({ request, payload })
+      return redirect(`/trainings/${(result.data as SeanceContrat).id}`)
+    }
+  }
+  return null
+}
+
 type ParentMatchData = { params: { idSeance: string }; data: { listeSeance: SeanceExplorationContrat[] } };
 type CurrentMatchData = { params: { idSeance: string }; data: { seanceSelectionne: DetailSeanceContrat } };
 
@@ -46,6 +64,8 @@ const TrainingSeance: FunctionComponent = () => {
 
   const { idSeance: idSeanceSelectionne } = useParams()
 
+  const fetcher = useFetcher({ key: "dupliquer-seance" })
+
   return (
     <>
       <div
@@ -59,12 +79,17 @@ const TrainingSeance: FunctionComponent = () => {
             </div>
             <div className="w-full flex justify-center pb-4">
               {idSeanceSelectionne && (
-                <button
-                  type="button"
-                  className="rounded-md bg-gray-300 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Dupliquer cette séance
-                </button>
+                <fetcher.Form method="POST">
+                  <input type="hidden" name="idSeance" value={idSeanceSelectionne} />
+                  <button
+                    type="submit"
+                    name="_action"
+                    value="dupliquer-seance"
+                    className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Dupliquer cette séance
+                  </button>
+                </fetcher.Form>
               )}
             </div>
           </>

@@ -41,10 +41,6 @@ export class Seance {
     return this._exerciceSeances
   }
 
-  ajouterExerciceSeance(exerciceSeance: ExerciceSeance) {
-    this._exerciceSeances.push(exerciceSeance)
-  }
-
   static creerSeance({
                        id,
                        idUtilisateur,
