@@ -38,17 +38,11 @@ export class GoogleAuthentificatorService implements AuthentificationService {
     )
   }
 
-  async seConnecter(request: Request): Promise<CompteUtilisateur> {
-    const callbackProfile: GoogleProfile = await this.authenticator.authenticate(config.authenticatorStrategy, request,
+  async seConnecter(request: Request): Promise<void> {
+    await this.authenticator.authenticate(config.authenticatorStrategy, request,
       {
         successRedirect: "/authentication/new",
       })
-
-    let compteUtilisateur = await this._compteUtilisateurRepository.recupererCompteUtilisateurParId(callbackProfile.id)
-    if (!compteUtilisateur) {
-      compteUtilisateur = await this._compteUtilisateurRepository.creerCompteUtilisateur(CompteUtilisateur.creerCompteUtilisateur({ id: callbackProfile.id, nom: callbackProfile.name.familyName, prenom: callbackProfile.name.givenName }))
-    }
-    return compteUtilisateur
   }
 
   async seDeconnecter(request: Request): Promise<string> {

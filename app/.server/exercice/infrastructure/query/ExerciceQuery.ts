@@ -1,6 +1,5 @@
 import type { Exercice } from "@prisma/client"
 
-import type { ListeExerciceContrat } from "@/api/index.server"
 import type { ServerRequestWithoutPayload } from "~/.server/app/ServerRequest"
 import type { ServerResponse} from "~/.server/app/ServerResponse";
 import { success } from "~/.server/app/ServerResponse"
@@ -8,6 +7,7 @@ import { Controller } from "~/.server/app/decorators/ControllerDecorator"
 import { DoitEtreAuthentifie } from "~/.server/app/decorators/DoitEtreAuthentifieDecorator"
 import { ProduceServerResponse } from "~/.server/app/decorators/ProduceServerResponseDecorator"
 import { prisma } from "~/.server/db/prisma";
+import { ListeExerciceContrat } from "@/api/app/contrats"
 
 @Controller()
 export class ExerciceQuery {

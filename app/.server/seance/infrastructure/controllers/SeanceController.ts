@@ -4,7 +4,6 @@ import type { ExerciceSeance } from "../../domain/ExerciceSeance"
 import type { Seance } from "../../domain/Seance"
 import type { InitialiserSeanceUseCase } from "../../usecases/InitialiserSeanceUseCase"
 import type { ModifierNomSeanceUseCase } from "../../usecases/ModifierNomSeanceUseCase"
-import type { ExerciceSeanceContrat, SeanceContrat } from "@/api/index.server"
 import type { ServerRequest, ServerRequestWithoutPayload } from "~/.server/app/ServerRequest"
 import type { ServerResponse} from "~/.server/app/ServerResponse";
 import { created, updated } from "~/.server/app/ServerResponse";
@@ -12,6 +11,7 @@ import { Controller } from "~/.server/app/decorators/ControllerDecorator"
 import { DoitEtreAuthentifie } from "~/.server/app/decorators/DoitEtreAuthentifieDecorator"
 import { ProduceServerResponse } from "~/.server/app/decorators/ProduceServerResponseDecorator"
 import type { DupliquerSeanceUseCase } from "@/api/seance/usecases/DupliquerSeanceUseCase";
+import { ExerciceSeanceContrat, SeanceContrat } from "@/api/app/contrats"
 
 interface Dependencies {
   dupliquerSeanceUseCase: DupliquerSeanceUseCase

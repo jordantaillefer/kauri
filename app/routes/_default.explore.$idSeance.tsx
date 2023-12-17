@@ -1,11 +1,12 @@
+import { SeanceContrat } from "@/api/app/contrats"
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
-import { SeanceExplorationContrat } from "@/api/app/contrats/SeanceExplorationContrat";
-import { container, SeanceContrat } from "@/api/index.server";
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { useFetcher, useLoaderData, useOutletContext, useParams } from "@remix-run/react";
+import { SeanceExplorationContrat } from "@/api/app/contrats/SeanceExplorationContrat"
+import * as serverModule from "@/api/index.server"
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node"
+import { useFetcher, useLoaderData, useOutletContext, useParams } from "@remix-run/react"
 import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { FunctionComponent } from "react"
-import invariant from "tiny-invariant";
+import invariant from "tiny-invariant"
 
 import { H2Title } from "~/ui/atoms/H2Title"
 import { ListeExerciceSeance } from "~/ui/pages/trainings/ListeExerciceSeance"
@@ -17,7 +18,9 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     idSeance: params.idSeance
   }
 
-  const resultRecupererSeance = await container.resolve("seanceQuery").recupererSeanceParId({ request, payload })
+  const resultRecupererSeance = await serverModule.container
+    .resolve("seanceQuery")
+    .recupererSeanceParId({ request, payload })
 
   const seanceSelectionne = resultRecupererSeance.data as DetailSeanceContrat
 
@@ -35,24 +38,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       const { idSeance } = Object.fromEntries(formData)
 
       const payload = {
-        idSeance: idSeance.toString(),
+        idSeance: idSeance.toString()
       }
-      const result = await container.resolve("seanceController").dupliquerSeance({ request, payload })
+      const result = await serverModule.container.resolve("seanceController").dupliquerSeance({ request, payload })
       return redirect(`/trainings/${(result.data as SeanceContrat).id}`)
     }
   }
   return null
 }
 
-type ParentMatchData = { params: { idSeance: string }; data: { listeSeance: SeanceExplorationContrat[] } };
-type CurrentMatchData = { params: { idSeance: string }; data: { seanceSelectionne: DetailSeanceContrat } };
+type ParentMatchData = { params: { idSeance: string }; data: { listeSeance: SeanceExplorationContrat[] } }
+type CurrentMatchData = { params: { idSeance: string }; data: { seanceSelectionne: DetailSeanceContrat } }
 
 export const handle: AgnosticDataIndexRouteObject["handle"] = {
-  breadcrumb: (parentMatch: ParentMatchData, currentMatch: CurrentMatchData ) => {
+  breadcrumb: (parentMatch: ParentMatchData, currentMatch: CurrentMatchData) => {
     if (currentMatch) {
       const seanceSelectionne = currentMatch.data.seanceSelectionne
 
-      return { to: `/trainings/${currentMatch.params.idSeance}`, label: seanceSelectionne.nomSeance, state: "consulter-seance", isDynamic: true }
+      return {
+        to: `/trainings/${currentMatch.params.idSeance}`,
+        label: seanceSelectionne.nomSeance,
+        state: "consulter-seance",
+        isDynamic: true
+      }
     }
     return { to: `/trainings/${parentMatch.params.idSeance}`, label: "Aucune séance", state: "consulter-seance" }
   }
@@ -60,7 +68,7 @@ export const handle: AgnosticDataIndexRouteObject["handle"] = {
 
 const TrainingSeance: FunctionComponent = () => {
   const { seanceSelectionne } = useLoaderData<typeof loader>()
-  const { lastState } = useOutletContext<{ idSeanceSelectionne: string, lastState: string }>()
+  const { lastState } = useOutletContext<{ idSeanceSelectionne: string; lastState: string }>()
 
   const { idSeance: idSeanceSelectionne } = useParams()
 
@@ -69,7 +77,9 @@ const TrainingSeance: FunctionComponent = () => {
   return (
     <>
       <div
-        className={`${lastState === "consulter-seance" || "max-md:hidden"} flex flex-col w-full lg:w-1/3 px-4 h-full border-l border-gray-300`}
+        className={`${
+          lastState === "consulter-seance" || "max-md:hidden"
+        } flex flex-col w-full lg:w-1/3 px-4 h-full border-l border-gray-300`}
       >
         {idSeanceSelectionne ? (
           <>

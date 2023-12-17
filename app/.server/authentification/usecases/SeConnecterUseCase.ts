@@ -8,7 +8,7 @@ export class SeConnecterUseCase {
     this.authentificationService = authentificationService
   }
 
-  async execute(request: Request): Promise<CompteUtilisateur> {
+  async execute(request: Request): Promise<void> {
     return this.authentificationService.seConnecter(request)
   }
 }

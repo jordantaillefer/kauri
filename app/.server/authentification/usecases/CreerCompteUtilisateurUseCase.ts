@@ -13,8 +13,10 @@ export class CreerCompteUtilisateurUseCase {
   }
 
   async execute({ idUtilisateur, nom, prenom }: { idUtilisateur: string, nom: string, prenom: string }): Promise<CompteUtilisateur> {
-    return this.compteUtilisateurRepository.creerCompteUtilisateur(
-      CompteUtilisateur.creerCompteUtilisateur({ id: idUtilisateur, nom, prenom })
-    )
+    let compteUtilisateur = await this.compteUtilisateurRepository.recupererCompteUtilisateurParId(idUtilisateur)
+    if (!compteUtilisateur) {
+      compteUtilisateur = await this.compteUtilisateurRepository.creerCompteUtilisateur(CompteUtilisateur.creerCompteUtilisateur({ id: idUtilisateur, nom, prenom }))
+    }
+    return compteUtilisateur
   }
 }

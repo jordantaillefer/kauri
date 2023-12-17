@@ -1,6 +1,6 @@
+import { ListeExerciceContrat } from "@/api/app/contrats"
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import * as serverModule from "@/api/index.server"
-import { ListeExerciceContrat } from "@/api/index.server"
 import { PencilIcon } from "@heroicons/react/24/solid"
 import type { ActionFunction, LoaderFunctionArgs } from "@remix-run/node"
 import { json, redirect } from "@remix-run/node"
