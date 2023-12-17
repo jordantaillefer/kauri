@@ -7,19 +7,11 @@ import type { CompteUtilisateurRepository } from "../../domain/ports/CompteUtili
 
 export class PrismaCompteUtilisateurRepository implements CompteUtilisateurRepository {
   async creerCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Promise<CompteUtilisateur> {
-    console.log("repo1")
     const compteUtilisateurASauvegarder = convertirEnCompteUtilisateurModel(compteUtilisateur)
-    try {
-      console.log("repo2")
-      const compteUtilisateurModel = await prisma.user.create({
-        data: compteUtilisateurASauvegarder
-      })
-      console.log("repo3")
-      return convertirEnCompteUtilisateur(compteUtilisateurModel)
-    } catch (e) {
-      console.log("tototototo")
-      console.log(e)
-    }
+    const compteUtilisateurModel = await prisma.user.create({
+      data: compteUtilisateurASauvegarder
+    })
+    return convertirEnCompteUtilisateur(compteUtilisateurModel)
   }
 
   async recupererCompteUtilisateurParId(compteUtilisateurId: string): Promise<CompteUtilisateur> {
