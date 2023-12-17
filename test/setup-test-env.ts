@@ -1,7 +1,6 @@
 import { installGlobals } from "@remix-run/node"
-import "@testing-library/jest-dom/extend-expect"
 import { PrismaClient } from "@prisma/client"
-import type { TestContext, TestFunction } from "vitest"
+import type { TaskContext, Test, TestContext, TestFunction } from "vitest"
 import path, { join } from "path"
 import dotenv from "dotenv"
 import { fileURLToPath } from "url"
@@ -60,7 +59,7 @@ export const integrationTestFunction = (
     vi.restoreAllMocks()
   })
 
-  return (testContext: TestContext) => {
+  return (testContext: TaskContext<Test<{}>> & TestContext) => {
     return testFunction({ ...testContext, identifiant, testIdGenerator })
   }
 }
