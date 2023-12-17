@@ -15,7 +15,7 @@
     "migrate": "prisma migrate deploy",
     "migrate:test": "dotenv -e .env.test prisma migrate deploy",
     "prestart": "yarn migrate",
-    "start": "remix-serve ./build/index.js",
+    "start": "remix-serve ./build/server/index.js",
     "test": "NODE_ENV=test vitest"
   },
   "prisma": {
