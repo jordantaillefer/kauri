@@ -22,8 +22,8 @@
     "skipLibCheck": true,
     "paths": {
       "~/*": ["./app/*"],
-      "@/api/*": ["./app/server/*"],
-      "@/api": ["./app/server/index.ts"]
+      "@/api/*": ["./app/.server/*"],
+      "@/api": ["./app/server/index.server.ts"]
     },
     "noEmit": true
   }

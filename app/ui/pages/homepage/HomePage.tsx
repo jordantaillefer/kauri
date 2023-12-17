@@ -1,4 +1,4 @@
-import { container } from "@/api";
+import * as serverModule from "@/api/index.server";
 import { CheckIcon } from "@heroicons/react/20/solid"
 import {
   ArrowPathIcon,
@@ -123,7 +123,7 @@ function classNames(...classes: string[]) {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const response = await container.resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
+  const response = await serverModule.container.resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
   if (response.reasonPhrase === ReasonPhrases.OK) {
     return redirect("/trainings")
   }

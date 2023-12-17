@@ -1,5 +1,5 @@
-import { container } from "@/api"
 import { SeanceExplorationContrat } from "@/api/app/contrats/SeanceExplorationContrat"
+import * as serverModule from "@/api/index.server"
 import { Menu, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid"
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node"
@@ -10,7 +10,7 @@ import { H2Title } from "~/ui/atoms/H2Title"
 import { randomBgColor } from "~/utils/RandomBgColor"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const resultListerSeanceExploration = await container
+  const resultListerSeanceExploration = await serverModule.container
     .resolve("seanceExplorationQuery")
     .listerSeanceExploration({ request })
 

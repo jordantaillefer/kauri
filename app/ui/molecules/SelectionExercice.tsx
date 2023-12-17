@@ -1,4 +1,4 @@
-import { ExerciceContrat } from "@/api";
+import { ExerciceContrat } from "@/api/index.server";
 import { RadioGroup } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { Dispatch, FunctionComponent, SetStateAction } from "react";

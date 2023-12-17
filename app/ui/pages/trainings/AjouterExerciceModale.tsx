@@ -1,4 +1,4 @@
-import { ExerciceContrat, ListeExerciceContrat } from "@/api"
+import { ExerciceContrat, ListeExerciceContrat } from "@/api/index.server"
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { useFetcher } from "@remix-run/react"
 import { FunctionComponent, MouseEventHandler, useEffect, useState } from "react";

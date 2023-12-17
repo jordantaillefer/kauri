@@ -1,6 +1,6 @@
-import { container } from "@/api"
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import { SportifEvenementContrat } from "@/api/app/contrats/SportifEvenementContrat"
+import * as serverModule from "@/api/index.server"
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { FunctionComponent, useState } from "react"
@@ -18,8 +18,8 @@ import { MoisSelecteur } from "~/ui/organisms/MoisSelecteur"
 import { useCalendar } from "~/ui/pages/planning/useCalendar"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const resultListerSeance = await container.resolve("seanceQuery").listerSeance({ request })
-  const resultListerEvenement = await container.resolve("sportifQuery").listerEvenement({ request })
+  const resultListerSeance = await serverModule.container.resolve("seanceQuery").listerSeance({ request })
+  const resultListerEvenement = await serverModule.container.resolve("sportifQuery").listerEvenement({ request })
 
   const listeSeance = resultListerSeance.data as DetailSeanceContrat[]
   const listeSportifEvenement = resultListerEvenement.data as SportifEvenementContrat[]
@@ -41,7 +41,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         tempsEvenement: `${selectedDay.toString()}T${tempsEvenement.toString()}`
       }
 
-      await container.resolve("sportifController").ajouterEvenement({ request, payload })
+      await serverModule.container.resolve("sportifController").ajouterEvenement({ request, payload })
 
       break
     }

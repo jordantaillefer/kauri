@@ -8,7 +8,7 @@ export default defineConfig({
     cache: false,
     globals: true,
     environment: "happy-dom",
-    setupFiles: ["config.ts", "./test/setup-test-env.ts"],
+    setupFiles: ["config.server.ts", "./test/setup-test-env.ts"],
     include: ["./app/server/**/*.test.ts", "./app/**/*.spec.ts"],
     watchExclude: [".*\\/node_modules\\/.*", ".*\\/build\\/.*", ".*\\/postgres-data\\/.*"]
   }

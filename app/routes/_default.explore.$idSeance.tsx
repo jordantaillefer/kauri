@@ -1,6 +1,6 @@
-import { container, SeanceContrat } from "@/api";
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import { SeanceExplorationContrat } from "@/api/app/contrats/SeanceExplorationContrat";
+import { container, SeanceContrat } from "@/api/index.server";
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { useFetcher, useLoaderData, useOutletContext, useParams } from "@remix-run/react";
 import { AgnosticDataIndexRouteObject } from "@remix-run/router"
