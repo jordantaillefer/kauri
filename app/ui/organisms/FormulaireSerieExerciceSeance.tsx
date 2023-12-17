@@ -1,5 +1,5 @@
-import { ExerciceContrat } from "@/api";
 import { CATEGORIE } from "@/api/exercice/domain/categorie";
+import { ExerciceContrat } from "@/api/index.server";
 import { TrashIcon } from "@heroicons/react/24/outline"
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Dispatch, FunctionComponent, SetStateAction } from "react";

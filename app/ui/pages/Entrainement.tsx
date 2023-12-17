@@ -1,4 +1,3 @@
-import { container } from "@/api"
 import { DetailEntrainementContrat } from "@/api/app/contrats/EntrainementContrat"
 import { CATEGORIE } from "@/api/exercice/domain/categorie"
 import { CheckIcon } from "@heroicons/react/20/solid"
@@ -8,6 +7,7 @@ import { useFetcher, useLoaderData } from "@remix-run/react"
 import { FunctionComponent, useState } from "react"
 import invariant from "tiny-invariant"
 
+import * as serverModule from "~/.server/index.server"
 import { H2Title } from "~/ui/atoms/H2Title"
 import { Card } from "~/ui/molecules/Card"
 import { ListeExerciceSeanceSideBar } from "~/ui/molecules/ListeExerciceSeanceSideBar"
@@ -23,7 +23,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     idEntrainement
   }
 
-  const entrainementResult = await container
+  const entrainementResult = await serverModule.container
     .resolve("entrainementQuery")
     .recupererEntrainementParId({ request, payload })
 
@@ -50,7 +50,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         idSerieEntrainement: idSerieEntrainement.toString(),
         idExerciceEntrainement: idExerciceEntrainement.toString()
       }
-      await container.resolve("entrainementController").realiserSerie({ request, payload })
+      await serverModule.container.resolve("entrainementController").realiserSerie({ request, payload })
     }
   }
   return null

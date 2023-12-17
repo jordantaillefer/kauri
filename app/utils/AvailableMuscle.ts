@@ -1,4 +1,3 @@
-import { CATEGORIE } from "@/api/exercice/domain/categorie";
 import ImageAbdos from "~/images/image-abdos.jpg";
 import ImageAvantBras from "~/images/image-avant-bras.jpg";
 import ImageBiceps from "~/images/image-biceps.jpg";
@@ -12,6 +11,7 @@ import ImagePectoraux from "~/images/image-pectoraux.jpg";
 import ImageQuadriceps from "~/images/image-quadriceps.jpg";
 import ImageTrapeze from "~/images/image-trapeze.jpg";
 import ImageTriceps from "~/images/image-triceps.jpg";
+import { CATEGORIE } from "~/utils/Categorie"
 
 export const AVAILABLE_MUSCLE: { [key in CATEGORIE]: string } = {
   [CATEGORIE.ABDOMINAUX]: ImageAbdos,

@@ -1,7 +1,7 @@
-import { container } from "@/api"
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import { EntrainementContrat } from "@/api/app/contrats/EntrainementContrat"
 import { SportifEvenementContrat } from "@/api/app/contrats/SportifEvenementContrat"
+import * as serverModule from "@/api/index.server"
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node"
 import { useFetcher, useLoaderData } from "@remix-run/react"
 import { format } from "date-fns"
@@ -17,7 +17,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const payload = {
     date: format(new Date(), "yyyy-MM-dd")
   }
-  const resultListerEvenement = await container.resolve("sportifQuery").listerEvenementParDate({ request, payload })
+  const resultListerEvenement = await serverModule.container.resolve("sportifQuery").listerEvenementParDate({ request, payload })
 
   const payloadListeSeance = {
     listeSeanceIds: ((resultListerEvenement?.data as SportifEvenementContrat[]) || []).map(
@@ -25,7 +25,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     )
   }
 
-  const resultListerSeanceParIds = await container
+  const resultListerSeanceParIds = await serverModule.container
     .resolve("seanceQuery")
     .listerSeanceParIds({ request, payload: payloadListeSeance })
   const listeSeance = resultListerSeanceParIds.data as DetailSeanceContrat[]
@@ -49,7 +49,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         idSeance: idSeance.toString()
       }
 
-      const demarrerEntrainementResult = await container
+      const demarrerEntrainementResult = await serverModule.container
         .resolve("entrainementController")
         .demarrerEntrainement({ request, payload })
       const nouvelEntrainement = demarrerEntrainementResult.data as EntrainementContrat

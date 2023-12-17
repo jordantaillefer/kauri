@@ -1,4 +1,4 @@
-import { container } from "@/api"
+import { container } from "@/api/index.server"
 import type { LoaderFunction, MetaFunction } from "@remix-run/node"
 import { json } from "@remix-run/node"
 import {

@@ -1,6 +1,6 @@
-import { container, ExerciceContrat, ListeExerciceContrat } from "@/api"
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
 import { CATEGORIE } from "@/api/exercice/domain/categorie"
+import { container, ExerciceContrat, ListeExerciceContrat } from "@/api/index.server"
 import { ChevronRightIcon } from "@heroicons/react/24/solid"
 import { ActionFunction, redirect } from "@remix-run/node"
 import { useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@remix-run/react"

@@ -1,5 +1,6 @@
-import { container, ListeExerciceContrat } from "@/api"
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
+import * as serverModule from "@/api/index.server"
+import { ListeExerciceContrat } from "@/api/index.server"
 import { PencilIcon } from "@heroicons/react/24/solid"
 import type { ActionFunction, LoaderFunctionArgs } from "@remix-run/node"
 import { json, redirect } from "@remix-run/node"
@@ -12,9 +13,9 @@ import { CreerSeanceCard } from "~/ui/organisms/CreerSeanceCard"
 import { randomBgColor } from "~/utils/RandomBgColor"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const resultListerSeance = await container.resolve("seanceQuery").listerSeance({ request })
+  const resultListerSeance = await serverModule.container.resolve("seanceQuery").listerSeance({ request })
 
-  const resultListerExercice = await container.resolve("exerciceQuery").listerExercice({ request })
+  const resultListerExercice = await serverModule.container.resolve("exerciceQuery").listerExercice({ request })
 
   if (resultListerSeance.reasonPhrase === ReasonPhrases.FORBIDDEN) {
     redirect("/")
@@ -36,7 +37,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   switch (_action) {
     case "creer-seance": {
-      await container.resolve("seanceController").initialiserSeance({ request })
+      await serverModule.container.resolve("seanceController").initialiserSeance({ request })
       break
     }
   }

@@ -1,5 +1,5 @@
-import { container } from "@/api"
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
+import { container } from "@/api/index.server"
 import { PencilIcon } from "@heroicons/react/24/solid";
 import { ActionFunction } from "@remix-run/node"
 import { NavLink, Outlet, useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@remix-run/react";

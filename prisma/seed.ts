@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { CATEGORIE } from "~/server/exercice/domain/categorie"
+import { CATEGORIE } from "~/.server/exercice/domain/categorie"
 
 const prisma = new PrismaClient()
 
