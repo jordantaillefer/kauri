@@ -2,17 +2,18 @@ import { CompteUtilisateurContrat } from "@/api/app/contrats/CompteUtilisateurCo
 import { Dialog, Transition } from "@headlessui/react"
 import { Bars3Icon } from "@heroicons/react/20/solid"
 import {
-  CalendarIcon,
   DocumentDuplicateIcon,
   CalendarDaysIcon,
   SunIcon,
   ChatBubbleLeftEllipsisIcon,
   PresentationChartLineIcon,
   XMarkIcon,
-  UsersIcon
-} from "@heroicons/react/24/solid"
-import { Link, NavLink, useRouteLoaderData } from "@remix-run/react"
-import React, { Dispatch, Fragment, FunctionComponent, SetStateAction, useState } from "react"
+  UsersIcon,
+  GlobeEuropeAfricaIcon,
+  SparklesIcon
+} from "@heroicons/react/24/solid";
+import { Link, NavLink, useRouteLoaderData } from "@remix-run/react";
+import React, { Dispatch, Fragment, FunctionComponent, SetStateAction, useState } from "react";
 import { NavLinkProps } from "react-router-dom"
 
 import LogoKauriDark from "~/images/logo-kauri-dark.png"
@@ -35,11 +36,17 @@ const MenuNavigation: FunctionComponent<{
       {navigation.map(item => (
         <li key={item.name}>
           <NavLink to={item.to} className={updateClassNameLinkIfActive} onClick={() => setIsSidebarOpen(false)}>
-            <item.icon className={"h-6 w-6 shrink-0"} aria-hidden="true" />
+            <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
             <span>{item.name}</span>
           </NavLink>
         </li>
       ))}
+      <li>
+        <NavLink to="coach" className="bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-white" onClick={() => setIsSidebarOpen(false)}>
+          <SparklesIcon className="h-6 w-6 shrink-0" aria-hidden="true" />
+          <span>Espace coach</span>
+        </NavLink>
+      </li>
     </ul>
   )
 }
@@ -52,7 +59,7 @@ export const Navigation: FunctionComponent<{ mode?: string }> = ({ mode = "" }) 
     { name: "Mes séances", to: "trainings", icon: DocumentDuplicateIcon, active: true },
     { name: "Mes statistiques", to: "statistiques", icon: PresentationChartLineIcon, active: false },
     { name: "Planning d'entrainement", to: "planning", icon: CalendarDaysIcon, active: true },
-    { name: "Explorer les séances", to: "explore", icon: CalendarIcon, active: true },
+    { name: "Explorer les séances", to: "explore", icon: GlobeEuropeAfricaIcon, active: true },
     { name: "Discussions", to: "chat", icon: ChatBubbleLeftEllipsisIcon, active: false }
   ]
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
