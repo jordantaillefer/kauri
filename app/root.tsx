@@ -1,4 +1,4 @@
-import { container } from "@/api/index.server"
+import * as serverModule from "@/api/index.server"
 import type { LoaderFunction, MetaFunction } from "@remix-run/node"
 import { json } from "@remix-run/node"
 import {
@@ -10,14 +10,12 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useOutletContext, useRouteError
+  useRouteError
 } from "@remix-run/react";
 import { ReasonPhrases } from "http-status-codes"
 import { ReactNode } from "react"
 
 import "./styles/tailwind.css"
-
-type ContextType = { authenticated: boolean }
 
 export const meta: MetaFunction = () => {
   return [
@@ -54,7 +52,7 @@ function Document({ children }: DocumentProps) {
 }
 
 export const loader: LoaderFunction = async ({ request, params, context }) => {
-  const response = await container.resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
+  const response = await serverModule.container.resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
   return json({
     authenticated: response.reasonPhrase === ReasonPhrases.OK,
     user: response.data

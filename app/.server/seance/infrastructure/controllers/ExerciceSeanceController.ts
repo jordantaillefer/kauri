@@ -3,7 +3,6 @@ import invariant from "tiny-invariant"
 import type { ExerciceSeance } from "../../domain/ExerciceSeance"
 import type { SerieExerciceSeance } from "../../domain/SerieExerciceSeance"
 import type { InitialiserExerciceSeanceUseCase } from "../../usecases/InitialiserExerciceSeanceUseCase"
-import type { ExerciceSeanceContrat, SerieExerciceSeanceContrat } from "@/api/index.server"
 import type { ServerRequest } from "~/.server/app/ServerRequest"
 import type { ServerResponse } from "~/.server/app/ServerResponse";
 import { created, updated } from "~/.server/app/ServerResponse";
@@ -12,6 +11,7 @@ import { DoitEtreAuthentifie } from "~/.server/app/decorators/DoitEtreAuthentifi
 import { ProduceServerResponse } from "~/.server/app/decorators/ProduceServerResponseDecorator"
 import type { ModifierExerciceSeanceUseCase } from "@/api/seance/usecases/ModifierExerciceSeanceUseCase";
 import type { SupprimerExerciceSeanceUseCase } from "@/api/seance/usecases/SupprimerExerciceSeanceUseCase";
+import { ExerciceSeanceContrat, SerieExerciceSeanceContrat } from "@/api/app/contrats"
 
 interface Dependencies {
   initialiserExerciceSeanceUseCase: InitialiserExerciceSeanceUseCase

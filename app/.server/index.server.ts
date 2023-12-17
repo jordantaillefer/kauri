@@ -159,6 +159,4 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
   })
 }
 
-export * from "./app/contrats"
-
 export const container = innerContainer

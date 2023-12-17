@@ -1,5 +1,5 @@
 import { DetailSeanceContrat } from "@/api/app/contrats/DetailSeanceContrat"
-import { container } from "@/api/index.server"
+import * as serverModule from "@/api/index.server"
 import { PencilIcon } from "@heroicons/react/24/solid";
 import { ActionFunction } from "@remix-run/node"
 import { NavLink, Outlet, useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@remix-run/react";
@@ -22,7 +22,7 @@ export const action: ActionFunction = async ({ request }) => {
         idSeance: idSeance.toString(),
         nomSeance: nomSeance.toString()
       }
-      await container.resolve("seanceController").mettreAJourNomSeance({ request, payload })
+      await serverModule.container.resolve("seanceController").mettreAJourNomSeance({ request, payload })
       break
     }
     case "supprimer-exercice": {
@@ -31,7 +31,7 @@ export const action: ActionFunction = async ({ request }) => {
       const payload = {
         idExerciceSeance: idExerciceSeance.toString(),
       }
-      await container.resolve("exerciceSeanceController").supprimerExerciceSeance({ request, payload })
+      await serverModule.container.resolve("exerciceSeanceController").supprimerExerciceSeance({ request, payload })
       break
     }
   }

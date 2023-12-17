@@ -1,5 +1,6 @@
+import { ExerciceContrat, ListeExerciceContrat } from "@/api/app/contrats"
 import { CATEGORIE } from "@/api/exercice/domain/categorie"
-import { container, ExerciceContrat, ListeExerciceContrat } from "@/api/index.server"
+import * as serverModule from "@/api/index.server"
 import { ChevronRightIcon } from "@heroicons/react/24/solid"
 import { ActionFunction, redirect } from "@remix-run/node"
 import { useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@remix-run/react"
@@ -31,7 +32,7 @@ export const action: ActionFunction = async ({ request }) => {
           poids: Number(listePoids.at(index)?.toString() || 0)
         }))
       }
-      await container.resolve("exerciceSeanceController").creerExerciceSeance({ request, payload })
+      await serverModule.container.resolve("exerciceSeanceController").creerExerciceSeance({ request, payload })
       return redirect(`/trainings/${idSeance}`)
     }
   }
