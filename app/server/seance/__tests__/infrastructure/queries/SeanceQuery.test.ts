@@ -171,7 +171,16 @@ describe("SeanceQuery", () => {
           const listeSeance = response.data as DetailSeanceContrat[]
           expect(listeSeance).toBeDefined()
           expect(listeSeance).toHaveLength(2)
-          expect(listeSeance.map(seance => seance.id)).toEqual([uuidSeance1, uuidSeance3])
+          expect(listeSeance).toContainEqual({
+            id: uuidSeance1,
+            nomSeance: "Seance 1",
+            exerciceSeances: [],
+          })
+          expect(listeSeance).toContainEqual({
+            id: uuidSeance3,
+            nomSeance: "Seance 3",
+            exerciceSeances: [],
+          })
         })
       )
 

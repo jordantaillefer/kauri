@@ -1,6 +1,5 @@
 import { container } from "@/api"
-import { cssBundleHref } from "@remix-run/css-bundle"
-import type { LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node"
+import type { LoaderFunction, MetaFunction } from "@remix-run/node"
 import { json } from "@remix-run/node"
 import {
   isRouteErrorResponse,
@@ -16,13 +15,9 @@ import {
 import { ReasonPhrases } from "http-status-codes"
 import { ReactNode } from "react"
 
-import styles from "./styles/tailwind.css"
+import "./styles/tailwind.css"
 
 type ContextType = { authenticated: boolean }
-
-export const links: LinksFunction = () => {
-  return [...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []), { rel: "stylesheet", href: styles }]
-}
 
 export const meta: MetaFunction = () => {
   return [
@@ -74,10 +69,6 @@ export default function App(): ReactNode {
       <Outlet context={{ authenticated }} />
     </Document>
   )
-}
-
-export function useAuthenticated() {
-  return useOutletContext<ContextType>()
 }
 
 export function ErrorBoundary() {

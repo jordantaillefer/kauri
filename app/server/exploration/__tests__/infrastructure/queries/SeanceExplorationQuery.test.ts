@@ -7,6 +7,7 @@ import { SeanceBuilder } from "@/api/testUtils/builders/SeanceBuilder"
 import { prisma } from "@/api/db/prisma"
 import type { SeanceExplorationContrat } from "@/api/app/contrats/SeanceExplorationContrat"
 import { SeanceExplorationQuery } from "@/api/exploration/infrastructure/queries/SeanceExplorationQuery"
+import { anyString } from "vitest-mock-extended"
 
 describe("SeanceExplorationQuery", () => {
   let seanceExplorationQuery: SeanceExplorationQuery
@@ -79,12 +80,18 @@ describe("SeanceExplorationQuery", () => {
       expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
       expect(response.data).toHaveLength(2)
       const listeSeanceResult = response.data as SeanceExplorationContrat[]
-      expect(listeSeanceResult.at(0)?.nomSeance).toEqual("nom seance 1")
-      expect(listeSeanceResult.at(0)?.nomUtilisateur).toEqual("John Doe")
-      expect(listeSeanceResult.at(0)?.nombreExercicesSeance).toEqual(2)
-      expect(listeSeanceResult.at(1)?.nomSeance).toEqual("nom seance 2")
-      expect(listeSeanceResult.at(1)?.nomUtilisateur).toEqual("Jane Doe")
-      expect(listeSeanceResult.at(1)?.nombreExercicesSeance).toEqual(1)
+      expect(listeSeanceResult).toContainEqual({
+        id: anyString(),
+        nomSeance: "nom seance 1",
+        nomUtilisateur: "John Doe",
+        nombreExercicesSeance: 2
+      })
+      expect(listeSeanceResult).toContainEqual({
+        id: anyString(),
+        nomSeance: "nom seance 2",
+        nomUtilisateur: "Jane Doe",
+        nombreExercicesSeance: 1
+      })
     })
   )
 })
