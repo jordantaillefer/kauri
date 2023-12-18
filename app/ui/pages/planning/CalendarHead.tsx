@@ -1,5 +1,5 @@
 const CalendarHeaders = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."];
-export const CalenderHead = () => {
+export const CalendarHead = () => {
   return (
     <div
       className="grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none">

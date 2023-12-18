@@ -1,16 +1,16 @@
 import { Outlet, useOutletContext } from "@remix-run/react"
 import { FunctionComponent, PropsWithChildren } from "react"
 
-import { FilAriane } from "~/ui/organisms/FilAriane"
-import { SideBar } from "~/ui/organisms/SideBar"
+import { FilAriane } from "~/ui/shared/FilAriane"
+import { Navigation } from "~/ui/shared/Navigation"
 
 export const DefaultLayout = () => {
   const { authenticated } = useOutletContext<{ authenticated: boolean }>()
 
   return (
     <div className="flex h-full flex-col text-primary" data-theme="default">
-      <main id="main" className="flex flex-col flex-grow md:flex-row flex-grow overflow-x-hidden  bg-background-main">
-        <SideBar authenticated={authenticated} />
+      <main id="main" className="flex flex-col flex-grow md:flex-row overflow-x-hidden  bg-background-main">
+        <Navigation authenticated={authenticated} />
         <MainContent>
           <Outlet />
         </MainContent>

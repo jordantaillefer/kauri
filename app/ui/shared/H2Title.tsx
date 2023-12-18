@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 
-import { Titre } from "~/ui/atoms/Titre"
+import { Titre } from "~/ui/shared/Titre"
 
 interface H2TitleProps {
   children: ReactNode

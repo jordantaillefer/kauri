@@ -33,7 +33,7 @@ export default {
         "danger-lighter": "hsl(345, 86%, 80%)"
       },
       backgroundImage: {
-        "accueil-button": "var(--bg-accueil-button)",
+        "logo-accueil-button": "var(--bg-logo-accueil-button)",
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))"
       },
       keyframes: {

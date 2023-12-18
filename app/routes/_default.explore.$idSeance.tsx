@@ -8,8 +8,8 @@ import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { FunctionComponent } from "react"
 import invariant from "tiny-invariant"
 
-import { H2Title } from "~/ui/atoms/H2Title"
 import { ListeExerciceSeance } from "~/ui/pages/trainings/ListeExerciceSeance"
+import { H2Title } from "~/ui/shared/H2Title"
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   invariant(params.idSeance)

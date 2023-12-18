@@ -15,8 +15,8 @@ import React, { Dispatch, Fragment, FunctionComponent, SetStateAction, useState 
 import { NavLinkProps } from "react-router-dom"
 
 import LogoKauri from "~/images/logo-kauri-dark.png"
-import { AccueilButton } from "~/ui/molecules/AccueilButton"
-import { SeDeconnecterButton } from "~/ui/molecules/SeDeconnecterButton";
+import { AccueilButton } from "~/ui/shared/AccueilButton"
+import { SeDeconnecterButton } from "~/ui/shared/SeDeconnecterButton";
 
 const updateClassNameLinkIfActive: NavLinkProps["className"] = props => {
   return `${
@@ -41,7 +41,7 @@ const MenuNavigation: FunctionComponent<{ navigation: { name: string, to: string
   )
 }
 
-export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authenticated }) => {
+export const Navigation: FunctionComponent<{ authenticated: boolean }> = ({ authenticated }) => {
   const data = useRouteLoaderData<{ authenticated: boolean, user: CompteUtilisateurContrat }>("root");
 
   const navigation = [
@@ -99,7 +99,6 @@ export const SideBar: FunctionComponent<{ authenticated: boolean }> = ({ authent
                     </button>
                   </div>
                 </Transition.Child>
-                {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col overflow-y-auto bg-gray-200 px-6 ring-1 ring-white/10">
                   <div className="flex items-center h-10 pt-2 md:h-20 shrink-0 justify-center w-full">
                     <img className="h-4 md:h-6 w-auto" src={LogoKauri} alt="Kauri" />

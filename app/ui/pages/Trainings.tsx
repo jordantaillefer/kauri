@@ -8,8 +8,8 @@ import { NavLink, Outlet, UIMatch, useLoaderData, useMatches, useParams } from "
 import { ReasonPhrases } from "http-status-codes"
 import { FunctionComponent } from "react"
 
-import { H2Title } from "~/ui/atoms/H2Title"
-import { CreerSeanceCard } from "~/ui/organisms/CreerSeanceCard"
+import { CreerSeanceCard } from "~/ui/pages/trainings/CreerSeanceCard"
+import { H2Title } from "~/ui/shared/H2Title"
 import { randomBgColor } from "~/utils/RandomBgColor"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -51,7 +51,10 @@ export const handle = {
 
 const Trainings: FunctionComponent = () => {
   const { listeSeance } = useLoaderData<typeof loader>()
-  const matches = useMatches() as UIMatch<any, { breadcrumb: (match: UIMatch) => { to: string, label: string, state: string } }>[]
+  const matches = useMatches() as UIMatch<
+    any,
+    { breadcrumb: (match: UIMatch) => { to: string; label: string; state: string } }
+  >[]
 
   const lastMatch = matches[matches.length - 1]
   const lastState = lastMatch.handle.breadcrumb(lastMatch).state

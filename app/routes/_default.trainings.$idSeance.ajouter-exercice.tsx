@@ -7,9 +7,9 @@ import { useFetcher, useOutletContext, useParams, useRouteLoaderData } from "@re
 import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { Fragment, FunctionComponent, useState } from "react"
 
-import { H2Title } from "~/ui/atoms/H2Title"
-import { Select } from "~/ui/molecules/Select"
-import { FormulaireSerieExerciceSeance, SerieCreation } from "~/ui/organisms/FormulaireSerieExerciceSeance";
+import { FormulaireSerieExerciceSeance, SerieCreation } from "~/ui/pages/trainings/FormulaireSerieExerciceSeance";
+import { H2Title } from "~/ui/shared/H2Title"
+import { Select } from "~/ui/shared/Select"
 import { AVAILABLE_MUSCLE } from "~/utils/AvailableMuscle"
 import { removeAccents } from "~/utils/RemoveAccents";
 

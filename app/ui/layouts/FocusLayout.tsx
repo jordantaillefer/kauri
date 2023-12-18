@@ -1,7 +1,7 @@
 import { Outlet, useOutletContext } from "@remix-run/react"
 import type { FunctionComponent, PropsWithChildren, ReactNode } from "react"
 
-import { Header } from "~/ui/organisms/Header"
+import { Header } from "~/ui/shared/Header"
 
 type FocusLayoutProps = PropsWithChildren & {
   children: ReactNode

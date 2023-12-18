@@ -3,8 +3,8 @@ import { ExerciceEntrainementContrat } from "@/api/app/contrats/EntrainementCont
 import { NavLink, useFetcher } from "@remix-run/react";
 import { FunctionComponent } from "react"
 
-import { ImageMuscle } from "~/ui/molecules/imageMuscle"
-import { ExerciceSeancePopover } from "~/ui/organisms/ExerciceSeancePopover";
+import { ExerciceSeancePopover } from "~/ui/shared/ExerciceSeancePopover";
+import { ImageMuscle } from "~/ui/shared/ImageMuscle"
 
 export const ListeExerciceSeance: FunctionComponent<{
   exerciceSeances: (DetailExerciceContrat | ExerciceEntrainementContrat)[]

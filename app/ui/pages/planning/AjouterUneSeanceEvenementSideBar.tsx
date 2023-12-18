@@ -4,9 +4,9 @@ import { useFetcher, useLoaderData } from "@remix-run/react"
 import { Dispatch, Fragment, SetStateAction, useState } from "react"
 
 import { JourPlanning } from "~/domain/JourPlanning"
-import { SeanceCard } from "~/ui/organisms/SeanceCard"
 import { loader } from "~/ui/pages/Planning"
 import { useCalendar } from "~/ui/pages/planning/useCalendar"
+import { SeanceCard } from "~/ui/pages/trainings/SeanceCard"
 import { LISTE_HEURE } from "~/utils/ListeHeure"
 
 export const AjouterUneSeanceEvenementSideBar = ({
@@ -98,7 +98,12 @@ export const AjouterUneSeanceEvenementSideBar = ({
                         </div>
                         <div className="relative mt-6 flex-1 px-4 sm:px-6 space-y-4 py-2 max-h-[75vh] overflow-y-scroll flex flex-col">
                           {listeSeance.map(seance => (
-                            <button className="text-left" key={seance.id} type="button" onClick={() => setIdSelectedSeanceEvenement(seance.id)}>
+                            <button
+                              className="text-left"
+                              key={seance.id}
+                              type="button"
+                              onClick={() => setIdSelectedSeanceEvenement(seance.id)}
+                            >
                               <SeanceCard
                                 name={seance.nomSeance}
                                 description={`${seance.exerciceSeances.length} exercice${
@@ -113,7 +118,9 @@ export const AjouterUneSeanceEvenementSideBar = ({
                       <div className="flex justify-center">
                         <button
                           type="submit"
-                          onClick={() => { setIsOpen(false) }}
+                          onClick={() => {
+                            setIsOpen(false)
+                          }}
                           className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
                         >
                           Ajouter cette séance

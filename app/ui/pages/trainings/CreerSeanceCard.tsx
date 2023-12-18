@@ -2,7 +2,7 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import { useFetcher } from "@remix-run/react";
 import { FunctionComponent } from "react"
 
-import { Card } from "~/ui/molecules/Card"
+import { Card } from "~/ui/shared/Card"
 
 export const CreerSeanceCard: FunctionComponent = () => {
   const fetcher = useFetcher({ key: "creer-seance" })

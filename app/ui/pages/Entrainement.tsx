@@ -8,11 +8,11 @@ import { FunctionComponent, useState } from "react"
 import invariant from "tiny-invariant"
 
 import * as serverModule from "~/.server/index.server"
-import { H2Title } from "~/ui/atoms/H2Title"
-import { Card } from "~/ui/molecules/Card"
-import { ListeExerciceSeanceSideBar } from "~/ui/molecules/ListeExerciceSeanceSideBar"
-import { StopWatch } from "~/ui/organisms/StopWatch"
+import { ListeExerciceSeanceSideBar } from "~/ui/pages/entrainement/ListeExerciceSeanceSideBar"
+import { StopWatch } from "~/ui/pages/entrainement/StopWatch"
 import { ListeExerciceSeance } from "~/ui/pages/trainings/ListeExerciceSeance"
+import { Card } from "~/ui/shared/Card"
+import { H2Title } from "~/ui/shared/H2Title"
 import { AVAILABLE_MUSCLE } from "~/utils/AvailableMuscle"
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -112,7 +112,7 @@ const Entrainement: FunctionComponent = () => {
                     </div>
                     <div className="p-4">
                       <h3 className="font-bold">{dernierExerciceActif.nomExercice}</h3>
-                      <p>{ derniereSerieActive.repetitions } répétitions</p>
+                      <p>{derniereSerieActive.repetitions} répétitions</p>
                     </div>
                     <div className="flex flex-col flex-1 justify-center w-full h-full items-center">
                       <StopWatch />

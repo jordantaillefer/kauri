@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 
-import { H2Title } from "~/ui/atoms/H2Title";
+import { H2Title } from "~/ui/shared/H2Title";
 
 export const handle = {
   breadcrumb: () => ({ to: "/chat", label: "Discussions", state: "discussions" })

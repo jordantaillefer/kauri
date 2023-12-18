@@ -7,15 +7,15 @@ import { FunctionComponent, useState } from "react"
 
 import { EvenementPlanning } from "~/domain/EvenementPlanning"
 import { JourPlanning } from "~/domain/JourPlanning"
-import { H2Title } from "~/ui/atoms/H2Title"
-import { AjouterUneSeanceEvenementSideBar } from "~/ui/organisms/AjouterUneSeanceEvenementSideBar"
-import { CalendarBody } from "~/ui/organisms/CalendarBody"
-import { CalendarMenu } from "~/ui/organisms/CalendarMenu"
-import { CalendarModeAffichage } from "~/ui/organisms/CalendarModeAffichage"
-import { CalendarUserEvent } from "~/ui/organisms/CalendarUserEvent"
-import { CalenderHead } from "~/ui/organisms/CalenderHead"
-import { MoisSelecteur } from "~/ui/organisms/MoisSelecteur"
+import { AjouterUneSeanceEvenementSideBar } from "~/ui/pages/planning/AjouterUneSeanceEvenementSideBar"
+import { CalendarBody } from "~/ui/pages/planning/CalendarBody"
+import { CalendarHead } from "~/ui/pages/planning/CalendarHead"
+import { CalendarMenu } from "~/ui/pages/planning/CalendarMenu"
+import { CalendarModeAffichage } from "~/ui/pages/planning/CalendarModeAffichage"
+import { CalendarUserEvent } from "~/ui/pages/planning/CalendarUserEvent"
+import { MoisSelecteur } from "~/ui/pages/planning/MoisSelecteur"
 import { useCalendar } from "~/ui/pages/planning/useCalendar"
+import { H2Title } from "~/ui/shared/H2Title"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const resultListerSeance = await serverModule.container.resolve("seanceQuery").listerSeance({ request })
@@ -107,7 +107,7 @@ const Planning: FunctionComponent = () => {
           </div>
         </header>
         <div className="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col">
-          <CalenderHead />
+          <CalendarHead />
           <CalendarBody
             isSelected={isSelected}
             selectDay={selectDay}

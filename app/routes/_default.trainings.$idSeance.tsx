@@ -7,8 +7,8 @@ import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { FunctionComponent, useEffect, useRef, useState } from "react"
 import { flushSync } from "react-dom"
 
-import { H2Title } from "~/ui/atoms/H2Title"
 import { ListeExerciceSeance } from "~/ui/pages/trainings/ListeExerciceSeance"
+import { H2Title } from "~/ui/shared/H2Title"
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
