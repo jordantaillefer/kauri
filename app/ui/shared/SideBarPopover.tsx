@@ -2,7 +2,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { Fragment, FunctionComponent, PropsWithChildren } from "react";
 
-export const ExerciceSeancePopover: FunctionComponent<PropsWithChildren> = ({ children }) => {
+export const SideBarPopover: FunctionComponent<PropsWithChildren> = ({ children }) => {
   return (
     <Popover className="relative">
       <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">

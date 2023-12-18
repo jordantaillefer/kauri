@@ -1,19 +1,15 @@
-import { Outlet, useOutletContext } from "@remix-run/react"
+import { Outlet } from "@remix-run/react"
 import type { FunctionComponent, PropsWithChildren, ReactNode } from "react"
-
-import { Header } from "~/ui/organisms/Header"
 
 type FocusLayoutProps = PropsWithChildren & {
   children: ReactNode
 }
 
 export const FocusLayout: FunctionComponent<FocusLayoutProps> = () => {
-  const { authenticated } = useOutletContext<{ authenticated: boolean }>()
 
   return (
     <div className="flex min-h-screen flex-col bg-background-main" data-theme="focus">
-      <Header authenticated={authenticated} />
-
+      <header className="border-b border-primary-lighter border-opacity-40 shadow-lg" />
       <main id="main" className="flex flex-grow flex-col overflow-x-hidden">
         <Outlet />
       </main>

@@ -11,5 +11,5 @@ export enum CATEGORIE {
   QUADRICEPS = "Quadriceps",
   ISCHIOJAMBIERS = "Ischio-jambiers",
   MOLLETS = "Mollets",
-  LOMBAIRES = "Lombaires",
+  LOMBAIRES = "Lombaires"
 }

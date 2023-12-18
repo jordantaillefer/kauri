@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react"
 
-import { Card } from "~/ui/molecules/Card"
+import { Card } from "~/ui/shared/Card"
 
 export const SeanceCard: FunctionComponent<{ name: string; description: string, active: boolean }> = ({
   description,

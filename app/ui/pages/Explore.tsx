@@ -6,7 +6,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node"
 import { NavLink, Outlet, UIMatch, useLoaderData, useMatches } from "@remix-run/react"
 import { Fragment, FunctionComponent } from "react"
 
-import { H2Title } from "~/ui/atoms/H2Title"
+import { Titre } from "~/ui/shared/Titre"
 import { randomBgColor } from "~/utils/RandomBgColor"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -19,10 +19,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     listeSeance: listeSeanceExploration
   }
 }
-export const action = async ({ request }: ActionFunctionArgs) => {
-  return null
-}
-
 export const handle = {
   breadcrumb: () => ({ to: "/explore", label: "Explorer les séances", state: "explorer-seance" })
 }
@@ -44,7 +40,7 @@ const Explore: FunctionComponent = () => {
           lastState === "consulter-seance" && "lg:w-2/3"
         } `}
       >
-        <H2Title>Explorer les séances</H2Title>
+        <Titre as="h2">Explorer les séances</Titre>
 
         <div className="flow-root">
           <div className="-mx-4 -my-2 md:overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -58,13 +54,13 @@ const Explore: FunctionComponent = () => {
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                       Nom de la séance
                     </th>
-                    <th
-                      scope="col"
-                      className="max-sm:hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
+                    <th scope="col" className="max-sm:hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                       Nombre d'exercice
                     </th>
-                    <th scope="col" className="md:w-40 px-3 md:px-6 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    <th
+                      scope="col"
+                      className="md:w-40 px-3 md:px-6 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
                       Actions
                     </th>
                   </tr>
@@ -88,7 +84,9 @@ const Explore: FunctionComponent = () => {
                         </div>
                       </td>
                       <td className="whitespace-nowrap py-5 text-sm text-gray-500">
-                        <div className="text-gray-900 max-w-[40vw] md:max-w-full overflow-hidden overflow-ellipsis">{seance.nomSeance}</div>
+                        <div className="text-gray-900 max-w-[40vw] md:max-w-full overflow-hidden overflow-ellipsis">
+                          {seance.nomSeance}
+                        </div>
                       </td>
                       <td className="max-sm:hidden whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                         {seance.nombreExercicesSeance} exercices

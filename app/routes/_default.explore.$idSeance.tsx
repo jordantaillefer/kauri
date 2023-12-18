@@ -8,8 +8,8 @@ import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { FunctionComponent } from "react"
 import invariant from "tiny-invariant"
 
-import { H2Title } from "~/ui/atoms/H2Title"
 import { ListeExerciceSeance } from "~/ui/pages/trainings/ListeExerciceSeance"
+import { Titre } from "~/ui/shared/Titre"
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   invariant(params.idSeance)
@@ -84,7 +84,7 @@ const TrainingSeance: FunctionComponent = () => {
         {idSeanceSelectionne ? (
           <>
             <div>
-              <H2Title>Résumé de la séance</H2Title>
+              <Titre as="h2">Résumé de la séance</Titre>
               <p className="text-lg font-bold mb-3">{seanceSelectionne.nomSeance}</p>
               <ListeExerciceSeance exerciceSeances={seanceSelectionne.exerciceSeances} />
             </div>
@@ -105,7 +105,7 @@ const TrainingSeance: FunctionComponent = () => {
             </div>
           </>
         ) : (
-          <H2Title>Aucune séance séléctionnée</H2Title>
+          <Titre as="h2">Aucune séance séléctionnée</Titre>
         )}
       </div>
     </>

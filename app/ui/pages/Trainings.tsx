@@ -8,8 +8,8 @@ import { NavLink, Outlet, UIMatch, useLoaderData, useMatches, useParams } from "
 import { ReasonPhrases } from "http-status-codes"
 import { FunctionComponent } from "react"
 
-import { H2Title } from "~/ui/atoms/H2Title"
-import { CreerSeanceCard } from "~/ui/organisms/CreerSeanceCard"
+import { CreerSeanceCard } from "~/ui/pages/trainings/CreerSeanceCard"
+import { Titre } from "~/ui/shared/Titre"
 import { randomBgColor } from "~/utils/RandomBgColor"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -51,7 +51,10 @@ export const handle = {
 
 const Trainings: FunctionComponent = () => {
   const { listeSeance } = useLoaderData<typeof loader>()
-  const matches = useMatches() as UIMatch<any, { breadcrumb: (match: UIMatch) => { to: string, label: string, state: string } }>[]
+  const matches = useMatches() as UIMatch<
+    any,
+    { breadcrumb: (match: UIMatch) => { to: string; label: string; state: string } }
+  >[]
 
   const lastMatch = matches[matches.length - 1]
   const lastState = lastMatch.handle.breadcrumb(lastMatch).state
@@ -65,7 +68,7 @@ const Trainings: FunctionComponent = () => {
           lastState === "ajouter-exercice" || lastState === "modifier-exercice" ? "lg:w-1/3" : "lg:w-2/3"
         } px-4 w-full md:w-1/2`}
       >
-        <H2Title>Mes séances</H2Title>
+        <Titre as="h2">Mes séances</Titre>
         <ul className="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2 xl:gap-x-8">
           {listeSeance.map(seance => (
             <li

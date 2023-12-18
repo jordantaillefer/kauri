@@ -7,15 +7,15 @@ import { FunctionComponent, useState } from "react"
 
 import { EvenementPlanning } from "~/domain/EvenementPlanning"
 import { JourPlanning } from "~/domain/JourPlanning"
-import { H2Title } from "~/ui/atoms/H2Title"
-import { AjouterUneSeanceEvenementSideBar } from "~/ui/organisms/AjouterUneSeanceEvenementSideBar"
-import { CalendarBody } from "~/ui/organisms/CalendarBody"
-import { CalendarMenu } from "~/ui/organisms/CalendarMenu"
-import { CalendarModeAffichage } from "~/ui/organisms/CalendarModeAffichage"
-import { CalendarUserEvent } from "~/ui/organisms/CalendarUserEvent"
-import { CalenderHead } from "~/ui/organisms/CalenderHead"
-import { MoisSelecteur } from "~/ui/organisms/MoisSelecteur"
+import { AjouterUneSeanceEvenementSideBar } from "~/ui/pages/planning/AjouterUneSeanceEvenementSideBar"
+import { CalendarBody } from "~/ui/pages/planning/CalendarBody"
+import { CalendarHead } from "~/ui/pages/planning/CalendarHead"
+import { CalendarMenu } from "~/ui/pages/planning/CalendarMenu"
+import { CalendarModeAffichage } from "~/ui/pages/planning/CalendarModeAffichage"
+import { CalendarUserEvent } from "~/ui/pages/planning/CalendarUserEvent"
+import { MoisSelecteur } from "~/ui/pages/planning/MoisSelecteur"
 import { useCalendar } from "~/ui/pages/planning/useCalendar"
+import { Titre } from "~/ui/shared/Titre"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const resultListerSeance = await serverModule.container.resolve("seanceQuery").listerSeance({ request })
@@ -96,7 +96,7 @@ const Planning: FunctionComponent = () => {
 
   return (
     <div className="px-4">
-      <H2Title>Mon planning</H2Title>
+      <Titre as="h2">Mon planning</Titre>
       <div className="lg:flex lg:h-full lg:flex-col 2xl:max-w-[60vw]">
         <header className="flex items-center justify-between border-b border-gray-200 py-4 lg:flex-none">
           <h1 className="text-base font-semibold leading-6 text-gray-900 capitalize">{actualDate()}</h1>
@@ -107,7 +107,7 @@ const Planning: FunctionComponent = () => {
           </div>
         </header>
         <div className="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col">
-          <CalenderHead />
+          <CalendarHead />
           <CalendarBody
             isSelected={isSelected}
             selectDay={selectDay}

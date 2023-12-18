@@ -9,9 +9,9 @@ import { AgnosticDataIndexRouteObject } from "@remix-run/router"
 import { FunctionComponent, useState } from "react"
 import invariant from "tiny-invariant"
 
-import { H2Title } from "~/ui/atoms/H2Title"
-import { Select } from "~/ui/molecules/Select"
-import { FormulaireSerieExerciceSeance, SerieCreation } from "~/ui/organisms/FormulaireSerieExerciceSeance"
+import { FormulaireSerieExerciceSeance, SerieCreation } from "~/ui/pages/trainings/FormulaireSerieExerciceSeance"
+import { Select } from "~/ui/shared/Select"
+import { Titre } from "~/ui/shared/Titre"
 import { AVAILABLE_MUSCLE } from "~/utils/AvailableMuscle"
 import { removeAccents } from "~/utils/RemoveAccents"
 
@@ -107,7 +107,7 @@ const ModifierExerciceSeance: FunctionComponent = () => {
         lastState === "modifier-exercice" ? "" : "max-md:hidden"
       } flex flex-col w-full lg:w-1/3 px-4 h-full border-l border-gray-300 divide-y divide-gray-200`}
     >
-      <H2Title>Modifier l'exercice</H2Title>
+      <Titre as="h2">Modifier l'exercice</Titre>
       {exerciceSelectionne ? (
         <fetcher.Form method="PUT">
           <input type="hidden" name="idSeance" value={idSeanceSelectionne} />

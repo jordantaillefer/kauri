@@ -7,8 +7,8 @@ import { useFetcher, useLoaderData } from "@remix-run/react"
 import { format } from "date-fns"
 import { FunctionComponent, useState } from "react"
 
-import { H2Title } from "~/ui/atoms/H2Title"
-import { SeanceCard } from "~/ui/organisms/SeanceCard";
+import { SeanceCard } from "~/ui/pages/trainings/SeanceCard"
+import { Titre } from "~/ui/shared/Titre"
 
 export const handle = {
   breadcrumb: () => ({ to: "/day", label: "Ma journée", state: "day" })
@@ -17,7 +17,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const payload = {
     date: format(new Date(), "yyyy-MM-dd")
   }
-  const resultListerEvenement = await serverModule.container.resolve("sportifQuery").listerEvenementParDate({ request, payload })
+  const resultListerEvenement = await serverModule.container
+    .resolve("sportifQuery")
+    .listerEvenementParDate({ request, payload })
 
   const payloadListeSeance = {
     listeSeanceIds: ((resultListerEvenement?.data as SportifEvenementContrat[]) || []).map(
@@ -67,27 +69,27 @@ const Day: FunctionComponent = () => {
 
   return (
     <div className="px-4">
-      <H2Title>Ma journée</H2Title>
-      <H2Title>Séance du jour</H2Title>
+      <Titre as="h2">Ma journée</Titre>
+      <Titre as="h2">Séance du jour</Titre>
       <div className="grid grid-cols-responsive gap-4 mb-4">
-        {
-          listeSeance.length > 0 ? (
-            listeSeance.map(seance => (
-                <button className="text-left" key={seance.id} type="button" onClick={() => setIdSeanceSelectionne(seance.id)}>
-                  <SeanceCard
-                    name={seance.nomSeance}
-                    description={`${seance.exerciceSeances.length} exercice${
-                      seance.exerciceSeances.length > 1 ? "s" : ""
-                    }`}
-                    active={seance.id === idSeanceSelectionne}
-                  ></SeanceCard>
-                </button>
-              ))
-          ) : (
-            <div>Aucun séance aujourd'hui</div>
-          )
-        }
-
+        {listeSeance.length > 0 ? (
+          listeSeance.map(seance => (
+            <button
+              className="text-left"
+              key={seance.id}
+              type="button"
+              onClick={() => setIdSeanceSelectionne(seance.id)}
+            >
+              <SeanceCard
+                name={seance.nomSeance}
+                description={`${seance.exerciceSeances.length} exercice${seance.exerciceSeances.length > 1 ? "s" : ""}`}
+                active={seance.id === idSeanceSelectionne}
+              ></SeanceCard>
+            </button>
+          ))
+        ) : (
+          <div>Aucun séance aujourd'hui</div>
+        )}
       </div>
       <fetcher.Form method="POST">
         {idSeanceSelectionne && <input type="hidden" name="idSeance" value={idSeanceSelectionne} />}

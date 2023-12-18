@@ -6,7 +6,7 @@ import { clsxm } from "~/utils/clsxm"
 
 type PrimaryButtonProps = PropsWithChildren<{}> & React.ButtonHTMLAttributes<HTMLButtonElement>
 
-export const PrimaryButton: FunctionComponent<PrimaryButtonProps> = ({ className, ...props }) => {
+export const Button: FunctionComponent<PrimaryButtonProps> = ({ className, ...props }) => {
   const defaultClasses = clsx(
     "bg-primary",
     "mx-2 px-5 py-2.5",

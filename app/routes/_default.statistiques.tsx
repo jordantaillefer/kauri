@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react"
 
-import { H2Title } from "~/ui/atoms/H2Title"
+import { Titre } from "~/ui/shared/Titre"
 
 export const handle = {
   breadcrumb: () => ({ to: "/statistiques", label: "Mes statistiques", state: "consulter-statistique" })
@@ -9,7 +9,7 @@ export const handle = {
 const Planning: FunctionComponent = () => {
   return (
     <div className="px-4">
-      <H2Title>Mes statistiques</H2Title>
+      <Titre as="h2">Mes statistiques</Titre>
     </div>
   )
 }
