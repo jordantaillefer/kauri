@@ -12,7 +12,7 @@ import { ListeExerciceSeanceSideBar } from "~/ui/pages/entrainement/ListeExercic
 import { StopWatch } from "~/ui/pages/entrainement/StopWatch"
 import { ListeExerciceSeance } from "~/ui/pages/trainings/ListeExerciceSeance"
 import { Card } from "~/ui/shared/Card"
-import { H2Title } from "~/ui/shared/H2Title"
+import { Titre } from "~/ui/shared/Titre"
 import { AVAILABLE_MUSCLE } from "~/utils/AvailableMuscle"
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -66,7 +66,7 @@ const Entrainement: FunctionComponent = () => {
 
   return (
     <div className="px-4">
-      <H2Title>Entrainement</H2Title>
+      <Titre as="h2">Entrainement</Titre>
       <div className="flex justify-center w-full h-full">
         <Card className="relative w-full sm:w-3/5 md:w-1/2 lg:w-1/3 h-full min-h-[90vh] md:min-h-[80vh] p-0 bg-gray-100">
           {!isEntrainementDemarre ? (

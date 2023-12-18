@@ -6,7 +6,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node"
 import { NavLink, Outlet, UIMatch, useLoaderData, useMatches } from "@remix-run/react"
 import { Fragment, FunctionComponent } from "react"
 
-import { H2Title } from "~/ui/shared/H2Title"
+import { Titre } from "~/ui/shared/Titre"
 import { randomBgColor } from "~/utils/RandomBgColor"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -40,7 +40,7 @@ const Explore: FunctionComponent = () => {
           lastState === "consulter-seance" && "lg:w-2/3"
         } `}
       >
-        <H2Title>Explorer les séances</H2Title>
+        <Titre as="h2">Explorer les séances</Titre>
 
         <div className="flow-root">
           <div className="-mx-4 -my-2 md:overflow-x-auto sm:-mx-6 lg:-mx-8">

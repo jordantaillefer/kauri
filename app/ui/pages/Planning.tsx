@@ -15,7 +15,7 @@ import { CalendarModeAffichage } from "~/ui/pages/planning/CalendarModeAffichage
 import { CalendarUserEvent } from "~/ui/pages/planning/CalendarUserEvent"
 import { MoisSelecteur } from "~/ui/pages/planning/MoisSelecteur"
 import { useCalendar } from "~/ui/pages/planning/useCalendar"
-import { H2Title } from "~/ui/shared/H2Title"
+import { Titre } from "~/ui/shared/Titre"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const resultListerSeance = await serverModule.container.resolve("seanceQuery").listerSeance({ request })
@@ -96,7 +96,7 @@ const Planning: FunctionComponent = () => {
 
   return (
     <div className="px-4">
-      <H2Title>Mon planning</H2Title>
+      <Titre as="h2">Mon planning</Titre>
       <div className="lg:flex lg:h-full lg:flex-col 2xl:max-w-[60vw]">
         <header className="flex items-center justify-between border-b border-gray-200 py-4 lg:flex-none">
           <h1 className="text-base font-semibold leading-6 text-gray-900 capitalize">{actualDate()}</h1>

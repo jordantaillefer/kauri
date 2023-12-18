@@ -8,7 +8,7 @@ import { FunctionComponent, useEffect, useRef, useState } from "react"
 import { flushSync } from "react-dom"
 
 import { ListeExerciceSeance } from "~/ui/pages/trainings/ListeExerciceSeance"
-import { H2Title } from "~/ui/shared/H2Title"
+import { Titre } from "~/ui/shared/Titre"
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
@@ -84,7 +84,7 @@ const TrainingSeance: FunctionComponent = () => {
         {idSeanceSelectionne ? (
           <>
             <div>
-              <H2Title>Résumé de la séance</H2Title>
+              <Titre as="h2">Résumé de la séance</Titre>
               <nomSeanceFetcher.Form method="POST">
                 <input type="hidden" name="_action" value="modifier-nom-seance" />
                 <input type="hidden" name="idSeance" value={seanceSelectionne.id} />
@@ -146,7 +146,7 @@ const TrainingSeance: FunctionComponent = () => {
             </div>
           </>
         ) : (
-          <H2Title>Aucune séance séléctionnée</H2Title>
+          <Titre as="h2">Aucune séance séléctionnée</Titre>
         )}
       </div>
       <Outlet context={{ lastState }} key={idExerciceSeanceSelectionne} />

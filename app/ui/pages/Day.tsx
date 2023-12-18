@@ -8,7 +8,7 @@ import { format } from "date-fns"
 import { FunctionComponent, useState } from "react"
 
 import { SeanceCard } from "~/ui/pages/trainings/SeanceCard"
-import { H2Title } from "~/ui/shared/H2Title"
+import { Titre } from "~/ui/shared/Titre"
 
 export const handle = {
   breadcrumb: () => ({ to: "/day", label: "Ma journée", state: "day" })
@@ -69,8 +69,8 @@ const Day: FunctionComponent = () => {
 
   return (
     <div className="px-4">
-      <H2Title>Ma journée</H2Title>
-      <H2Title>Séance du jour</H2Title>
+      <Titre as="h2">Ma journée</Titre>
+      <Titre as="h2">Séance du jour</Titre>
       <div className="grid grid-cols-responsive gap-4 mb-4">
         {listeSeance.length > 0 ? (
           listeSeance.map(seance => (

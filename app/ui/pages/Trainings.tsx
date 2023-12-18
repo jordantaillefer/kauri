@@ -9,7 +9,7 @@ import { ReasonPhrases } from "http-status-codes"
 import { FunctionComponent } from "react"
 
 import { CreerSeanceCard } from "~/ui/pages/trainings/CreerSeanceCard"
-import { H2Title } from "~/ui/shared/H2Title"
+import { Titre } from "~/ui/shared/Titre"
 import { randomBgColor } from "~/utils/RandomBgColor"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -68,7 +68,7 @@ const Trainings: FunctionComponent = () => {
           lastState === "ajouter-exercice" || lastState === "modifier-exercice" ? "lg:w-1/3" : "lg:w-2/3"
         } px-4 w-full md:w-1/2`}
       >
-        <H2Title>Mes séances</H2Title>
+        <Titre as="h2">Mes séances</Titre>
         <ul className="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2 xl:gap-x-8">
           {listeSeance.map(seance => (
             <li
