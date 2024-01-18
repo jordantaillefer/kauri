@@ -56,6 +56,7 @@ export class EntrainementController {
   ): Promise<ServerResponse<void>> {
     invariant(serverRequest.compteUtilisateurConnecte)
     const { idSerieEntrainement, idExerciceEntrainement } = serverRequest.payload
+
     await this.realiserSerieUseCase.execute({
       idUtilisateur: serverRequest.compteUtilisateurConnecte.id,
       idSerieEntrainement,

@@ -9,7 +9,7 @@ export default defineConfig({
     globals: true,
     environment: "happy-dom",
     setupFiles: ["config.server.ts", "./test/setup-test-env.ts"],
-    include: ["./app/server/**/*.test.ts", "./app/**/*.spec.ts"],
+    include: ["./app/.server/**/*.test.ts", "./app/**/*.spec.ts"],
     watchExclude: [".*\\/node_modules\\/.*", ".*\\/build\\/.*", ".*\\/postgres-data\\/.*"]
   }
 })
