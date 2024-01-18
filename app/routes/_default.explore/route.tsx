@@ -2,7 +2,7 @@ import { SeanceExplorationContrat } from "@/api/app/contrats/SeanceExplorationCo
 import * as serverModule from "@/api/index.server"
 import { Menu, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid"
-import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node"
+import { LoaderFunctionArgs } from "@remix-run/node"
 import { NavLink, Outlet, UIMatch, useLoaderData, useMatches } from "@remix-run/react"
 import { Fragment, FunctionComponent } from "react"
 
