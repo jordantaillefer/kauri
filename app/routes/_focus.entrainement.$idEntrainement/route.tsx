@@ -38,7 +38,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData()
   const { _action } = Object.fromEntries(formData)
 
-  console.log("action", _action)
   switch (_action) {
     case "valider-serie": {
       const { idSerie, idExercice } = Object.fromEntries(formData)
@@ -47,9 +46,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         idSerieEntrainement: idSerie.toString(),
         idExerciceEntrainement: idExercice.toString()
       }
-      console.log("payload", payload)
       await serverModule.container.resolve("entrainementController").realiserSerie({ request, payload })
-      console.log("jeu")
     }
   }
   return null
@@ -130,7 +127,7 @@ const Entrainement: FunctionComponent = () => {
                                 serie.id === derniereSerieActive?.id ? (
                                 <div
                                   style={{ width: `${calculerWidth(serie.tempsRepos, counter)}%` }}
-                                  className="absolute top-0 left-0 bg-background-main opacity-50 h-full"/>
+                                  className="transition-all ease-linear duration-1000 absolute top-0 left-0 bg-background-main opacity-50 h-full"/>
                                 ) : null
                               }
                               {
