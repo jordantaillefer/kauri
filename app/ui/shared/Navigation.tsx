@@ -47,10 +47,10 @@ export const Navigation: FunctionComponent<{ authenticated: boolean }> = ({ auth
   const data = useRouteLoaderData<{ authenticated: boolean; user: CompteUtilisateurContrat }>("root")
 
   const navigation = [
-    { name: "Ma journée", to: "day", icon: SunIcon, active: false },
+    { name: "Ma journée", to: "day", icon: SunIcon, active: true },
     { name: "Mes séances", to: "trainings", icon: DocumentDuplicateIcon, active: true },
     { name: "Mes statistiques", to: "statistiques", icon: PresentationChartLineIcon, active: false },
-    { name: "Planning d'entrainement", to: "planning", icon: CalendarDaysIcon, active: false },
+    { name: "Planning d'entrainement", to: "planning", icon: CalendarDaysIcon, active: true },
     { name: "Explorer les séances", to: "explore", icon: CalendarIcon, active: true },
     { name: "Discussions", to: "chat", icon: ChatBubbleLeftEllipsisIcon, active: false }
   ]
