@@ -1,6 +1,10 @@
 {
   "short_name": "Kauri",
   "name": "Kauri",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#009A64",
+  "background_color": "#009A64",
   "icons": [
     {
       "src": "favicon.ico",
@@ -43,10 +47,6 @@
       "sizes": "1024x1024"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff",
   "screenshots": [
     {
       "src": "assets/screenshots/image-application-kauri.png",
