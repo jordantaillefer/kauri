@@ -1,14 +1,9 @@
-import * as serverModule from "@/api/index.server";
+import * as serverModule from "@/api/index.server"
 import { CheckIcon } from "@heroicons/react/20/solid"
-import {
-  ArrowPathIcon,
-  CloudArrowUpIcon,
-  FingerPrintIcon,
-  LockClosedIcon,
-} from "@heroicons/react/24/outline"
-import { json, LoaderFunction, redirect } from "@remix-run/node";
+import { ArrowPathIcon, CloudArrowUpIcon, FingerPrintIcon, LockClosedIcon } from "@heroicons/react/24/outline"
+import { json, LoaderFunction, redirect } from "@remix-run/node"
 import { Form } from "@remix-run/react"
-import { ReasonPhrases } from "http-status-codes";
+import { ReasonPhrases } from "http-status-codes"
 import { SocialsProvider } from "remix-auth-socials"
 
 import ImageFitnessRoom from "~/images/fitness-room.jpg"
@@ -123,7 +118,9 @@ function classNames(...classes: string[]) {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const response = await serverModule.container.resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
+  const response = await serverModule.container
+    .resolve("compteUtilisateurController")
+    .recupererCompteUtilisateurConnecte(request)
   if (response.reasonPhrase === ReasonPhrases.OK) {
     return redirect("/trainings")
   }
@@ -158,7 +155,6 @@ const HomePage = () => {
       </header>
 
       <main className="isolate">
-        {/* Hero section */}
         <div className="relative pt-14">
           <div
             className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -172,7 +168,7 @@ const HomePage = () => {
               }}
             />
           </div>
-          <div className="py-24 sm:py-32">
+          <div className="py-12 sm:py-16">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
               <div className="mx-auto max-w-2xl text-center">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
@@ -226,7 +222,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Feature section */}
+        {/*
         <div className="mx-auto mt-12 max-w-7xl px-6 sm:mt-10 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
             <h2 className="text-base font-semibold leading-7 text-indigo-600">Deploy faster</h2>
@@ -255,7 +251,6 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Testimonial section */}
         <div className="mx-auto mt-32 max-w-7xl sm:mt-56 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden bg-gray-900 px-6 py-20 shadow-xl sm:rounded-3xl sm:px-10 sm:py-24 md:px-12 lg:px-20">
             <img
@@ -304,7 +299,6 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Pricing section */}
         <div className="py-24 sm:pt-48">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-4xl text-center">
@@ -377,7 +371,6 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* FAQs */}
         <div className="mx-auto max-w-2xl divide-y divide-gray-900/10 px-6 pb-8 sm:pb-24 sm:pt-12 lg:max-w-7xl lg:px-8 lg:pb-32">
           <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
           <dl className="mt-10 space-y-8 divide-y divide-gray-900/10">
@@ -392,7 +385,6 @@ const HomePage = () => {
           </dl>
         </div>
 
-        {/* CTA section */}
         <div className="relative -z-10 mt-32 px-6 lg:px-8">
           <div
             className="absolute inset-x-0 top-1/2 -z-10 flex -translate-y-1/2 transform-gpu justify-center overflow-hidden blur-3xl sm:bottom-0 sm:right-[calc(50%-6rem)] sm:top-auto sm:translate-y-0 sm:transform-gpu sm:justify-end"
@@ -441,9 +433,10 @@ const HomePage = () => {
             />
           </div>
         </div>
+      */}
       </main>
+      {/*
 
-      {/* Footer */}
       <div className="mx-auto mt-32 max-w-7xl px-6 lg:px-8">
         <footer
           aria-labelledby="footer-heading"
@@ -515,6 +508,7 @@ const HomePage = () => {
           </div>
         </footer>
       </div>
+      */}
     </div>
   )
 }

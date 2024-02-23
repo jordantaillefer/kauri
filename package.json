@@ -4,7 +4,6 @@
   "type": "module",
   "scripts": {
     "build": "vite build && vite build --ssr",
-    "deploy": "fly deploy --remote-only",
     "dev": "vite dev --port 3000",
     "lint:check": "eslint .",
     "lint:fix": "eslint . --fix",
