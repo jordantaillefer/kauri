@@ -1,16 +1,10 @@
-import * as serverModule from "@/api/index.server"
-import { CheckIcon } from "@heroicons/react/20/solid"
-import { ArrowPathIcon, CloudArrowUpIcon, FingerPrintIcon, LockClosedIcon } from "@heroicons/react/24/outline"
-import { json, LoaderFunction, redirect } from "@remix-run/node"
 import { Form } from "@remix-run/react"
-import { ReasonPhrases } from "http-status-codes"
 import { SocialsProvider } from "remix-auth-socials"
 
-import ImageFitnessRoom from "~/images/fitness-room.jpg"
 import ImageApplicationKauri from "~/images/image-application-kauri.png"
 import LogoKauri from "~/images/logo-kauri-dark.png"
 
-const features = [
+/* const features = [
   {
     name: "Push to deploy",
     description:
@@ -128,6 +122,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     authenticated: !!response.data
   })
 }
+*/
 
 const HomePage = () => {
   return (
@@ -195,7 +190,7 @@ const HomePage = () => {
                   En savoir plus <span aria-hidden="true">→</span>
                 </a>
               </div>
-              <div className="mt-16 flow-root sm:mt-24">
+              <div className="mt-10 flow-root sm:mt-16">
                 <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
                   <img
                     src={ImageApplicationKauri}

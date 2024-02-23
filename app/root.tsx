@@ -4,7 +4,6 @@ import { json } from "@remix-run/node"
 import {
   isRouteErrorResponse,
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -40,12 +39,12 @@ function Document({ children }: DocumentProps) {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="h-full">
         {children}
         <ScrollRestoration />
         <Scripts />
-        {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
   )
