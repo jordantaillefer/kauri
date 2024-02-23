@@ -5,6 +5,7 @@ import { mock } from "vitest-mock-extended"
 import { CompteUtilisateur } from "../../domain/CompteUtilisateur"
 import type { CompteUtilisateurRepository } from "../../domain/ports/CompteUtilisateurRepository"
 import { CreerCompteUtilisateurUseCase } from "../../usecases/CreerCompteUtilisateurUseCase"
+import { LUtilisateurNExistePasError } from "@/api/authentification/domain/errors/LUtilisateurNExistePasError"
 
 describe("CreerCompteUtilisateurUseCase", () => {
   let compteUtilisateurRepository: MockProxy<CompteUtilisateurRepository>
@@ -23,6 +24,7 @@ describe("CreerCompteUtilisateurUseCase", () => {
     const nom = "nom"
     const prenom = "prenom"
     const compteUtilisateur = CompteUtilisateur.creerCompteUtilisateur({ id: idUtilisateur, prenom, nom })
+    compteUtilisateurRepository.recupererCompteUtilisateurParId.mockRejectedValue(new LUtilisateurNExistePasError())
     compteUtilisateurRepository.creerCompteUtilisateur.mockResolvedValue(compteUtilisateur)
     // Act
     const user = await creerCompteUtilisateurUseCase.execute({ idUtilisateur, nom, prenom })

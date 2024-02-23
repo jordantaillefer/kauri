@@ -6,10 +6,10 @@ import type { Exercice } from "../../../domain/Exercice"
 import { CATEGORIE } from "../../../domain/categorie"
 import type { ExerciceRepository } from "../../../domain/ports/ExerciceRepository"
 import type { ExerciceQuery } from "../../../infrastructure/query/ExerciceQuery"
-import type { ListeExerciceContrat } from "@/api/index.server";
 import { container } from "@/api/index.server"
 import { creerRequest, creerRequestPourCompteUtilisateur } from "~/.server/testUtils/RequestUtils"
 import { ExerciceBuilder } from "~/.server/testUtils/builders/ExerciceBuilder"
+import { ListeExerciceContrat } from "@/api/app/contrats"
 
 describe("ExerciceQuery", () => {
   let exerciceQuery: ExerciceQuery

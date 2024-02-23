@@ -69,7 +69,7 @@ describe("CompteUtilisateurController", () => {
       })
     )
     it(
-      "Quand le compte utilisateur existe déjà, doit renvoyer une Bad Request",
+      "Quand le compte utilisateur existe déjà, doit renvoyer l'utilisateur",
       integrationTestFunction(async ({ testIdGenerator }) => {
         // Arrange
         const uuid = testIdGenerator.getId()
@@ -79,11 +79,7 @@ describe("CompteUtilisateurController", () => {
         const response = await compteUtilisateurController.creerCompteUtilisateur(request)
 
         // Assert
-        const compteUtilisateurResult = await compteUtilisateurRepository.recupererCompteUtilisateurParId(uuid)
-        expect(compteUtilisateurResult).toBeDefined()
-        expect(compteUtilisateurResult?.id).toEqual(uuid)
-
-        expect(response.reasonPhrase).toEqual(ReasonPhrases.BAD_REQUEST)
+        expect(response.reasonPhrase).toEqual(ReasonPhrases.CREATED)
       })
     )
   })

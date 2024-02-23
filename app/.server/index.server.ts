@@ -103,7 +103,7 @@ declare global {
 }
 
 if (process.env.NODE_ENV === "production") {
-  innerContainer = createContainer<ContainerDependencies, ContainerDependencies>({ injectionMode: "PROXY" })
+  innerContainer = createContainer<ContainerDependencies>({ injectionMode: "PROXY" })
   registerContainer(innerContainer)
 } else {
   if (!global.__container) {
