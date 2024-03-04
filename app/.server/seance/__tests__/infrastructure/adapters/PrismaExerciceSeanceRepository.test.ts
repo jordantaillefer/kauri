@@ -12,21 +12,20 @@ import { PrismaSeanceRepository } from "../../../infrastructure/adapters/PrismaS
 import { prisma } from "~/.server/db/prisma"
 import { CATEGORIE } from "~/.server/exercice/domain/categorie"
 import { SeanceBuilder } from "~/.server/testUtils/builders/SeanceBuilder"
+import { getContainer } from "@/api/index.server"
 
 describe("PrismaExerciceSeanceRepository", () => {
-  let prismaExerciceSeanceRepository: PrismaExerciceSeanceRepository
-  let prismaSeanceRepository: PrismaSeanceRepository
-
-  beforeEach(() => {
-    prismaExerciceSeanceRepository = new PrismaExerciceSeanceRepository()
-    prismaSeanceRepository = new PrismaSeanceRepository()
-  })
-
   describe("#creerExerciceSeance", () => {
     it(
       "doit créer l'exercice d'une séance",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaExerciceSeanceRepository = new PrismaExerciceSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
+        const prismaSeanceRepository = new PrismaSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSeance = testIdGenerator.getId()
         const uuidExerciceSeance = testIdGenerator.getId()
         const uuidExercice = testIdGenerator.getId()
@@ -63,8 +62,14 @@ describe("PrismaExerciceSeanceRepository", () => {
   describe("#modifierExerciceSeance", () => {
     it(
       "doit modifier l'exercice d'une séance",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaExerciceSeanceRepository = new PrismaExerciceSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
+        const prismaSeanceRepository = new PrismaSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSeance = testIdGenerator.getId()
         const uuidExerciceSeance = testIdGenerator.getId()
         const uuidExercice = testIdGenerator.getId()
@@ -111,8 +116,14 @@ describe("PrismaExerciceSeanceRepository", () => {
   describe("#recupererParIdEtParIdSeance", () => {
     it(
       "quand l'exercice existe, doit remonter l'exercice de la seance",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaExerciceSeanceRepository = new PrismaExerciceSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
+        const prismaSeanceRepository = new PrismaSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSeance = testIdGenerator.getId()
         const uuidExerciceSeance = testIdGenerator.getId()
         const uuidExercice = testIdGenerator.getId()
@@ -145,10 +156,13 @@ describe("PrismaExerciceSeanceRepository", () => {
     )
     it(
       "quand l'exercice n'existe pas, doit remonter une erreur",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         expect.assertions(2)
         try {
           // Act
+          const prismaExerciceSeanceRepository = new PrismaExerciceSeanceRepository({
+            correlationIdService: container.resolve('correlationIdService')
+          })
           await prismaExerciceSeanceRepository.recupererParIdSeanceEtParId(
             testIdGenerator.getId(),
             testIdGenerator.getId()
@@ -162,8 +176,14 @@ describe("PrismaExerciceSeanceRepository", () => {
     )
     it(
       "quand l'exercice n'appartient pas à la séance, doit remonter une erreur",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaExerciceSeanceRepository = new PrismaExerciceSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
+        const prismaSeanceRepository = new PrismaSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSeance = testIdGenerator.getId()
         const uuidSeance2 = testIdGenerator.getId()
         const uuidExerciceSeance = testIdGenerator.getId()
@@ -201,8 +221,14 @@ describe("PrismaExerciceSeanceRepository", () => {
   describe("#ajouterSerieExerciceSeance", () => {
     it(
       "doit ajouter les series à un exercice de séance",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaExerciceSeanceRepository = new PrismaExerciceSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
+        const prismaSeanceRepository = new PrismaSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSerieExerciceSeance1 = testIdGenerator.getId()
         const uuidSerieExerciceSeance2 = testIdGenerator.getId()
         const uuidSeance = testIdGenerator.getId()
@@ -242,8 +268,14 @@ describe("PrismaExerciceSeanceRepository", () => {
   describe("#supprimerSerieExerciceSeance", () => {
     it(
       "doit supprimer les series de l'exercice de séance",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaExerciceSeanceRepository = new PrismaExerciceSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
+        const prismaSeanceRepository = new PrismaSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSerieExerciceSeance1 = testIdGenerator.getId()
         const uuidSerieExerciceSeance2 = testIdGenerator.getId()
         const uuidSeance = testIdGenerator.getId()
@@ -278,8 +310,14 @@ describe("PrismaExerciceSeanceRepository", () => {
   describe("#supprimerExerciceSeance", () => {
     it(
       "doit supprimer l'exercice de séance",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaExerciceSeanceRepository = new PrismaExerciceSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
+        const prismaSeanceRepository = new PrismaSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         expect.assertions(1)
         const uuidSerieExerciceSeance1 = testIdGenerator.getId()
         const uuidSerieExerciceSeance2 = testIdGenerator.getId()

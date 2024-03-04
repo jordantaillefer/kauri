@@ -12,9 +12,9 @@ import { Titre } from "~/ui/shared/Titre"
 import { randomBgColor } from "~/utils/RandomBgColor"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const resultListerSeance = await serverModule.container.resolve("seanceQuery").listerSeance({ request })
+  const resultListerSeance = await serverModule.getContainer().resolve("seanceQuery").listerSeance({ request })
 
-  const resultListerExercice = await serverModule.container.resolve("exerciceQuery").listerExercice({ request })
+  const resultListerExercice = await serverModule.getContainer().resolve("exerciceQuery").listerExercice({ request })
 
   if (resultListerSeance.reasonPhrase === ReasonPhrases.FORBIDDEN) {
     redirect("/")
@@ -36,7 +36,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   switch (_action) {
     case "creer-seance": {
-      await serverModule.container.resolve("seanceController").initialiserSeance({ request })
+      await serverModule.getContainer().resolve("seanceController").initialiserSeance({ request })
       break
     }
   }

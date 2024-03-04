@@ -18,7 +18,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     idSeance: params.idSeance
   }
 
-  const resultRecupererSeance = await serverModule.container
+  const resultRecupererSeance = await serverModule.getContainer()
     .resolve("seanceQuery")
     .recupererSeanceParId({ request, payload })
 
@@ -40,7 +40,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       const payload = {
         idSeance: idSeance.toString()
       }
-      const result = await serverModule.container.resolve("seanceController").dupliquerSeance({ request, payload })
+      const result = await serverModule.getContainer().resolve("seanceController").dupliquerSeance({ request, payload })
       return redirect(`/trainings/${(result.data as SeanceContrat).id}`)
     }
   }

@@ -22,7 +22,7 @@ export const action: ActionFunction = async ({ request }) => {
         idSeance: idSeance.toString(),
         nomSeance: nomSeance.toString()
       }
-      await serverModule.container.resolve("seanceController").mettreAJourNomSeance({ request, payload })
+      await serverModule.getContainer().resolve("seanceController").mettreAJourNomSeance({ request, payload })
       break
     }
     case "supprimer-exercice": {
@@ -31,7 +31,7 @@ export const action: ActionFunction = async ({ request }) => {
       const payload = {
         idExerciceSeance: idExerciceSeance.toString(),
       }
-      await serverModule.container.resolve("exerciceSeanceController").supprimerExerciceSeance({ request, payload })
+      await serverModule.getContainer().resolve("exerciceSeanceController").supprimerExerciceSeance({ request, payload })
       break
     }
   }

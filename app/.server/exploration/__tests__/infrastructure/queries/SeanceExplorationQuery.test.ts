@@ -10,22 +10,16 @@ import { SeanceExplorationQuery } from "@/api/exploration/infrastructure/queries
 import { anyString } from "vitest-mock-extended"
 
 describe("SeanceExplorationQuery", () => {
-  let seanceExplorationQuery: SeanceExplorationQuery
-
-  beforeEach(() => {
-    seanceExplorationQuery = new SeanceExplorationQuery()
-  })
-
   it(
     "quand il n'existe existe une séance pour plusieurs utilisateur, doit remonter la liste des séances",
-    integrationTestFunction(async ({ testIdGenerator }) => {
+    integrationTestFunction(async ({ testIdGenerator, container }) => {
       // Arrange
       const uuidUtilisateur = testIdGenerator.getId()
       const uuidUtilisateur2 = testIdGenerator.getId()
       const uuidSeance1 = testIdGenerator.getId()
       const uuidSeance2 = testIdGenerator.getId()
-      const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
-      await creerRequestPourCompteUtilisateur(uuidUtilisateur2, "Doe", "Jane")
+      const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
+      await creerRequestPourCompteUtilisateur(container, uuidUtilisateur2, "Doe", "Jane")
 
       const exerciceSeance1 = new ExerciceSeanceBuilder()
         .withId(testIdGenerator.getId())
@@ -59,7 +53,8 @@ describe("SeanceExplorationQuery", () => {
         data: [seance, seance2].map(seanceACreer => ({
           id: seanceACreer.id,
           nomSeance: seanceACreer.nomSeance,
-          idUtilisateur: seanceACreer.idUtilisateur
+          idUtilisateur: seanceACreer.idUtilisateur,
+          correlationId: container.resolve('correlationIdService').correlationId
         }))
       })
       await prisma.exerciceSeance.createMany({
@@ -69,16 +64,17 @@ describe("SeanceExplorationQuery", () => {
           categorie: exerciceSeanceACreer.categorie,
           idExercice: exerciceSeanceACreer.idExercice,
           nomExercice: exerciceSeanceACreer.nomExercice,
-          idSeance: exerciceSeanceACreer.idSeance
+          idSeance: exerciceSeanceACreer.idSeance,
+          correlationId: container.resolve('correlationIdService').correlationId
         }))
       })
 
       // Act
-      const response = await seanceExplorationQuery.listerSeanceExploration({ request })
+      const response = await container.resolve('seanceExplorationQuery').listerSeanceExploration({ request })
 
       // Assert
       expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
-      expect(response.data).toHaveLength(2)
+      expect(response.data?.length).toBeGreaterThanOrEqual(2)
       const listeSeanceResult = response.data as SeanceExplorationContrat[]
       expect(listeSeanceResult).toContainEqual({
         id: anyString(),

@@ -42,8 +42,10 @@ import { ModifierExerciceSeanceUseCase } from "@/api/seance/usecases/ModifierExe
 import { SupprimerExerciceSeanceUseCase } from "@/api/seance/usecases/SupprimerExerciceSeanceUseCase";
 import { SeanceExplorationQuery } from "@/api/exploration/infrastructure/queries/SeanceExplorationQuery";
 import { DupliquerSeanceUseCase } from "@/api/seance/usecases/DupliquerSeanceUseCase";
+import { CorrelationIdService } from "@/api/CorrelationIdService"
 
 type ApplicationDependencies = {
+  correlationIdService: CorrelationIdService
   sessionManager: SessionManager
 }
 
@@ -115,6 +117,9 @@ if (process.env.NODE_ENV === "production") {
 
 function registerContainer(container: AwilixContainer<ContainerDependencies>) {
   container.register({
+    correlationIdService: asClass(CorrelationIdService, {
+      lifetime: "SCOPED"
+    }),
     sessionManager: asClass(SessionManager)
   })
   container.register({
@@ -159,4 +164,4 @@ function registerContainer(container: AwilixContainer<ContainerDependencies>) {
   })
 }
 
-export const container = innerContainer
+export const getContainer = innerContainer.createScope

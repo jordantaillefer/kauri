@@ -6,6 +6,9 @@ import dotenv from "dotenv"
 import { fileURLToPath } from "url"
 import { randomUUID } from "crypto"
 import { TestIdGenerator } from "./TestIdGenerator"
+import type { AwilixContainer } from "awilix"
+import type { ContainerDependencies } from "@/api/index.server";
+import { getContainer } from "@/api/index.server"
 
 const env = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : ""
 
@@ -21,45 +24,46 @@ const prisma = new PrismaClient()
 installGlobals()
 
 export const integrationTestFunction = (
-  testFunction: TestFunction<{ identifiant: string; testIdGenerator: TestIdGenerator }>
+  testFunction: TestFunction<{ identifiant: string; testIdGenerator: TestIdGenerator, container: AwilixContainer<ContainerDependencies> }>
 ): TestFunction<{ identifiant: string; testIdGenerator: TestIdGenerator }> => {
   let identifiant: string
   let testIdGenerator: TestIdGenerator
+  let innerContainer: AwilixContainer<ContainerDependencies>
 
-  beforeEach(() => {
-    identifiant = randomUUID()
-    testIdGenerator = new TestIdGenerator({ identifiant })
-  })
-
-  afterEach(async () => {
-    const whereStartId = { // Tout le monde devrait utiliser le where idUtilisateur
+  const clearDatabase = async (correlationId: string) => {
+    const whereCorrelationId = {
       where: {
-        id: {
-          startsWith: identifiant
-        }
+        correlationId
       }
     }
-    const whereStartIdUtilisateur = {
-      where: {
-        idUtilisateur: {
-          startsWith: identifiant
-        }
-      }
-    }
-    await prisma.user.deleteMany(whereStartId)
-    await prisma.serieExerciceSeance.deleteMany(whereStartId)
-    await prisma.exerciceSeance.deleteMany(whereStartId)
-    await prisma.seance.deleteMany(whereStartIdUtilisateur)
-    await prisma.exercice.deleteMany(whereStartId)
-    await prisma.serieEntrainement.deleteMany(whereStartId)
-    await prisma.exerciceEntrainement.deleteMany(whereStartId)
-    await prisma.entrainement.deleteMany(whereStartId)
-    await prisma.sportifEvenement.deleteMany(whereStartIdUtilisateur)
+
+    await prisma.user.deleteMany(whereCorrelationId)
+    await prisma.serieExerciceSeance.deleteMany(whereCorrelationId)
+    await prisma.exerciceSeance.deleteMany(whereCorrelationId)
+    await prisma.seance.deleteMany(whereCorrelationId)
+    await prisma.exercice.deleteMany(whereCorrelationId)
+    await prisma.serieEntrainement.deleteMany(whereCorrelationId)
+    await prisma.exerciceEntrainement.deleteMany(whereCorrelationId)
+    await prisma.entrainement.deleteMany(whereCorrelationId)
+    await prisma.sportifEvenement.deleteMany(whereCorrelationId)
 
     vi.restoreAllMocks()
-  })
+  }
 
-  return (testContext: TaskContext<Test<{}>> & TestContext) => {
-    return testFunction({ ...testContext, identifiant, testIdGenerator })
+  return async (testContext: TaskContext<Test<{}>> & TestContext) => {
+    identifiant = randomUUID()
+    testIdGenerator = new TestIdGenerator({ identifiant })
+    innerContainer = getContainer()
+
+    try {
+      const test = await testFunction({ ...testContext, identifiant, testIdGenerator, container: innerContainer })
+      await clearDatabase(innerContainer.resolve('correlationIdService').correlationId)
+      return test
+    } catch(error) {
+      await clearDatabase(innerContainer.resolve('correlationIdService').correlationId)
+      throw error
+    }
+
+
   }
 }

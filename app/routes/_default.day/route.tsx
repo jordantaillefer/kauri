@@ -17,7 +17,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const payload = {
     date: format(new Date(), "yyyy-MM-dd")
   }
-  const resultListerEvenement = await serverModule.container
+  const resultListerEvenement = await serverModule.getContainer()
     .resolve("sportifQuery")
     .listerEvenementParDate({ request, payload })
 
@@ -27,7 +27,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     )
   }
 
-  const resultListerSeanceParIds = await serverModule.container
+  const resultListerSeanceParIds = await serverModule.getContainer()
     .resolve("seanceQuery")
     .listerSeanceParIds({ request, payload: payloadListeSeance })
   const listeSeance = resultListerSeanceParIds.data as DetailSeanceContrat[]
@@ -51,7 +51,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         idSeance: idSeance.toString()
       }
 
-      const demarrerEntrainementResult = await serverModule.container
+      const demarrerEntrainementResult = await serverModule.getContainer()
         .resolve("entrainementController")
         .demarrerEntrainement({ request, payload })
       const nouvelEntrainement = demarrerEntrainementResult.data as EntrainementContrat

@@ -35,7 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
           poids: Number(listePoids.at(index)!.toString())
         }))
       }
-      await serverModule.container.resolve("exerciceSeanceController").modifierExerciceSeance({ request, payload })
+      await serverModule.getContainer().resolve("exerciceSeanceController").modifierExerciceSeance({ request, payload })
       return redirect(`/trainings/${idSeance}`)
     }
   }

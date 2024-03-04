@@ -10,7 +10,7 @@ import { Titre } from "~/ui/shared/Titre"
 import { randomBgColor } from "~/utils/RandomBgColor"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const resultListerSeanceExploration = await serverModule.container
+  const resultListerSeanceExploration = await serverModule.getContainer()
     .resolve("seanceExplorationQuery")
     .listerSeanceExploration({ request })
 

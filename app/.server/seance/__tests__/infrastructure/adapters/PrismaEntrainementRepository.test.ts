@@ -8,19 +8,17 @@ import { SerieEntrainementBuilder } from "../../../application/builders/SerieEnt
 import { PrismaEntrainementRepository } from "../../../infrastructure/adapters/PrismaEntrainementRepository"
 import { prisma } from "~/.server/db/prisma"
 import { CATEGORIE } from "~/.server/exercice/domain/categorie"
+import { getContainer } from "@/api/index.server"
 
 describe("PrismaEntrainementRepository", () => {
-  let prismaEntrainementRepository: PrismaEntrainementRepository
-
-  beforeEach(() => {
-    prismaEntrainementRepository = new PrismaEntrainementRepository()
-  })
-
   describe("#creerEntrainement", () => {
     it(
       "doit sauvegarder l'entrainement",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaEntrainementRepository = new PrismaEntrainementRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSerieEntrainement1 = testIdGenerator.getId()
         const uuidSerieEntrainement2 = testIdGenerator.getId()
         const uuidSerieEntrainement3 = testIdGenerator.getId()
@@ -121,8 +119,11 @@ describe("PrismaEntrainementRepository", () => {
   describe("#mettreAJourSerieEstRealise", () => {
     it(
       "doit mettre à jour le champ est réalisé de la série",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaEntrainementRepository = new PrismaEntrainementRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSerieEntrainement1 = testIdGenerator.getId()
         const uuidSerieEntrainement2 = testIdGenerator.getId()
         const uuidSerieEntrainement3 = testIdGenerator.getId()
@@ -133,16 +134,19 @@ describe("PrismaEntrainementRepository", () => {
         const serieEntrainement1 = new SerieEntrainementBuilder()
           .withId(uuidSerieEntrainement1)
           .withNombreRepetition(8)
+          .withOrdre(1)
           .withEstRealise(false)
           .build()
         const serieEntrainement2 = new SerieEntrainementBuilder()
           .withId(uuidSerieEntrainement2)
           .withNombreRepetition(10)
+          .withOrdre(2)
           .withEstRealise(true)
           .build()
         const serieEntrainement3 = new SerieEntrainementBuilder()
           .withId(uuidSerieEntrainement3)
           .withNombreRepetition(12)
+          .withOrdre(3)
           .withEstRealise(false)
           .build()
         const exerciceEntrainement1 = new ExerciceEntrainementBuilder()
@@ -150,6 +154,7 @@ describe("PrismaEntrainementRepository", () => {
           .withEstRealise(false)
           .withNomExercice("nomExercice 1")
           .withCategorie(CATEGORIE.PECTORAUX)
+          .withOrdre(1)
           .withListeSerieEntrainement(serieEntrainement1)
           .build()
         const exerciceEntrainement2 = new ExerciceEntrainementBuilder()
@@ -157,6 +162,7 @@ describe("PrismaEntrainementRepository", () => {
           .withEstRealise(true)
           .withNomExercice("nomExercice 2")
           .withCategorie(CATEGORIE.ISCHIOJAMBIERS)
+          .withOrdre(2)
           .withListeSerieEntrainement(serieEntrainement2, serieEntrainement3)
           .build()
         const entrainement = new EntrainementBuilder()
@@ -194,8 +200,11 @@ describe("PrismaEntrainementRepository", () => {
   describe("#mettreAJourExercice", () => {
     it(
       "doit mettre à jour le champ est réalisé de la série",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaEntrainementRepository = new PrismaEntrainementRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSerieEntrainement1 = testIdGenerator.getId()
         const uuidSerieEntrainement2 = testIdGenerator.getId()
         const uuidSerieEntrainement3 = testIdGenerator.getId()
@@ -265,8 +274,11 @@ describe("PrismaEntrainementRepository", () => {
 
     it(
       "doit mettre à jour le champ est réalisé de l'entrainement",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaEntrainementRepository = new PrismaEntrainementRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSerieEntrainement1 = testIdGenerator.getId()
         const uuidSerieEntrainement2 = testIdGenerator.getId()
         const uuidSerieEntrainement3 = testIdGenerator.getId()
@@ -334,8 +346,11 @@ describe("PrismaEntrainementRepository", () => {
   describe("#mettreAJourEntrainementEstRealise", () => {
     it(
       "doit mettre à jour le champ est réalisé de l'entrainement",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaEntrainementRepository = new PrismaEntrainementRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSerieEntrainement1 = testIdGenerator.getId()
         const uuidSerieEntrainement2 = testIdGenerator.getId()
         const uuidSerieEntrainement3 = testIdGenerator.getId()

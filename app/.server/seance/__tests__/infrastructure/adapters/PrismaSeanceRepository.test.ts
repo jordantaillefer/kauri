@@ -6,18 +6,17 @@ import type { Seance } from "../../../domain/Seance"
 import { PrismaSeanceRepository } from "../../../infrastructure/adapters/PrismaSeanceRepository"
 import { prisma } from "~/.server/db/prisma"
 import { SeanceBuilder } from "~/.server/testUtils/builders/SeanceBuilder"
+import { getContainer } from "@/api/index.server"
 
 describe("PrismaSeanceRepository", () => {
-  let prismaSeanceRepository: PrismaSeanceRepository
-  beforeEach(() => {
-    prismaSeanceRepository = new PrismaSeanceRepository()
-  })
-
   describe("#creerSeance", () => {
     it(
       "doit creer un seance",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaSeanceRepository = new PrismaSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidSeance = testIdGenerator.getId()
         const uuidUtilisateur = testIdGenerator.getId()
         const seance: Seance = new SeanceBuilder()
@@ -40,8 +39,11 @@ describe("PrismaSeanceRepository", () => {
   describe("#ajouterExerciceSeanceASeance", () => {
     it(
       "doit ajouter l'exercice à la séance",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaSeanceRepository = new PrismaSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidExerciceSeance = testIdGenerator.getId()
         const uuidSeance = testIdGenerator.getId()
         const uuidExerciceSeanceAAjouter = testIdGenerator.getId()
@@ -75,8 +77,12 @@ describe("PrismaSeanceRepository", () => {
   describe("#modifierNomSeance", () => {
     it(
       "doit mettre à jour le nom de la séance",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaSeanceRepository = new PrismaSeanceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
+
         const uuidSeance = testIdGenerator.getId()
         const seance1: Seance = new SeanceBuilder()
           .withId(uuidSeance)

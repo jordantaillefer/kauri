@@ -5,7 +5,7 @@ import { redirect } from "@remix-run/node"
 export const loader: LoaderFunction = async ({ request }) => {
   return redirect("/", {
     headers: {
-      "Set-Cookie": await serverModule.container.resolve("compteUtilisateurController").seDeconnecter({ request, payload: null })
+      "Set-Cookie": await serverModule.getContainer().resolve("compteUtilisateurController").seDeconnecter({ request, payload: null })
     }
   })
 }

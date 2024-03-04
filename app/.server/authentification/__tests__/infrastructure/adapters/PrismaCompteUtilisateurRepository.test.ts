@@ -6,18 +6,17 @@ import { LUtilisateurNExistePasError } from "../../../domain/errors/LUtilisateur
 import { PrismaCompteUtilisateurRepository } from "../../../infrastructure/adapters/PrismaCompteUtilisateurRepository"
 import { TestFailedError } from "~/.server/testUtils/errors/TestFailedError"
 import { CompteUtilisateurBuilder } from "@/api/testUtils/builders/CompteUtilisateurBuilder";
+import { getContainer } from "@/api/index.server"
 
 describe("PrismaCompteUtilisateurRepository", () => {
-  let prismaCompteUtilisateurRepository: PrismaCompteUtilisateurRepository
-  beforeEach(() => {
-    prismaCompteUtilisateurRepository = new PrismaCompteUtilisateurRepository()
-  })
-
   describe("CreerCompteUtilisateur", () => {
     it(
       "Doit créer un compte utilisateur",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaCompteUtilisateurRepository = new PrismaCompteUtilisateurRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidUtilisateur = testIdGenerator.getId()
         const compteUtilisateur = new CompteUtilisateurBuilder().withId(uuidUtilisateur).build()
         // Act
@@ -32,8 +31,11 @@ describe("PrismaCompteUtilisateurRepository", () => {
   describe("recupererCompteUtilisateur", () => {
     it(
       "Quand l'utilisateur existe, doit récupérer un compte utilisateur",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaCompteUtilisateurRepository = new PrismaCompteUtilisateurRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidUtilisateur = testIdGenerator.getId()
         const compteUtilisateur = new CompteUtilisateurBuilder().withId(uuidUtilisateur).build()
         await prismaCompteUtilisateurRepository.creerCompteUtilisateur(compteUtilisateur)
@@ -46,9 +48,12 @@ describe("PrismaCompteUtilisateurRepository", () => {
     )
     it(
       "Quand l'utilisateur n'existe pas, doit récupérer un compte utilisateur",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         try {
           // Act
+          const prismaCompteUtilisateurRepository = new PrismaCompteUtilisateurRepository({
+            correlationIdService: container.resolve('correlationIdService')
+          })
           const uuidUtilisateur = testIdGenerator.getId()
           await prismaCompteUtilisateurRepository.recupererCompteUtilisateurParId(uuidUtilisateur)
           throw new TestFailedError()

@@ -1,33 +1,25 @@
 import { ReasonPhrases } from "http-status-codes"
 
-import { container } from "@/api/index.server"
 import { integrationTestFunction } from "../../../../../../test/setup-test-env"
-import type { SportifRepository } from "~/.server/sportif/domain/ports/SportifRepository"
-import type { SportifQuery } from "~/.server/sportif/infrastructure/queries/SportifQuery"
 import { creerRequestPourCompteUtilisateur } from "~/.server/testUtils/RequestUtils"
 import { SportifEvenementBuilder } from "~/.server/testUtils/builders/SportifEvenementBuilder"
 
 describe("SportifQuery", () => {
-  let sportifQuery: SportifQuery
-  let sportifRepository: SportifRepository
-
-  beforeEach(() => {
-    sportifRepository = container.resolve("sportifRepository")
-    sportifQuery = container.resolve("sportifQuery")
-  })
-
   describe("#listerEvenement", () => {
     it(
       "doit récupérer les événements d'un utilisateur",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const sportifRepository = container.resolve('sportifRepository')
+        const sportifQuery = container.resolve('sportifQuery')
+
         const uuidSeance1 = testIdGenerator.getId()
         const uuidSeance2 = testIdGenerator.getId()
         const uuidUtilisateur1 = testIdGenerator.getId()
         const uuidSportifEvenement1 = testIdGenerator.getId()
         const uuidSportifEvenement2 = testIdGenerator.getId()
 
-        const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur1)
+        const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur1)
 
         const sportifEvenement1 = new SportifEvenementBuilder()
           .withId(uuidSportifEvenement1)
@@ -64,10 +56,12 @@ describe("SportifQuery", () => {
   describe("#listerEvenementParDate", () => {
     it(
       "quand il y a une date en payload, doit remonter les événements de cette date pour l'utilisateur",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const sportifRepository = container.resolve('sportifRepository')
+        const sportifQuery = container.resolve('sportifQuery')
         const uuidUtilisateur1 = testIdGenerator.getId()
-        const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur1)
+        const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur1)
 
         const sportifEvenement1 = new SportifEvenementBuilder()
           .withId(testIdGenerator.getId())

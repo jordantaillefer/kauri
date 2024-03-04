@@ -10,32 +10,22 @@ import { SerieExerciceSeanceBuilder } from "../../../application/builders/SerieE
 import type { EntrainementRepository } from "../../../domain/ports/EntrainementRepository"
 import type { SeanceRepository } from "../../../domain/ports/SeanceRepository"
 import type { EntrainementController } from "../../../infrastructure/controllers/EntrainementController"
-import { container } from "@/api/index.server"
+import { getContainer } from "@/api/index.server"
 import type { EntrainementContrat } from "~/.server/app/contrats/EntrainementContrat"
 import { CATEGORIE } from "~/.server/exercice/domain/categorie"
 import { creerRequestPourCompteUtilisateur } from "~/.server/testUtils/RequestUtils"
 import { SeanceBuilder } from "~/.server/testUtils/builders/SeanceBuilder"
 
 describe("EntrainementController", () => {
-  let entrainementController: EntrainementController
-  let seanceRepository: SeanceRepository
-  let entrainementRepository: EntrainementRepository
-
-  beforeEach(() => {
-    entrainementController = container.resolve("entrainementController")
-    seanceRepository = container.resolve("seanceRepository")
-    entrainementRepository = container.resolve("entrainementRepository")
-  })
-
   describe("#demarrerEntrainement", () => {
     describe("Cas OK", () => {
       it(
         "doit créer un nouvel entrainement à partir d'une séance",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const idUtilisateur = testIdGenerator.getId()
           const uuidSeance = testIdGenerator.getId()
-          const request = await creerRequestPourCompteUtilisateur(idUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, idUtilisateur)
 
           const serieExerciceSeance1 = new SerieExerciceSeanceBuilder().withRepetitions(8).build()
           const serieExerciceSeance2 = new SerieExerciceSeanceBuilder().withRepetitions(10).build()
@@ -56,10 +46,10 @@ describe("EntrainementController", () => {
             .withNomSeance("nomSeance 1")
             .withListeExerciceSeance(exercice1, exercice2)
             .build()
-          await seanceRepository.creerSeance(seance)
+          await container.resolve('seanceRepository').creerSeance(seance)
           const payload = { idSeance: uuidSeance }
           // Act
-          const result = await entrainementController.demarrerEntrainement({ request, payload })
+          const result = await container.resolve('entrainementController').demarrerEntrainement({ request, payload })
           // Assert
           expect(result.reasonPhrase).toEqual(ReasonPhrases.CREATED)
           const nouvelEntrainement = result.data as EntrainementContrat
@@ -73,7 +63,7 @@ describe("EntrainementController", () => {
     describe("Cas OK", () => {
       it(
         "doit faire passer la série à réalisée",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidUtilisateur = testIdGenerator.getId()
           const uuidSerieEntrainement1 = testIdGenerator.getId()
@@ -83,7 +73,7 @@ describe("EntrainementController", () => {
           const uuidExerciceEntrainement2 = testIdGenerator.getId()
           const uuidEntrainement = testIdGenerator.getId()
 
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
 
           const serieEntrainement1 = new SerieEntrainementBuilder()
             .withId(uuidSerieEntrainement1)
@@ -122,13 +112,13 @@ describe("EntrainementController", () => {
             .withNomSeance("nomSeance")
             .withListeExerciceEntrainement(exerciceEntrainement1, exerciceEntrainement2)
             .build()
-          await entrainementRepository.creerEntrainement(entrainement)
+          await container.resolve('entrainementRepository').creerEntrainement(entrainement)
           const payload = {
             idSerieEntrainement: uuidSerieEntrainement1,
             idExerciceEntrainement: uuidExerciceEntrainement1
           }
           // Act
-          const result = await entrainementController.realiserSerie({
+          const result = await container.resolve('entrainementController').realiserSerie({
             request,
             payload
           })

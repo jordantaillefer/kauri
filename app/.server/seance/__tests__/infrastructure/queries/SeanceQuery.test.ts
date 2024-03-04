@@ -3,34 +3,20 @@ import { describe, expect, it } from "vitest"
 
 import { ExerciceSeanceBuilder } from "../../../application/builders/ExerciceSeanceBuilder"
 import type { Seance } from "../../../domain/Seance"
-import type { ExerciceSeanceRepository } from "../../../domain/ports/ExerciceSeanceRepository"
-import type { SeanceRepository } from "../../../domain/ports/SeanceRepository"
-import type { SeanceQuery } from "../../../infrastructure/queries/SeanceQuery"
-import { container } from "@/api/index.server"
 import { integrationTestFunction } from "../../../../../../test/setup-test-env"
 import type { DetailSeanceContrat } from "~/.server/app/contrats/DetailSeanceContrat"
 import { creerRequest, creerRequestPourCompteUtilisateur } from "~/.server/testUtils/RequestUtils"
 import { SeanceBuilder } from "~/.server/testUtils/builders/SeanceBuilder"
 
 describe("SeanceQuery", () => {
-  let seanceQuery: SeanceQuery
-  let seanceRepository: SeanceRepository
-  let exerciceSeanceRepository: ExerciceSeanceRepository
-
-  beforeEach(() => {
-    seanceQuery = container.resolve("seanceQuery")
-    seanceRepository = container.resolve("seanceRepository")
-    exerciceSeanceRepository = container.resolve("exerciceSeanceRepository")
-  })
-
   describe("#listerSeance", () => {
     describe("Cas OK", () => {
       it(
         "doit récupérer la liste des séances de l'utilisateur",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidUtilisateur = testIdGenerator.getId()
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
           const uuidSeance1 = testIdGenerator.getId()
           const uuidSeance2 = testIdGenerator.getId()
           const seanceUtilisateur1: Seance = new SeanceBuilder()
@@ -47,11 +33,11 @@ describe("SeanceQuery", () => {
             .withId(testIdGenerator.getId())
             .withIdUtilisateur(testIdGenerator.getId())
             .build()
-          await seanceRepository.creerSeance(seanceUtilisateur1)
-          await seanceRepository.creerSeance(seanceUtilisateur2)
-          await seanceRepository.creerSeance(seanceAutreUtilisateur)
+          await container.resolve('seanceRepository').creerSeance(seanceUtilisateur1)
+          await container.resolve('seanceRepository').creerSeance(seanceUtilisateur2)
+          await container.resolve('seanceRepository').creerSeance(seanceAutreUtilisateur)
           // Act
-          const response = await seanceQuery.listerSeance({ request })
+          const response = await container.resolve('seanceQuery').listerSeance({ request })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
           const listeSeance = response.data as DetailSeanceContrat[]
@@ -64,10 +50,10 @@ describe("SeanceQuery", () => {
 
       it(
         "quand la séance a des exercices, doit récupérer les exercices",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidUtilisateur = testIdGenerator.getId()
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
           // Arrange
           const uuidSeance1 = testIdGenerator.getId()
           const uuidSeance2 = testIdGenerator.getId()
@@ -93,13 +79,13 @@ describe("SeanceQuery", () => {
             .withListeExerciceSeance(exerciceSeance1, exerciceSeance2)
             .build()
           const seance2: Seance = new SeanceBuilder().withId(uuidSeance2).withIdUtilisateur(uuidUtilisateur).build()
-          await seanceRepository.creerSeance(seance)
-          await seanceRepository.creerSeance(seance2)
-          await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance1)
-          await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance2)
-          await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance3)
+          await container.resolve('seanceRepository').creerSeance(seance)
+          await container.resolve('seanceRepository').creerSeance(seance2)
+          await container.resolve('exerciceSeanceRepository').creerExerciceSeance(exerciceSeance1)
+          await container.resolve('exerciceSeanceRepository').creerExerciceSeance(exerciceSeance2)
+          await container.resolve('exerciceSeanceRepository').creerExerciceSeance(exerciceSeance3)
           // Act
-          const response = await seanceQuery.listerSeance({ request })
+          const response = await container.resolve('seanceQuery').listerSeance({ request })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
           const listeSeance = response.data as DetailSeanceContrat[]
@@ -114,11 +100,11 @@ describe("SeanceQuery", () => {
     describe("Cas KO", () => {
       it(
         "Quand l'utilisateur n'est pas connecté, erreur Unauthorized",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const request = creerRequest()
           // Act
-          const response = await seanceQuery.listerSeance({ request })
+          const response = await container.resolve('seanceQuery').listerSeance({ request })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
         })
@@ -130,10 +116,10 @@ describe("SeanceQuery", () => {
     describe("Cas OK", () => {
       it(
         "doit récupérer la liste des séances demandé en paramètre de l'utilisateur",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidUtilisateur = testIdGenerator.getId()
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
           const uuidSeance1 = testIdGenerator.getId()
           const uuidSeance2 = testIdGenerator.getId()
           const uuidSeance3 = testIdGenerator.getId()
@@ -156,16 +142,17 @@ describe("SeanceQuery", () => {
             .withId(testIdGenerator.getId())
             .withIdUtilisateur(testIdGenerator.getId())
             .build()
-          await seanceRepository.creerSeance(seanceUtilisateur1)
-          await seanceRepository.creerSeance(seanceUtilisateur2)
-          await seanceRepository.creerSeance(seanceUtilisateur3)
-          await seanceRepository.creerSeance(seanceAutreUtilisateur)
+          await container.resolve('seanceRepository').creerSeance(seanceUtilisateur1)
+          await container.resolve('seanceRepository').creerSeance(seanceUtilisateur2)
+          await container.resolve('seanceRepository').creerSeance(seanceUtilisateur3)
+          await container.resolve('seanceRepository').creerSeance(seanceAutreUtilisateur)
           const payload = {
             listeSeanceIds: [uuidSeance1, uuidSeance3]
           }
 
           // Act
-          const response = await seanceQuery.listerSeanceParIds({ request, payload })
+          const response = await container.resolve('seanceQuery').listerSeanceParIds({ request, payload })
+
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
           const listeSeance = response.data as DetailSeanceContrat[]
@@ -186,10 +173,10 @@ describe("SeanceQuery", () => {
 
       it(
         "quand la séance a des exercices, doit récupérer les exercices",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidUtilisateur = testIdGenerator.getId()
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
           // Arrange
           const uuidSeance1 = testIdGenerator.getId()
           const uuidSeance2 = testIdGenerator.getId()
@@ -215,13 +202,13 @@ describe("SeanceQuery", () => {
             .withListeExerciceSeance(exerciceSeance1, exerciceSeance2)
             .build()
           const seance2: Seance = new SeanceBuilder().withId(uuidSeance2).withIdUtilisateur(uuidUtilisateur).build()
-          await seanceRepository.creerSeance(seance)
-          await seanceRepository.creerSeance(seance2)
-          await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance1)
-          await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance2)
-          await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance3)
+          await container.resolve('seanceRepository').creerSeance(seance)
+          await container.resolve('seanceRepository').creerSeance(seance2)
+          await container.resolve('exerciceSeanceRepository').creerExerciceSeance(exerciceSeance1)
+          await container.resolve('exerciceSeanceRepository').creerExerciceSeance(exerciceSeance2)
+          await container.resolve('exerciceSeanceRepository').creerExerciceSeance(exerciceSeance3)
           // Act
-          const response = await seanceQuery.listerSeance({ request })
+          const response = await container.resolve('seanceQuery').listerSeance({ request })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
           const listeSeance = response.data as DetailSeanceContrat[]
@@ -236,11 +223,11 @@ describe("SeanceQuery", () => {
     describe("Cas KO", () => {
       it(
         "Quand l'utilisateur n'est pas connecté, erreur Unauthorized",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ container }) => {
           // Arrange
           const request = creerRequest()
           // Act
-          const response = await seanceQuery.listerSeance({ request })
+          const response = await container.resolve('seanceQuery').listerSeance({ request })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
         })
@@ -252,10 +239,10 @@ describe("SeanceQuery", () => {
     describe("Cas OK", () => {
       it(
         "doit récupérer la séance de l'utilisateur",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidUtilisateur = testIdGenerator.getId()
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
           const seanceUtilisateur1: Seance = new SeanceBuilder()
             .withId(testIdGenerator.getId())
             .withIdUtilisateur(uuidUtilisateur)
@@ -270,12 +257,12 @@ describe("SeanceQuery", () => {
             .withId(testIdGenerator.getId())
             .withIdUtilisateur(testIdGenerator.getId())
             .build()
-          await seanceRepository.creerSeance(seanceUtilisateur1)
-          await seanceRepository.creerSeance(seanceUtilisateur2)
-          await seanceRepository.creerSeance(seanceAutreUtilisateur)
+          await container.resolve('seanceRepository').creerSeance(seanceUtilisateur1)
+          await container.resolve('seanceRepository').creerSeance(seanceUtilisateur2)
+          await container.resolve('seanceRepository').creerSeance(seanceAutreUtilisateur)
           // Act
           const payload = { idSeance: seanceUtilisateur1.id }
-          const response = await seanceQuery.recupererSeanceParId({ request, payload })
+          const response = await container.resolve('seanceQuery').recupererSeanceParId({ request, payload })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
           const seanceResult = response.data as DetailSeanceContrat
@@ -286,10 +273,10 @@ describe("SeanceQuery", () => {
 
       it(
         "quand la séance a des exercices, doit récupérer les exercices",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidUtilisateur = testIdGenerator.getId()
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
           // Arrange
           const uuidSeance1 = testIdGenerator.getId()
           const uuidSeance2 = testIdGenerator.getId()
@@ -314,14 +301,14 @@ describe("SeanceQuery", () => {
             .withListeExerciceSeance(exerciceSeance1, exerciceSeance2)
             .build()
           const seance2: Seance = new SeanceBuilder().withId(uuidSeance2).withIdUtilisateur(uuidUtilisateur).build()
-          await seanceRepository.creerSeance(seance)
-          await seanceRepository.creerSeance(seance2)
-          await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance1)
-          await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance2)
-          await exerciceSeanceRepository.creerExerciceSeance(exerciceSeance3)
+          await container.resolve('seanceRepository').creerSeance(seance)
+          await container.resolve('seanceRepository').creerSeance(seance2)
+          await container.resolve('exerciceSeanceRepository').creerExerciceSeance(exerciceSeance1)
+          await container.resolve('exerciceSeanceRepository').creerExerciceSeance(exerciceSeance2)
+          await container.resolve('exerciceSeanceRepository').creerExerciceSeance(exerciceSeance3)
           // Act
           const payload = { idSeance: uuidSeance1 }
-          const response = await seanceQuery.recupererSeanceParId({ request, payload })
+          const response = await container.resolve('seanceQuery').recupererSeanceParId({ request, payload })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
           const seanceResult = response.data as DetailSeanceContrat
@@ -336,12 +323,12 @@ describe("SeanceQuery", () => {
     describe("Cas KO", () => {
       it(
         "Quand l'utilisateur n'est pas connecté, erreur Unauthorized",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const request = creerRequest()
           // Act
           const payload = { idSeance: "Peu importe l'id" }
-          const response = await seanceQuery.recupererSeanceParId({ request, payload })
+          const response = await container.resolve('seanceQuery').recupererSeanceParId({ request, payload })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
         })

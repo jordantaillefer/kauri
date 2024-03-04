@@ -14,8 +14,91 @@ import { Seance } from "../../domain/Seance"
 import { SeanceNotFoundError } from "../../domain/errors/SeanceNotFoundError"
 import type { SeanceRepository } from "../../domain/ports/SeanceRepository"
 import type { SerieExerciceSeance } from "~/.server/seance/domain/SerieExerciceSeance"
+import { UUID } from "node:crypto"
+import { CorrelationIdService } from "@/api/CorrelationIdService"
+export class PrismaSeanceRepository implements SeanceRepository {
+  private readonly correlationId: UUID
+  constructor({ correlationIdService }: { correlationIdService: CorrelationIdService }) {
+    this.correlationId = correlationIdService.correlationId
+  }
 
-function convertirEnModel(seance: Seance): SeanceModel {
+  async creerSeance(seance: Seance) {
+    const seanceModel = convertirEnModel(seance)
+    await prisma.seance.create({
+      data: {
+        ...seanceModel,
+        correlationId: this.correlationId
+      }
+    })
+  }
+
+  async recupererParId(idSeance: string): Promise<Seance> {
+    const seanceModel = await prisma.seance.findUnique({
+      where: { id: idSeance },
+      include: {
+        exerciceSeances: {
+          orderBy: { ordre: "asc" }
+        }
+      }
+    })
+    if (seanceModel === null) {
+      throw new SeanceNotFoundError()
+    }
+    return convertirEnSeance(seanceModel)
+  }
+
+  async recupererDetailParId(idSeance: string): Promise<DetailSeance> {
+    const detailSeanceModel = await prisma.seance.findUnique({
+      where: { id: idSeance },
+      include: {
+        exerciceSeances: {
+          orderBy: { ordre: "asc" },
+          include: {
+            serieExerciceSeances: { orderBy: { ordre: "asc" } }
+          }
+        }
+      }
+    })
+    if (detailSeanceModel === null) {
+      throw new SeanceNotFoundError()
+    }
+
+    return convertirEnDetailSeance(detailSeanceModel)
+  }
+
+  async ajouterExerciceSeanceASeance(idSeance: string, exerciceSeanceAAjouter: ExerciceSeance): Promise<void> {
+    const exerciceSeanceModel = convertirEnExerciceSeanceModel(exerciceSeanceAAjouter)
+    await prisma.seance.update({
+      where: { id: idSeance },
+      data: {
+        exerciceSeances: {
+          create: {
+            ...exerciceSeanceModel,
+            correlationId: this.correlationId,
+            serieExerciceSeances: {
+              create: exerciceSeanceAAjouter.listeSerieExerciceSeance.map(serieExerciceSeance => ({
+                ...convertirEnSerieExerciceSeanceModel(serieExerciceSeance),
+                correlationId: this.correlationId
+              }))
+            }
+          }
+        }
+      }
+    })
+  }
+
+  async modifierNomSeance(idSeance: string, nouveauNomSeance: string): Promise<void> {
+    await prisma.seance.update({
+      where: { id: idSeance },
+      data: {
+        nomSeance: nouveauNomSeance
+      }
+    })
+  }
+}
+
+
+function convertirEnModel(seance: Seance): Omit<SeanceModel, 'correlationId'> {
   return {
     id: seance.id,
     idUtilisateur: seance.idUtilisateur,
@@ -77,7 +160,7 @@ function convertirEnDetailSeance(detailSeanceModel: DetailSeanceModel): DetailSe
   })
 }
 
-function convertirEnExerciceSeanceModel(exerciceSeance: ExerciceSeance): Omit<ExerciceSeanceModel, "idSeance"> {
+function convertirEnExerciceSeanceModel(exerciceSeance: ExerciceSeance): Omit<ExerciceSeanceModel, "idSeance" | "correlationId"> {
   return {
     id: exerciceSeance.id,
     idExercice: exerciceSeance.idExercice,
@@ -87,85 +170,12 @@ function convertirEnExerciceSeanceModel(exerciceSeance: ExerciceSeance): Omit<Ex
   }
 }
 
-const convertirEnSerieModel = (
+const convertirEnSerieExerciceSeanceModel = (
   serieExerciceSeance: SerieExerciceSeance
-): Omit<SerieExerciceSeanceModel, "idExerciceSeance"> => ({
+): Omit<SerieExerciceSeanceModel, "idExerciceSeance" | "correlationId"> => ({
   id: serieExerciceSeance.id,
   ordre: serieExerciceSeance.ordre,
   repetitions: serieExerciceSeance.repetitions,
   poids: serieExerciceSeance.poids,
   tempsRepos: serieExerciceSeance.tempsRepos
 })
-
-export class PrismaSeanceRepository implements SeanceRepository {
-  async creerSeance(seance: Seance) {
-    const seanceModel = convertirEnModel(seance)
-    await prisma.seance.create({
-      data: {
-        id: seanceModel.id,
-        nomSeance: seanceModel.nomSeance,
-        idUtilisateur: seanceModel.idUtilisateur
-      }
-    })
-  }
-
-  async recupererParId(idSeance: string): Promise<Seance> {
-    const seanceModel = await prisma.seance.findUnique({
-      where: { id: idSeance },
-      include: {
-        exerciceSeances: {
-          orderBy: { ordre: "asc" }
-        }
-      }
-    })
-    if (seanceModel === null) {
-      throw new SeanceNotFoundError()
-    }
-    return convertirEnSeance(seanceModel)
-  }
-
-  async recupererDetailParId(idSeance: string): Promise<DetailSeance> {
-    const detailSeanceModel = await prisma.seance.findUnique({
-      where: { id: idSeance },
-      include: {
-        exerciceSeances: {
-          orderBy: { ordre: "asc" },
-          include: {
-            serieExerciceSeances: { orderBy: { ordre: "asc" } }
-          }
-        }
-      }
-    })
-    if (detailSeanceModel === null) {
-      throw new SeanceNotFoundError()
-    }
-
-    return convertirEnDetailSeance(detailSeanceModel)
-  }
-
-  async ajouterExerciceSeanceASeance(idSeance: string, exerciceSeanceAAjouter: ExerciceSeance): Promise<void> {
-    const exerciceSeanceModel = convertirEnExerciceSeanceModel(exerciceSeanceAAjouter)
-    await prisma.seance.update({
-      where: { id: idSeance },
-      data: {
-        exerciceSeances: {
-          create: {
-            ...exerciceSeanceModel,
-            serieExerciceSeances: {
-              create: exerciceSeanceAAjouter.listeSerieExerciceSeance.map(convertirEnSerieModel)
-            }
-          }
-        }
-      }
-    })
-  }
-
-  async modifierNomSeance(idSeance: string, nouveauNomSeance: string): Promise<void> {
-    await prisma.seance.update({
-      where: { id: idSeance },
-      data: {
-        nomSeance: nouveauNomSeance
-      }
-    })
-  }
-}

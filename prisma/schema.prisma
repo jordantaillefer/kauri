@@ -11,11 +11,12 @@ datasource db {
 }
 
 model User {
-  id        String    @id
-  nom       String
-  prenom    String
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @default(now()) @updatedAt
+  id            String    @id
+  nom           String
+  prenom        String
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime? @default(now()) @updatedAt
+  correlationId String    @default(uuid())
 }
 
 model Seance {
@@ -23,12 +24,14 @@ model Seance {
   nomSeance       String
   idUtilisateur   String
   exerciceSeances ExerciceSeance[]
+  correlationId   String           @default(uuid())
 }
 
 model Exercice {
-  id          String @id
-  nomExercice String
-  categorie   String
+  id            String @id
+  nomExercice   String
+  categorie     String
+  correlationId String @default(uuid())
 }
 
 model ExerciceSeance {
@@ -40,6 +43,7 @@ model ExerciceSeance {
   nomExercice          String
   categorie            String
   ordre                Int
+  correlationId        String                @default(uuid())
 }
 
 model SerieExerciceSeance {
@@ -50,6 +54,7 @@ model SerieExerciceSeance {
   repetitions      Int
   tempsRepos       Int
   ordre            Int
+  correlationId    String         @default(uuid())
 }
 
 model Entrainement {
@@ -57,6 +62,7 @@ model Entrainement {
   idUtilisateur         String
   nomSeance             String
   exerciceEntrainements ExerciceEntrainement[]
+  correlationId         String                 @default(uuid())
 }
 
 model ExerciceEntrainement {
@@ -68,6 +74,7 @@ model ExerciceEntrainement {
   categorie          String
   ordre              Int
   serieEntrainements SerieEntrainement[]
+  correlationId      String              @default(uuid())
 }
 
 model SerieEntrainement {
@@ -78,6 +85,7 @@ model SerieEntrainement {
   nombreRepetition       Int
   ordre                  Int
   estRealise             Boolean
+  correlationId          String               @default(uuid())
 }
 
 model SportifEvenement {
@@ -85,4 +93,5 @@ model SportifEvenement {
   idSeance       String
   idUtilisateur  String
   tempsEvenement String
+  correlationId  String @default(uuid())
 }
