@@ -19,7 +19,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     idEntrainement
   }
 
-  const entrainementResult = await serverModule.container
+  const entrainementResult = await serverModule.getContainer()
     .resolve("entrainementQuery")
     .recupererEntrainementParId({ request, payload })
 
@@ -46,7 +46,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         idSerieEntrainement: idSerie.toString(),
         idExerciceEntrainement: idExercice.toString()
       }
-      await serverModule.container.resolve("entrainementController").realiserSerie({ request, payload })
+      await serverModule.getContainer().resolve("entrainementController").realiserSerie({ request, payload })
     }
   }
   return null
@@ -78,7 +78,7 @@ const Entrainement: FunctionComponent = () => {
         })
       }
     }
-  }, [counter]);
+  }, [counter, dernierExerciceActif, derniereSerieActive, isRepos, submit]);
 
   const startTimer = (tempsRepos: number) => {
     setCounter(tempsRepos)

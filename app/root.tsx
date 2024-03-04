@@ -51,7 +51,7 @@ function Document({ children }: DocumentProps) {
 }
 
 export const loader: LoaderFunction = async ({ request, params, context }) => {
-  const response = await serverModule.container.resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
+  const response = await serverModule.getContainer().resolve("compteUtilisateurController").recupererCompteUtilisateurConnecte(request)
   return json({
     authenticated: response.reasonPhrase === ReasonPhrases.OK,
     user: response.data

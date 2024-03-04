@@ -32,7 +32,7 @@ export const action: ActionFunction = async ({ request }) => {
           poids: Number(listePoids.at(index)?.toString() || 0)
         }))
       }
-      await serverModule.container.resolve("exerciceSeanceController").creerExerciceSeance({ request, payload })
+      await serverModule.getContainer().resolve("exerciceSeanceController").creerExerciceSeance({ request, payload })
       return redirect(`/trainings/${idSeance}`)
     }
   }

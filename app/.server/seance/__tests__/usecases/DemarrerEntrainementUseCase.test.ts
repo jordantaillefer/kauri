@@ -2,27 +2,25 @@ import { describe, expect, it } from "vitest"
 import type { CaptorMatcher, MockProxy } from "vitest-mock-extended";
 import { captor, mock } from "vitest-mock-extended"
 
-import { CATEGORIE } from "../../../exercice/domain/categorie"
+import { CATEGORIE } from "@/api/exercice/domain/categorie"
 import { DetailExerciceBuilder } from "../../application/builders/DetailExerciceBuilder"
 import { DetailSeanceBuilder } from "../../application/builders/DetailSeanceBuilder"
 import { DetailSerieBuilder } from "../../application/builders/DetailSerieBuilder"
 import type { Entrainement } from "../../domain/Entrainement"
-import type {
-  CreerEntrainementRepository,
-  RecupererDetailSeanceParIdRepository
-} from "../../usecases/DemarrerEntrainementUseCase";
 import {
   DemarrerEntrainementUseCase
 } from "../../usecases/DemarrerEntrainementUseCase"
+import { SeanceRepository } from "@/api/seance/domain/ports/SeanceRepository"
+import { EntrainementRepository } from "@/api/seance/domain/ports/EntrainementRepository"
 
 describe("DemarrerEntrainementUseCase", () => {
   let demarrerEntrainementUseCase: DemarrerEntrainementUseCase
-  let seanceRepository: MockProxy<RecupererDetailSeanceParIdRepository>
-  let entrainementRepository: MockProxy<CreerEntrainementRepository>
+  let seanceRepository: MockProxy<SeanceRepository>
+  let entrainementRepository: MockProxy<EntrainementRepository>
 
   beforeEach(() => {
-    seanceRepository = mock<RecupererDetailSeanceParIdRepository>()
-    entrainementRepository = mock<CreerEntrainementRepository>()
+    seanceRepository = mock<SeanceRepository>()
+    entrainementRepository = mock<EntrainementRepository>()
     demarrerEntrainementUseCase = new DemarrerEntrainementUseCase({ seanceRepository, entrainementRepository })
   })
   it("doit créer un nouvel entrainement à partir d'une séance", async () => {
@@ -35,16 +33,19 @@ describe("DemarrerEntrainementUseCase", () => {
       .withNombreRepetition(8)
       .withTempsRepos(45)
       .withOrdre(1)
+      .withPoids(10)
       .build()
     const serieExerciceSeance2 = new DetailSerieBuilder()
       .withNombreRepetition(10)
       .withTempsRepos(50)
       .withOrdre(1)
+      .withPoids(15)
       .build()
     const serieExerciceSeance3 = new DetailSerieBuilder()
       .withNombreRepetition(12)
       .withTempsRepos(55)
       .withOrdre(2)
+      .withPoids(20)
       .build()
     const exercice1 = new DetailExerciceBuilder()
       .withNomExercice("nomExercice 1")
@@ -87,6 +88,7 @@ describe("DemarrerEntrainementUseCase", () => {
     expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement).toHaveLength(1)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.id).toBeDefined()
     expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.nombreRepetition).toEqual(8)
+    expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.poids).toEqual(10)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.tempsRepos).toEqual(45)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.ordre).toEqual(1)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(0)?.listeSerieEntrainement.at(0)?.estRealise).toEqual(false)
@@ -98,11 +100,13 @@ describe("DemarrerEntrainementUseCase", () => {
     expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement).toHaveLength(2)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(0)?.id).toBeDefined()
     expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(0)?.nombreRepetition).toEqual(10)
+    expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(0)?.poids).toEqual(15)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(0)?.tempsRepos).toEqual(50)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(0)?.ordre).toEqual(1)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(0)?.estRealise).toEqual(false)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(1)?.id).toBeDefined()
     expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(1)?.nombreRepetition).toEqual(12)
+    expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(1)?.poids).toEqual(20)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(1)?.tempsRepos).toEqual(55)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(1)?.ordre).toEqual(2)
     expect(nouvelEntrainement.listeExerciceEntrainement.at(1)?.listeSerieEntrainement.at(0)?.estRealise).toEqual(false)

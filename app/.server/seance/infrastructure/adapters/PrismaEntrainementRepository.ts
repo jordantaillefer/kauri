@@ -11,63 +11,14 @@ import { EntrainementNotFoundError } from "../../domain/errors/EntrainementNotFo
 import type { EntrainementRepository } from "../../domain/ports/EntrainementRepository"
 import { prisma } from "~/.server/db/prisma"
 import type { CATEGORIE } from "~/.server/exercice/domain/categorie"
-
-function convertirEnModel(entrainement: Entrainement): EntrainementModel {
-  return {
-    id: entrainement.id,
-    idUtilisateur: entrainement.idUtilisateur,
-    nomSeance: entrainement.nomSeance
-  }
-}
-
-function convertirExerciceEntrainementEnModel(
-  exerciceEntrainement: ExerciceEntrainement
-): Omit<ExerciceEntrainementModel, "idEntrainement"> {
-  return {
-    id: exerciceEntrainement.id,
-    nomExercice: exerciceEntrainement.nomExercice,
-    categorie: exerciceEntrainement.categorie,
-    ordre: exerciceEntrainement.ordre,
-    estRealise: exerciceEntrainement.estRealise
-  }
-}
-
-function convertirSerieEntrainementEnModel(
-  serieEntrainement: SerieEntrainement
-): Omit<SerieEntrainementModel, "idExerciceEntrainement"> {
-  return {
-    id: serieEntrainement.id,
-    nombreRepetition: serieEntrainement.nombreRepetition,
-    tempsRepos: serieEntrainement.tempsRepos,
-    ordre: serieEntrainement.ordre,
-    estRealise: serieEntrainement.estRealise
-  }
-}
-
-function convertirEnExerciceEntrainement(
-  exerciceEntrainementModel: ExerciceEntrainementModel & { serieEntrainements: SerieEntrainementModel[] }
-): ExerciceEntrainement {
-  return ExerciceEntrainement.creerExerciceEntrainement({
-    id: exerciceEntrainementModel.id,
-    nomExercice: exerciceEntrainementModel.nomExercice,
-    categorie: exerciceEntrainementModel.categorie as CATEGORIE,
-    estRealise: exerciceEntrainementModel.estRealise,
-    ordre: exerciceEntrainementModel.ordre,
-    listeSerieEntrainement: exerciceEntrainementModel.serieEntrainements.map(convertirEnSerieEntrainement)
-  })
-}
-
-function convertirEnSerieEntrainement(serieEntrainementModel: SerieEntrainementModel): SerieEntrainement {
-  return SerieEntrainement.creerSerieEntrainement({
-    id: serieEntrainementModel.id,
-    nombreRepetition: serieEntrainementModel.nombreRepetition,
-    tempsRepos: serieEntrainementModel.tempsRepos,
-    ordre: serieEntrainementModel.ordre,
-    estRealise: serieEntrainementModel.estRealise
-  })
-}
-
+import { UUID } from "node:crypto"
+import { CorrelationIdService } from "@/api/CorrelationIdService"
 export class PrismaEntrainementRepository implements EntrainementRepository {
+  private readonly correlationId: UUID
+  constructor({ correlationIdService }: { correlationIdService: CorrelationIdService }) {
+    this.correlationId = correlationIdService.correlationId
+  }
+
   async recupererExerciceEntrainementParId(idExercice: string): Promise<ExerciceEntrainement> {
     const exerciceModel = await prisma.exerciceEntrainement.findUnique({
       where: { id: idExercice },
@@ -124,12 +75,15 @@ export class PrismaEntrainementRepository implements EntrainementRepository {
     await prisma.entrainement.create({
       data: {
         ...entrainementModel,
+        correlationId: this.correlationId,
         exerciceEntrainements: {
           create: entrainement.listeExerciceEntrainement.map(exerciceEntrainement => ({
             ...convertirExerciceEntrainementEnModel(exerciceEntrainement),
+            correlationId: this.correlationId,
             serieEntrainements: {
               create: exerciceEntrainement.listeSerieEntrainement.map(serieEntrainement => ({
-                ...convertirSerieEntrainementEnModel(serieEntrainement)
+                ...convertirSerieEntrainementEnModel(serieEntrainement),
+                correlationId: this.correlationId,
               }))
             }
           }))
@@ -137,4 +91,62 @@ export class PrismaEntrainementRepository implements EntrainementRepository {
       }
     })
   }
+}
+
+
+function convertirEnModel(entrainement: Entrainement): Omit<EntrainementModel, 'correlationId'> {
+  return {
+    id: entrainement.id,
+    idUtilisateur: entrainement.idUtilisateur,
+    nomSeance: entrainement.nomSeance
+  }
+}
+
+function convertirExerciceEntrainementEnModel(
+  exerciceEntrainement: ExerciceEntrainement
+): Omit<ExerciceEntrainementModel, "idEntrainement" | 'correlationId'> {
+  return {
+    id: exerciceEntrainement.id,
+    nomExercice: exerciceEntrainement.nomExercice,
+    categorie: exerciceEntrainement.categorie,
+    ordre: exerciceEntrainement.ordre,
+    estRealise: exerciceEntrainement.estRealise
+  }
+}
+
+function convertirSerieEntrainementEnModel(
+  serieEntrainement: SerieEntrainement
+): Omit<SerieEntrainementModel, "idExerciceEntrainement" | 'correlationId'> {
+  return {
+    id: serieEntrainement.id,
+    nombreRepetition: serieEntrainement.nombreRepetition,
+    poids: serieEntrainement.poids,
+    tempsRepos: serieEntrainement.tempsRepos,
+    ordre: serieEntrainement.ordre,
+    estRealise: serieEntrainement.estRealise
+  }
+}
+
+function convertirEnExerciceEntrainement(
+  exerciceEntrainementModel: ExerciceEntrainementModel & { serieEntrainements: SerieEntrainementModel[] }
+): ExerciceEntrainement {
+  return ExerciceEntrainement.creerExerciceEntrainement({
+    id: exerciceEntrainementModel.id,
+    nomExercice: exerciceEntrainementModel.nomExercice,
+    categorie: exerciceEntrainementModel.categorie as CATEGORIE,
+    estRealise: exerciceEntrainementModel.estRealise,
+    ordre: exerciceEntrainementModel.ordre,
+    listeSerieEntrainement: exerciceEntrainementModel.serieEntrainements.map(convertirEnSerieEntrainement)
+  })
+}
+
+function convertirEnSerieEntrainement(serieEntrainementModel: SerieEntrainementModel): SerieEntrainement {
+  return SerieEntrainement.creerSerieEntrainement({
+    id: serieEntrainementModel.id,
+    nombreRepetition: serieEntrainementModel.nombreRepetition,
+    poids: serieEntrainementModel.poids,
+    tempsRepos: serieEntrainementModel.tempsRepos,
+    ordre: serieEntrainementModel.ordre,
+    estRealise: serieEntrainementModel.estRealise
+  })
 }

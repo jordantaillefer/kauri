@@ -2,18 +2,16 @@ import { integrationTestFunction } from "../../../../../../test/setup-test-env"
 import { prisma } from "~/.server/db/prisma"
 import { PrismaSportifRepository } from "~/.server/sportif/infrastructure/adapters/PrismaSportifRepository"
 import { SportifEvenementBuilder } from "~/.server/testUtils/builders/SportifEvenementBuilder"
+import { getContainer } from "@/api/index.server"
 
 describe("PrismaSportifRepository", () => {
-  let prismaSportifRepository: PrismaSportifRepository
-
-  beforeEach(() => {
-    prismaSportifRepository = new PrismaSportifRepository()
-  })
-
   it(
     "doit sauvegarder l'événement",
-    integrationTestFunction(async ({ testIdGenerator }) => {
+    integrationTestFunction(async ({ testIdGenerator, container }) => {
       // Arrange
+      const prismaSportifRepository = new PrismaSportifRepository({
+        correlationIdService: container.resolve('correlationIdService')
+      })
       const idSeance = testIdGenerator.getId()
       const idUtilisateur = testIdGenerator.getId()
       const idSportifEvenement = testIdGenerator.getId()

@@ -6,18 +6,17 @@ import { ExerciceBuilder } from "../../../application/builders/ExerciceBuilder"
 import { ExerciceNotFoundError } from "../../../domain/errors/ExerciceNotFoundError"
 import { PrismaSeanceExerciceRepository } from "../../../infrastructure/adapters/PrismaSeanceExerciceRepository"
 import { CATEGORIE } from "~/.server/exercice/domain/categorie"
+import { getContainer } from "@/api/index.server"
 
 describe("PrismaExerciceRepository", () => {
-  let prismaSeanceRepository: PrismaSeanceExerciceRepository
-  beforeEach(() => {
-    prismaSeanceRepository = new PrismaSeanceExerciceRepository()
-  })
-
   describe("#recupererParId", () => {
     it(
       "quand l'exercice existe, doit récupérer l'exercice",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaSeanceRepository = new PrismaSeanceExerciceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         const uuidExercice = testIdGenerator.getId()
         const exercice = new ExerciceBuilder()
           .withId(uuidExercice)
@@ -35,8 +34,11 @@ describe("PrismaExerciceRepository", () => {
     )
     it(
       "quand l'exercice n'existe pas, doit remonter une erreur",
-      integrationTestFunction(async ({ testIdGenerator }) => {
+      integrationTestFunction(async ({ testIdGenerator, container }) => {
         // Arrange
+        const prismaSeanceRepository = new PrismaSeanceExerciceRepository({
+          correlationIdService: container.resolve('correlationIdService')
+        })
         expect.assertions(2)
         const exercice = new ExerciceBuilder()
           .withId(testIdGenerator.getId())

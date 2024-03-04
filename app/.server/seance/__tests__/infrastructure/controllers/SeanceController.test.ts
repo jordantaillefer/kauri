@@ -3,35 +3,24 @@ import { describe, expect, it } from "vitest"
 
 import { integrationTestFunction } from "../../../../../../test/setup-test-env"
 import type { Seance } from "../../../domain/Seance"
-import type { SeanceRepository } from "../../../domain/ports/SeanceRepository"
-import type { SeanceController } from "../../../infrastructure/controllers/SeanceController"
-import type { SeanceContrat } from "@/api/index.server"
-import { container } from "@/api/index.server"
 import { creerRequest, creerRequestPourCompteUtilisateur } from "~/.server/testUtils/RequestUtils"
 import { SeanceBuilder } from "~/.server/testUtils/builders/SeanceBuilder"
 import { ExerciceSeanceBuilder } from "@/api/seance/application/builders/ExerciceSeanceBuilder"
 import { prisma } from "@/api/db/prisma"
+import { SeanceContrat } from "@/api/app/contrats"
 
 describe("SeanceController", () => {
-  let seanceController: SeanceController
-  let seanceRepository: SeanceRepository
-
-  beforeEach(() => {
-    seanceController = container.resolve("seanceController")
-    seanceRepository = container.resolve("seanceRepository")
-  })
-
   describe("#initialiserSeance", () => {
     describe("Cas OK", () => {
       it(
         "doit initialiser une seance",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidUtilisateur = testIdGenerator.getId()
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
 
           // Act
-          const response = await seanceController.initialiserSeance({ request })
+          const response = await container.resolve('seanceController').initialiserSeance({ request })
 
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.CREATED)
@@ -42,14 +31,14 @@ describe("SeanceController", () => {
       )
     })
     describe("Cas KO", () => {
-      it("Quand l'utilisateur n'est pas connecté, erreur Unauthorized", async () => {
+      it("Quand l'utilisateur n'est pas connecté, erreur Unauthorized", integrationTestFunction(async ({ container }) => {
         // Arrange
         const request = creerRequest()
         // Act
-        const response = await seanceController.initialiserSeance({ request })
+        const response = await container.resolve('seanceController').initialiserSeance({ request })
         // Assert
         expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
-      })
+      }))
     })
   })
 
@@ -57,12 +46,12 @@ describe("SeanceController", () => {
     describe("Cas OK", () => {
       it(
         "doit mettre à jour le nom de la séance",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidUtilisateur = testIdGenerator.getId()
           const uuidSeance1 = testIdGenerator.getId()
 
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
           const seanceUtilisateur1: Seance = new SeanceBuilder()
             .withId(uuidSeance1)
             .withIdUtilisateur(uuidUtilisateur)
@@ -72,11 +61,11 @@ describe("SeanceController", () => {
             .withId(testIdGenerator.getId())
             .withIdUtilisateur(testIdGenerator.getId())
             .build()
-          await seanceRepository.creerSeance(seanceUtilisateur1)
-          await seanceRepository.creerSeance(seanceAutreUtilisateur)
+          await container.resolve('seanceRepository').creerSeance(seanceUtilisateur1)
+          await container.resolve('seanceRepository').creerSeance(seanceAutreUtilisateur)
           // Act
           const payload = { idSeance: uuidSeance1, nomSeance: "nouveau nom seance 1" }
-          const response = await seanceController.mettreAJourNomSeance({ request, payload })
+          const response = await container.resolve('seanceController').mettreAJourNomSeance({ request, payload })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.NO_CONTENT)
         })
@@ -88,14 +77,14 @@ describe("SeanceController", () => {
     describe("Cas OK", () => {
       it(
         "doit dupliquer la séance",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidExerciceSeance = testIdGenerator.getId()
           const uuidUtilisateur = testIdGenerator.getId()
           const uuidUtilisateur2 = testIdGenerator.getId()
           const uuidSeance = testIdGenerator.getId()
 
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
 
           const exerciceSeance = new ExerciceSeanceBuilder().withId(uuidExerciceSeance).withOrdre(1).build()
           const seance: Seance = new SeanceBuilder()
@@ -104,10 +93,10 @@ describe("SeanceController", () => {
             .withIdUtilisateur(uuidUtilisateur2)
             .withListeExerciceSeance(exerciceSeance)
             .build()
-          await seanceRepository.creerSeance(seance)
+          await container.resolve('seanceRepository').creerSeance(seance)
           // Act
           const payload = { idSeance: uuidSeance }
-          const response = await seanceController.dupliquerSeance({ request, payload })
+          const response = await container.resolve('seanceController').dupliquerSeance({ request, payload })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.CREATED)
           const listeSeanceResult = await prisma.seance.findMany({

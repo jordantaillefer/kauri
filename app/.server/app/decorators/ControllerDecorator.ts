@@ -5,7 +5,7 @@ import { ReasonPhrases } from "http-status-codes"
 
 import { LUtilisateurNestPasConnecteError } from "../../authentification/domain/errors/LUtilisateurNestPasConnecteError"
 import type { DomainError } from "../errors/DomainError"
-import { container } from "@/api/index.server"
+import { getContainer } from "@/api/index.server"
 
 export const Controller = (): ClassDecorator =>
   (target: Function) => {
@@ -31,8 +31,9 @@ function _generateDescriptor(
       let result: any
 
       if (isAuthentificationRequired) {
-        const sessionManager = await container.resolve("sessionManager")
-        const compteUtilisateurRepository = await container.resolve("compteUtilisateurRepository")
+        const container = getContainer()
+        const sessionManager = container.resolve("sessionManager")
+        const compteUtilisateurRepository = container.resolve("compteUtilisateurRepository")
         const session = await sessionManager.get(args.request)
         if (!session.has("user")) {
           throw new LUtilisateurNestPasConnecteError()

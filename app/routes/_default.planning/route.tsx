@@ -18,8 +18,8 @@ import { useCalendar } from "~/routes/_default.planning/useCalendar"
 import { Titre } from "~/ui/shared/Titre"
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const resultListerSeance = await serverModule.container.resolve("seanceQuery").listerSeance({ request })
-  const resultListerEvenement = await serverModule.container.resolve("sportifQuery").listerEvenement({ request })
+  const resultListerSeance = await serverModule.getContainer().resolve("seanceQuery").listerSeance({ request })
+  const resultListerEvenement = await serverModule.getContainer().resolve("sportifQuery").listerEvenement({ request })
 
   const listeSeance = resultListerSeance.data as DetailSeanceContrat[]
   const listeSportifEvenement = resultListerEvenement.data as SportifEvenementContrat[]
@@ -41,7 +41,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         tempsEvenement: `${selectedDay.toString()}T${tempsEvenement.toString()}`
       }
 
-      await serverModule.container.resolve("sportifController").ajouterEvenement({ request, payload })
+      await serverModule.getContainer().resolve("sportifController").ajouterEvenement({ request, payload })
 
       break
     }

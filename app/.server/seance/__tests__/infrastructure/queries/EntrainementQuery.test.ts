@@ -6,30 +6,19 @@ import { EntrainementBuilder } from "../../../application/EntrainementBuilder"
 import { ExerciceEntrainementBuilder } from "../../../application/builders/ExerciceEntrainementBuilder"
 import { SerieEntrainementBuilder } from "../../../application/builders/SerieEntrainementBuilder"
 import type { Entrainement } from "../../../domain/Entrainement"
-import type { EntrainementRepository } from "../../../domain/ports/EntrainementRepository"
-import { container } from "@/api/index.server"
 import type { DetailEntrainementContrat, EntrainementContrat } from "~/.server/app/contrats/EntrainementContrat"
 import { CATEGORIE } from "~/.server/exercice/domain/categorie"
-import type { EntrainementQuery } from "~/.server/seance/infrastructure/queries/EntrainementQuery"
 import { creerRequest, creerRequestPourCompteUtilisateur } from "~/.server/testUtils/RequestUtils"
 
 describe("EntrainementQuery", () => {
-  let entrainementQuery: EntrainementQuery
-  let entrainementRepository: EntrainementRepository
-
-  beforeEach(() => {
-    entrainementQuery = container.resolve("entrainementQuery")
-    entrainementRepository = container.resolve("entrainementRepository")
-  })
-
   describe("#recuperEntrainementParId", () => {
     describe("Cas OK", () => {
       it(
         "quand l'entrainement existe, doit récupérer l'entrainement",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidUtilisateur = testIdGenerator.getId()
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
           const uuidSerieEntrainement1 = testIdGenerator.getId()
           const uuidSerieEntrainement2 = testIdGenerator.getId()
           const uuidSerieEntrainement3 = testIdGenerator.getId()
@@ -79,11 +68,11 @@ describe("EntrainementQuery", () => {
             .withNomSeance("nomSeance")
             .withListeExerciceEntrainement(exerciceSeance1, exerciceSeance2)
             .build()
-          await entrainementRepository.creerEntrainement(entrainement)
+          await container.resolve('entrainementRepository').creerEntrainement(entrainement)
           const payload = { idEntrainement: uuidEntrainement }
 
           // Act
-          const result = await entrainementQuery.recupererEntrainementParId({
+          const result = await container.resolve('entrainementQuery').recupererEntrainementParId({
             request,
             payload
           })
@@ -154,12 +143,12 @@ describe("EntrainementQuery", () => {
     describe("Cas OK", () => {
       it(
         "doit récupérer la liste des séances de l'utilisateur",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const uuidEntrainement1 = testIdGenerator.getId()
           const uuidEntrainement2 = testIdGenerator.getId()
           const uuidUtilisateur = testIdGenerator.getId()
-          const request = await creerRequestPourCompteUtilisateur(uuidUtilisateur)
+          const request = await creerRequestPourCompteUtilisateur(container, uuidUtilisateur)
 
           const entrainementUtilisateur1: Entrainement = new EntrainementBuilder()
             .withId(uuidEntrainement1)
@@ -175,11 +164,11 @@ describe("EntrainementQuery", () => {
             .withId(testIdGenerator.getId())
             .withIdUtilisateur("idAutreUtilisateur")
             .build()
-          await entrainementRepository.creerEntrainement(entrainementUtilisateur1)
-          await entrainementRepository.creerEntrainement(entrainementUtilisateur2)
-          await entrainementRepository.creerEntrainement(entrainementAutreUtilisateur)
+          await container.resolve('entrainementRepository').creerEntrainement(entrainementUtilisateur1)
+          await container.resolve('entrainementRepository').creerEntrainement(entrainementUtilisateur2)
+          await container.resolve('entrainementRepository').creerEntrainement(entrainementAutreUtilisateur)
           // Act
-          const response = await entrainementQuery.listerEntrainement({ request })
+          const response = await container.resolve('entrainementQuery').listerEntrainement({ request })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.OK)
           const listeEntrainement = response.data as EntrainementContrat[]
@@ -193,11 +182,11 @@ describe("EntrainementQuery", () => {
     describe("Cas KO", () => {
       it(
         "Quand l'utilisateur n'est pas connecté, erreur Unauthorized",
-        integrationTestFunction(async ({ testIdGenerator }) => {
+        integrationTestFunction(async ({ testIdGenerator, container }) => {
           // Arrange
           const request = creerRequest()
           // Act
-          const response = await entrainementQuery.listerEntrainement({ request })
+          const response = await container.resolve('entrainementQuery').listerEntrainement({ request })
           // Assert
           expect(response.reasonPhrase).toEqual(ReasonPhrases.UNAUTHORIZED)
         })
