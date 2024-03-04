@@ -120,6 +120,7 @@ function convertirSerieEntrainementEnModel(
   return {
     id: serieEntrainement.id,
     nombreRepetition: serieEntrainement.nombreRepetition,
+    poids: serieEntrainement.poids,
     tempsRepos: serieEntrainement.tempsRepos,
     ordre: serieEntrainement.ordre,
     estRealise: serieEntrainement.estRealise
@@ -143,6 +144,7 @@ function convertirEnSerieEntrainement(serieEntrainementModel: SerieEntrainementM
   return SerieEntrainement.creerSerieEntrainement({
     id: serieEntrainementModel.id,
     nombreRepetition: serieEntrainementModel.nombreRepetition,
+    poids: serieEntrainementModel.poids,
     tempsRepos: serieEntrainementModel.tempsRepos,
     ordre: serieEntrainementModel.ordre,
     estRealise: serieEntrainementModel.estRealise

@@ -83,6 +83,7 @@ model SerieEntrainement {
   tempsRepos             Int
   idExerciceEntrainement String
   nombreRepetition       Int
+  poids                  Int                  @default(0)
   ordre                  Int
   estRealise             Boolean
   correlationId          String               @default(uuid())

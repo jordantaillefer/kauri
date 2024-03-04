@@ -3,6 +3,7 @@ import { SerieEntrainement } from "../../domain/SerieEntrainement"
 export class SerieEntrainementBuilder {
   private id: string = "idSerieEntrainement"
   private nombreRepetition: number = 12
+  private poids: number = 20
   private tempsRepos: number = 45
   private estRealise: boolean = false
   private ordre: number = 1
@@ -14,6 +15,11 @@ export class SerieEntrainementBuilder {
 
   withNombreRepetition(nombreRepetition: number) {
     this.nombreRepetition = nombreRepetition
+    return this
+  }
+
+  withPoids(poids: number) {
+    this.poids = poids
     return this
   }
 
@@ -37,6 +43,7 @@ export class SerieEntrainementBuilder {
       id: this.id,
       nombreRepetition: this.nombreRepetition,
       tempsRepos: this.tempsRepos,
+      poids: this.poids,
       ordre: this.ordre,
       estRealise: this.estRealise
     })

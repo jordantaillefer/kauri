@@ -98,7 +98,7 @@ const presenterEnSerieEntrainement = (serieEntrainement: SerieEntrainement): Ser
   return {
     id: serieEntrainement.id,
     repetitions: serieEntrainement.nombreRepetition,
-    poids: 0,
+    poids: serieEntrainement.poids,
     tempsRepos: serieEntrainement.tempsRepos,
     ordre: serieEntrainement.ordre,
     estRealise: serieEntrainement.estRealise

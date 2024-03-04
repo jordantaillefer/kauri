@@ -7,10 +7,6 @@ import { ExerciceEntrainementBuilder } from "../../../application/builders/Exerc
 import { ExerciceSeanceBuilder } from "../../../application/builders/ExerciceSeanceBuilder"
 import { SerieEntrainementBuilder } from "../../../application/builders/SerieEntrainementBuilder"
 import { SerieExerciceSeanceBuilder } from "../../../application/builders/SerieExerciceSeanceBuilder"
-import type { EntrainementRepository } from "../../../domain/ports/EntrainementRepository"
-import type { SeanceRepository } from "../../../domain/ports/SeanceRepository"
-import type { EntrainementController } from "../../../infrastructure/controllers/EntrainementController"
-import { getContainer } from "@/api/index.server"
 import type { EntrainementContrat } from "~/.server/app/contrats/EntrainementContrat"
 import { CATEGORIE } from "~/.server/exercice/domain/categorie"
 import { creerRequestPourCompteUtilisateur } from "~/.server/testUtils/RequestUtils"
@@ -27,9 +23,18 @@ describe("EntrainementController", () => {
           const uuidSeance = testIdGenerator.getId()
           const request = await creerRequestPourCompteUtilisateur(container, idUtilisateur)
 
-          const serieExerciceSeance1 = new SerieExerciceSeanceBuilder().withRepetitions(8).build()
-          const serieExerciceSeance2 = new SerieExerciceSeanceBuilder().withRepetitions(10).build()
-          const serieExerciceSeance3 = new SerieExerciceSeanceBuilder().withRepetitions(12).build()
+          const serieExerciceSeance1 = new SerieExerciceSeanceBuilder()
+            .withRepetitions(8)
+            .withPoids(10)
+            .build()
+          const serieExerciceSeance2 = new SerieExerciceSeanceBuilder()
+            .withRepetitions(10)
+            .withPoids(15)
+            .build()
+          const serieExerciceSeance3 = new SerieExerciceSeanceBuilder()
+            .withRepetitions(12)
+            .withPoids(20)
+            .build()
           const exercice1 = new ExerciceSeanceBuilder()
             .withNomExercice("nomExercice 1")
             .withCategorie(CATEGORIE.PECTORAUX)
