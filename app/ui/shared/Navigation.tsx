@@ -15,7 +15,8 @@ import { Link, NavLink, useRouteLoaderData } from "@remix-run/react"
 import React, { Dispatch, Fragment, FunctionComponent, SetStateAction, useState } from "react"
 import { NavLinkProps } from "react-router-dom"
 
-import LogoKauri from "~/images/logo-kauri-dark.png"
+import LogoKauriDark from "~/images/logo-kauri-dark.png"
+import LogoKauriLight from "~/images/logo-kauri-light.png"
 
 const updateClassNameLinkIfActive: NavLinkProps["className"] = props => {
   return `${
@@ -43,7 +44,7 @@ const MenuNavigation: FunctionComponent<{
   )
 }
 
-export const Navigation: FunctionComponent<{ authenticated: boolean }> = ({ authenticated }) => {
+export const Navigation: FunctionComponent<{ mode?: string }> = ({ mode = "" }) => {
   const data = useRouteLoaderData<{ authenticated: boolean; user: CompteUtilisateurContrat }>("root")
 
   const navigation = [
@@ -103,7 +104,7 @@ export const Navigation: FunctionComponent<{ authenticated: boolean }> = ({ auth
                 </Transition.Child>
                 <div className="flex grow flex-col overflow-y-auto bg-gray-200 px-6 ring-1 ring-white/10">
                   <div className="flex items-center h-10 pt-2 md:h-20 shrink-0 justify-center w-full">
-                    <img className="h-4 md:h-6 w-auto" src={LogoKauri} alt="Kauri" />
+                    <img className="h-4 md:h-6 w-auto" src={LogoKauriDark} alt="Kauri" />
                   </div>
                   <nav className="flex flex-1 flex-col justify-between h-full">
                     <ul className="flex flex-1 flex-col gap-y-7">
@@ -137,13 +138,13 @@ export const Navigation: FunctionComponent<{ authenticated: boolean }> = ({ auth
           onClick={() => setIsSidebarOpen(true)}
         >
           <span className="sr-only">Open sidebar</span>
-          <img className="h-3 w-auto" src={LogoKauri} alt="Kauri" />
+          <img className="h-3 w-auto" src={mode === "light" ? LogoKauriLight : LogoKauriDark} alt="Kauri" />
 
           <div className="flex items-center space-x-3">
             <span>
               {data?.user.prenom} {data?.user.nom}
             </span>
-            <Bars3Icon className="h-5 w-5 text-main-kauri" aria-hidden="true" />
+            <Bars3Icon className={`h-5 w-5 ${mode === "light" ? "text-main-kauri-lighter" : "text-main-kauri"}`} aria-hidden="true" />
           </div>
         </button>
       </div>

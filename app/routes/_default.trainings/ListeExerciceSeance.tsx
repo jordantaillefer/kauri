@@ -13,7 +13,7 @@ export const ListeExerciceSeance: FunctionComponent<{
   const fetcher = useFetcher({ key: "supprimer-seance" })
 
   return (
-    <div className="flow-root h-full overflow-auto">
+    <div className="flow-root h-full overflow-auto w-full">
       <ul key="liste-exercice-seance">
         {exerciceSeances.map((exercice, exerciceItemIdx) => (
           <li key={`${exercice.nomExercice}-${exerciceItemIdx}`} className="bg-white rounded-lg shadow px-4 pt-4 mb-4">
