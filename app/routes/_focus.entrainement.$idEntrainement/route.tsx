@@ -19,18 +19,23 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     idEntrainement
   }
 
-  const entrainementResult = await serverModule.getContainer()
+  const entrainementResult = await serverModule
+    .getContainer()
     .resolve("entrainementQuery")
     .recupererEntrainementParId({ request, payload })
 
   const entrainement = entrainementResult.data as DetailEntrainementContrat
 
   const dernierExerciceActif = entrainement.listeExerciceEntrainement.find(exercice => !exercice.estRealise)
+  const prochainExercice = entrainement.listeExerciceEntrainement.find(
+    exercice => exercice.ordre === (dernierExerciceActif?.ordre || 0) + 1
+  )
   const derniereSerieActive = dernierExerciceActif?.series.find(serie => !serie.estRealise)
 
   return {
     entrainement,
     dernierExerciceActif,
+    prochainExercice,
     derniereSerieActive
   }
 }
@@ -53,51 +58,63 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 }
 
 const Entrainement: FunctionComponent = () => {
-  const { entrainement, dernierExerciceActif, derniereSerieActive } = useLoaderData<typeof loader>()
+  const {
+    entrainement,
+    dernierExerciceActif,
+    derniereSerieActive,
+    prochainExercice: prochaineExercice
+  } = useLoaderData<typeof loader>()
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isEntrainementDemarre, setIsEntrainementDemarre] = useState<boolean>(false)
   const [isRepos, setIsRepos] = useState<boolean>(false)
 
-  const [counter, setCounter] = useState(0);
+  const [time, setTime] = useState(0)
+  const [initialTime, setInitialTime] = useState(0)
+  const [tempsRepos, setTempsRepos] = useState(0)
 
   const submit = useSubmit()
 
   useEffect(() => {
     if (isRepos) {
-      if (counter > 0) {
-        setTimeout(() => setCounter(counter - 1), 1000);
-      } else {
-        setIsRepos(false)
-        const formData = new FormData()
-        formData.set("idSerie", derniereSerieActive!.id)
-        formData.set("idExercice", dernierExerciceActif!.id)
-        formData.set("_action", "valider-serie")
-        submit(formData, {
-          method: "post"
-        })
-      }
+      const interval = setInterval(() => {
+        if (time === 0) {
+          clearInterval(interval)
+          const formData = new FormData()
+          formData.set("idSerie", derniereSerieActive!.id)
+          formData.set("idExercice", dernierExerciceActif!.id)
+          formData.set("_action", "valider-serie")
+          submit(formData, {
+            method: "post"
+          })
+          setIsRepos(false)
+        } else {
+          const remainingTime = Date.now()
+          setTime(tempsRepos - Math.trunc((remainingTime - initialTime) / 1000))
+        }
+      }, 1000)
+      return () => clearInterval(interval)
     }
-  }, [counter, dernierExerciceActif, derniereSerieActive, isRepos, submit]);
+  }, [time, dernierExerciceActif, derniereSerieActive, isRepos, submit, tempsRepos, initialTime])
 
   const startTimer = (tempsRepos: number) => {
-    setCounter(tempsRepos)
+    setTime(tempsRepos)
+    setTempsRepos(tempsRepos)
+    setInitialTime(Date.now())
     setIsRepos(true)
   }
 
   const calculerWidth = (tempsRepos: number, counter: number) => {
-    return counter === 0 ? 0 : 100 - (counter / tempsRepos) * 100
+    return counter === 0 ? isRepos ? 100 : 0 : 100 - (counter / tempsRepos) * 100
   }
 
   return (
-    <div className="px-4">
-      <Titre as="h2">Entrainement</Titre>
-      <div className="flex justify-center w-full h-full">
-        <Card className="relative items-start w-full sm:w-3/5 md:w-1/2 lg:w-1/2 h-full min-h-[90vh] md:min-h-[80vh] p-0 bg-gray-100">
-          {
-            !isEntrainementDemarre ? (
-            <div className="p-4">
-              <span>Récapitulatif de la séance {entrainement.nomSeance}</span>
+    <>
+      <div className="flex flex-grow flex-col justify-center w-full h-full">
+        <Card className="flex-col flex-grow relative items-start w-full sm:w-3/5 md:w-1/2 lg:w-1/2 h-full md:min-h-[80vh] p-0 bg-gray-100 rounded-none">
+          {!isEntrainementDemarre ? (
+            <div className="p-4 w-full">
+              <p className="pb-4">Récapitulatif de la séance {entrainement.nomSeance}</p>
               <div className="flex w-full">
                 <ListeExerciceSeance exerciceSeances={entrainement.listeExerciceEntrainement} />
               </div>
@@ -112,71 +129,78 @@ const Entrainement: FunctionComponent = () => {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col w-full">
-              <Titre as="h2" className="text-black px-4">{ entrainement.nomSeance }</Titre>
-              <ul className="w-full px-4">
-                {
-                  entrainement.listeExerciceEntrainement.map(exerciceEntrainement => {
-                    return (
-                      <li key={exerciceEntrainement.id}>
-                        {exerciceEntrainement.nomExercice}
-                        <ul key={exerciceEntrainement.id} className="divide-y divide-gray-200 border-t border-gray-200 w-full pb-4 mt-2">
-                          {exerciceEntrainement.series.map((serie, index) => (
-                            <li key={serie.id} className="relative flex justify-between px-2 py-3 md:p-5">
-                              {
-                                serie.id === derniereSerieActive?.id ? (
-                                <div
-                                  style={{ width: `${calculerWidth(serie.tempsRepos, counter)}%` }}
-                                  className="transition-all ease-linear duration-1000 absolute top-0 left-0 bg-background-main opacity-50 h-full"/>
-                                ) : null
-                              }
-                              {
-                                serie.estRealise ? (
-                                  <div
-                                    className="absolute top-0 left-0 bg-background-main opacity-50 w-full h-full"/>
-                                ) : null
-                              }
-                              <div className="flex gap-x-4 pr-6 sm:w-1/2 sm:flex-none items-center">
-                                <span
-                                  className="h-8 w-8 md:h-12 md:w-12 flex justify-center items-center rounded-full bg-background-main text-white font-bold">{index + 1}</span>
-                                <div className="min-w-0 flex-auto">
-                                  <p className="text-sm font-semibold leading-6 text-gray-900">
-                                    {serie.repetitions} répétitions
-                                  </p>
-                                  <p className="mt-1 flex text-xs leading-5 text-gray-500">
-                                    Poids : {serie.poids} kg * Repos : { serie.tempsRepos } secs
-                                  </p>
-                                </div>
+            <div className="flex flex-col flex-grow w-full justify-between">
+              {dernierExerciceActif ? (
+                <>
+                  <div>
+                    <Titre as="h2" className="text-black px-4">
+                      {dernierExerciceActif.nomExercice}
+                    </Titre>
+                    <div key={dernierExerciceActif.id} className="px-4">
+                      <ul
+                        key={dernierExerciceActif.id}
+                        className="divide-y divide-gray-200 border-t border-gray-200 w-full pb-4 mt-2"
+                      >
+                        {dernierExerciceActif.series.map((serie, index) => (
+                          <li key={serie.id} className="relative flex justify-between px-2 py-3 md:p-5">
+                            {serie.id === derniereSerieActive?.id ? (
+                              <div
+                                style={{ width: `${calculerWidth(serie.tempsRepos, time)}%` }}
+                                className="transition-all ease-linear duration-1000 absolute top-0 left-0 bg-background-main opacity-50 h-full"
+                              />
+                            ) : null}
+                            {serie.estRealise ? (
+                              <div className="absolute top-0 left-0 bg-background-main opacity-50 w-full h-full" />
+                            ) : null}
+                            <div className="flex gap-x-4 pr-6 sm:w-1/2 sm:flex-none items-center">
+                              <span className="h-8 w-8 md:h-12 md:w-12 flex justify-center items-center rounded-full bg-background-main text-white font-bold">
+                                {index + 1}
+                              </span>
+                              <div className="min-w-0 flex-auto">
+                                <p className="text-sm font-semibold leading-6 text-gray-900">
+                                  {serie.repetitions} répétitions
+                                </p>
+                                <p className="mt-1 flex text-xs leading-5 text-gray-500">
+                                  Poids : {serie.poids} kg * Repos : {serie.tempsRepos} secs
+                                </p>
                               </div>
-                              {
-                                serie.id === derniereSerieActive?.id ? (
-                                  <div className="flex items-center justify-between gap-x-4 sm:w-1/2 sm:flex-none">
-                                    { counter } secs
-                                    <button type="button" onClick={() => startTimer(serie.tempsRepos)}>
-                                      <PlayCircleIcon className="h-8 w-8 flex-none text-gray-400" aria-hidden="true" />
-                                    </button>
-                                  </div>
-                                ) : null
-                              }
-                            </li>
-                            ))}
-                        </ul>
-                      </li>
-                  )
-                  })
-                  }
-                  </ul>
+                            </div>
+                            {serie.id === derniereSerieActive?.id ? (
+                              <div className="flex items-center justify-between gap-x-4 sm:w-1/2 sm:flex-none">
+                                {time} secs
+                                <button type="button" onClick={() => startTimer(serie.tempsRepos)}>
+                                  <PlayCircleIcon className="h-8 w-8 flex-none text-gray-400" aria-hidden="true" />
+                                </button>
+                              </div>
+                            ) : null}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                  )
-                  }
-                  </Card>
+                  <div className="p-4">
+                    {prochaineExercice ? (
+                      <div>
+                        <b>Prochaine exercice : </b> {prochaineExercice.nomExercice}
+                      </div>
+                    ) : (
+                      <div>Fin séance</div>
+                    )}
                   </div>
-                  <ListeExerciceSeanceSideBar
-                  isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                exerciceSeances={entrainement.listeExerciceEntrainement}
-              />
+                </>
+              ) : (
+                <div>entrainement terminé</div>
+              )}
             </div>
-            )
-          }
-          export default Entrainement
+          )}
+        </Card>
+      </div>
+      <ListeExerciceSeanceSideBar
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        exerciceSeances={entrainement.listeExerciceEntrainement}
+      />
+    </>
+  )
+}
+export default Entrainement

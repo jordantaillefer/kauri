@@ -8,7 +8,6 @@ import { SerieEntrainementBuilder } from "../../../application/builders/SerieEnt
 import { PrismaEntrainementRepository } from "../../../infrastructure/adapters/PrismaEntrainementRepository"
 import { prisma } from "~/.server/db/prisma"
 import { CATEGORIE } from "~/.server/exercice/domain/categorie"
-import { getContainer } from "@/api/index.server"
 
 describe("PrismaEntrainementRepository", () => {
   describe("#creerEntrainement", () => {
