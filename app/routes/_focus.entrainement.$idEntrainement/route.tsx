@@ -180,9 +180,11 @@ const Entrainement: FunctionComponent = () => {
                   </div>
                   <div className="p-4">
                     {prochaineExercice ? (
-                      <div>
-                        <b>Prochaine exercice : </b> {prochaineExercice.nomExercice}
-                      </div>
+                      <>
+                        <div>
+                          <b>Prochaine exercice : </b> {prochaineExercice.nomExercice}
+                        </div>
+                      </>
                     ) : (
                       <div>Fin séance</div>
                     )}
@@ -194,6 +196,7 @@ const Entrainement: FunctionComponent = () => {
             </div>
           )}
         </Card>
+        <div className="bg-background-main h-12" />
       </div>
       <ListeExerciceSeanceSideBar
         isOpen={isOpen}
