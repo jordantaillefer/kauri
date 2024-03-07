@@ -9,6 +9,7 @@ const DefaultLayout = () => {
     <div className="flex h-full flex-col text-primary" data-theme="default">
       <main id="main" className="flex flex-col flex-grow md:flex-row overflow-x-hidden  bg-background-main">
         <Navigation />
+
         <MainContent>
           <Outlet />
         </MainContent>

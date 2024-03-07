@@ -1,6 +1,7 @@
 import { DetailEntrainementContrat } from "@/api/app/contrats/EntrainementContrat"
 import * as serverModule from "@/api/index.server"
-import { PlayCircleIcon } from "@heroicons/react/20/solid"
+import { PlayCircleIcon, PauseCircleIcon } from "@heroicons/react/20/solid"
+import { logoBlue } from "@remix-run/dev/dist/colors"
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node"
 import { useLoaderData, useSubmit } from "@remix-run/react"
 import { FunctionComponent, useEffect, useState } from "react"
@@ -58,12 +59,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 }
 
 const Entrainement: FunctionComponent = () => {
-  const {
-    entrainement,
-    dernierExerciceActif,
-    derniereSerieActive,
-    prochainExercice: prochaineExercice
-  } = useLoaderData<typeof loader>()
+  const { entrainement, dernierExerciceActif, derniereSerieActive, prochainExercice } = useLoaderData<typeof loader>()
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isEntrainementDemarre, setIsEntrainementDemarre] = useState<boolean>(false)
@@ -98,6 +94,7 @@ const Entrainement: FunctionComponent = () => {
   }, [time, dernierExerciceActif, derniereSerieActive, isRepos, submit, tempsRepos, initialTime])
 
   const startTimer = (tempsRepos: number) => {
+    console.log({ tempsRepos })
     setTime(tempsRepos)
     setTempsRepos(tempsRepos)
     setInitialTime(Date.now())
@@ -105,13 +102,15 @@ const Entrainement: FunctionComponent = () => {
   }
 
   const calculerWidth = (tempsRepos: number, counter: number) => {
-    return counter === 0 ? isRepos ? 100 : 0 : 100 - (counter / tempsRepos) * 100
+    return counter > 0 ? 100 - (counter / tempsRepos) * 100 : counter === 0 && isRepos ? 100 : 0;
   }
+
+  console.log(time)
 
   return (
     <>
-      <div className="flex flex-grow flex-col justify-center w-full h-full">
-        <Card className="flex-col flex-grow relative items-start w-full sm:w-3/5 md:w-1/2 lg:w-1/2 h-full md:min-h-[80vh] p-0 bg-gray-100 rounded-none">
+      <div className="flex flex-grow flex-col items-center w-full h-full">
+        <Card className="flex-col flex-grow relative items-start w-full sm:w-3/5 md:w-1/2 lg:w-1/2 h-full md:min-h-[80vh] md:mt-8 p-0 bg-gray-100 rounded-none">
           {!isEntrainementDemarre ? (
             <div className="p-4 w-full">
               <p className="pb-4">Récapitulatif de la séance {entrainement.nomSeance}</p>
@@ -136,10 +135,10 @@ const Entrainement: FunctionComponent = () => {
                     <Titre as="h2" className="text-black px-4">
                       {dernierExerciceActif.nomExercice}
                     </Titre>
-                    <div key={dernierExerciceActif.id} className="px-4">
+                    <div key={dernierExerciceActif.id}>
                       <ul
                         key={dernierExerciceActif.id}
-                        className="divide-y divide-gray-200 border-t border-gray-200 w-full pb-4 mt-2"
+                        className="divide-y divide-gray-200 border-t border-b border-gray-200 w-full mt-2 px-4"
                       >
                         {dernierExerciceActif.series.map((serie, index) => (
                           <li key={serie.id} className="relative flex justify-between px-2 py-3 md:p-5">
@@ -161,16 +160,25 @@ const Entrainement: FunctionComponent = () => {
                                   {serie.repetitions} répétitions
                                 </p>
                                 <p className="mt-1 flex text-xs leading-5 text-gray-500">
-                                  Poids : {serie.poids} kg * Repos : {serie.tempsRepos} secs
+                                  <b className="pr-1">Poids : </b>
+                                  {serie.poids} kg<b className="pl-2 pr-1">Repos : </b>
+                                  {serie.tempsRepos} secs
                                 </p>
                               </div>
                             </div>
                             {serie.id === derniereSerieActive?.id ? (
                               <div className="flex items-center justify-between gap-x-4 sm:w-1/2 sm:flex-none">
-                                {time} secs
-                                <button type="button" onClick={() => startTimer(serie.tempsRepos)}>
-                                  <PlayCircleIcon className="h-8 w-8 flex-none text-gray-400" aria-hidden="true" />
-                                </button>
+                                {time > 0 || (time === 0 && isRepos) ? <span>{time} secs</span> : null}
+
+                                {isRepos ? (
+                                  <button type="button" onClick={() => setIsRepos(false)}>
+                                    <PauseCircleIcon className="h-8 w-8 flex-none text-gray-400" aria-hidden="true" />
+                                  </button>
+                                ) : (
+                                  <button type="button" onClick={() => startTimer(time > 0 ? time : derniereSerieActive.tempsRepos)}>
+                                    <PlayCircleIcon className="h-8 w-8 flex-none text-gray-400" aria-hidden="true" />
+                                  </button>
+                                )}
                               </div>
                             ) : null}
                           </li>
@@ -178,15 +186,13 @@ const Entrainement: FunctionComponent = () => {
                       </ul>
                     </div>
                   </div>
-                  <div className="p-4">
-                    {prochaineExercice ? (
-                      <>
-                        <div>
-                          <b>Prochaine exercice : </b> {prochaineExercice.nomExercice}
-                        </div>
-                      </>
+                  <div className="p-4 border-t border-background-main">
+                    {prochainExercice ? (
+                      <div>
+                        <b>A suivre : </b> {prochainExercice.nomExercice}
+                      </div>
                     ) : (
-                      <div>Fin séance</div>
+                      <div>A suivre : Fin séance</div>
                     )}
                   </div>
                 </>
@@ -196,7 +202,7 @@ const Entrainement: FunctionComponent = () => {
             </div>
           )}
         </Card>
-        <div className="bg-background-main h-12" />
+        <div className="bg-background-main w-full h-12" />
       </div>
       <ListeExerciceSeanceSideBar
         isOpen={isOpen}

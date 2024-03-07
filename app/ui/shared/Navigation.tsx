@@ -104,7 +104,7 @@ export const Navigation: FunctionComponent<{ mode?: string }> = ({ mode = "" }) 
                 </Transition.Child>
                 <div className="flex grow flex-col overflow-y-auto bg-gray-200 px-6 ring-1 ring-white/10">
                   <div className="flex items-center h-10 pt-2 md:h-20 shrink-0 justify-center w-full">
-                    <img className="h-4 md:h-6 w-auto" src={LogoKauriDark} alt="Kauri" />
+                    <img className="h-4 md:h-6 w-auto" src={mode === "light" ? LogoKauriLight : LogoKauriDark} alt="Kauri" />
                   </div>
                   <nav className="flex flex-1 flex-col justify-between h-full">
                     <ul className="flex flex-1 flex-col gap-y-7">
@@ -131,7 +131,7 @@ export const Navigation: FunctionComponent<{ mode?: string }> = ({ mode = "" }) 
           </div>
         </Dialog>
       </Transition.Root>
-      <div className="md:hidden border-b">
+      <div className="md:hidden border-b bg-background-main">
         <button
           type="button"
           className="py-2.5 px-4 md:hidden text-gray-900 flex justify-between w-full items-center"
@@ -141,7 +141,7 @@ export const Navigation: FunctionComponent<{ mode?: string }> = ({ mode = "" }) 
           <img className="h-3 w-auto" src={mode === "light" ? LogoKauriLight : LogoKauriDark} alt="Kauri" />
 
           <div className="flex items-center space-x-3">
-            <span>
+            <span className={`${ mode === "light" ? "text-white" : "text-black"}`}>
               {data?.user.prenom} {data?.user.nom}
             </span>
             <Bars3Icon className={`h-5 w-5 ${mode === "light" ? "text-main-kauri-lighter" : "text-main-kauri"}`} aria-hidden="true" />
@@ -156,7 +156,7 @@ export const Navigation: FunctionComponent<{ mode?: string }> = ({ mode = "" }) 
         </div>
         <nav className="flex flex-1 flex-col justify-between h-full">
           <ul className="flex flex-1 flex-col gap-y-7">
-            <li>
+            <li className="text-white">
               <MenuNavigation navigation={activeNavigation} setIsSidebarOpen={setIsSidebarOpen} />
             </li>
             <li className="mt-auto">

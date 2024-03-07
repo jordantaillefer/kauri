@@ -54,6 +54,6 @@
     --color-secondary-darker: theme("colors.teal.600");
     --color-primary-darker: theme("colors.gray.200");
     --color-background-main: theme("colors.teal.600");
-    --bg-accueil-button: url("/assets/logo/logo-kauri-light.png");
+    --bg-logo-accueil-button: url("/assets/logo/logo-kauri-light.png");
   }
 }
