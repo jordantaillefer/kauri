@@ -45,9 +45,9 @@ export const CalendarBody = ({
                       <time dateTime={event.datetime} className="mr-2 hidden flex-none text-gray-500 xl:block leading-4">
                         {event.time}
                       </time>
-                      <p className="truncate text-gray-900 leading-4">
+                      <span className="text-gray-900 leading-4 text-left">
                         {isSelected(day)} {event.name}
-                      </p>
+                      </span>
                     </span>
                   </li>
                 ))}
