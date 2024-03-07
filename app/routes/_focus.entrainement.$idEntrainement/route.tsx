@@ -1,7 +1,6 @@
 import { DetailEntrainementContrat } from "@/api/app/contrats/EntrainementContrat"
 import * as serverModule from "@/api/index.server"
 import { PlayCircleIcon, PauseCircleIcon } from "@heroicons/react/20/solid"
-import { logoBlue } from "@remix-run/dev/dist/colors"
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node"
 import { useLoaderData, useSubmit } from "@remix-run/react"
 import { FunctionComponent, useEffect, useState } from "react"
