@@ -94,7 +94,6 @@ const Entrainement: FunctionComponent = () => {
   }, [time, dernierExerciceActif, derniereSerieActive, isRepos, submit, tempsRepos, initialTime])
 
   const startTimer = (tempsRepos: number) => {
-    console.log({ tempsRepos })
     setTime(tempsRepos)
     setTempsRepos(tempsRepos)
     setInitialTime(Date.now())
@@ -104,8 +103,6 @@ const Entrainement: FunctionComponent = () => {
   const calculerWidth = (tempsRepos: number, counter: number) => {
     return counter > 0 ? 100 - (counter / tempsRepos) * 100 : counter === 0 && isRepos ? 100 : 0;
   }
-
-  console.log(time)
 
   return (
     <>
