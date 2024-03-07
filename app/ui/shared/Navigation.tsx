@@ -156,7 +156,7 @@ export const Navigation: FunctionComponent<{ mode?: string }> = ({ mode = "" }) 
         </div>
         <nav className="flex flex-1 flex-col justify-between h-full">
           <ul className="flex flex-1 flex-col gap-y-7">
-            <li className="text-white">
+            <li  className={`${mode === "light" ? "text-white" : "text-black"}`}>
               <MenuNavigation navigation={activeNavigation} setIsSidebarOpen={setIsSidebarOpen} />
             </li>
             <li className="mt-auto">

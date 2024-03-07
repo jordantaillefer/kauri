@@ -8,7 +8,7 @@ export const SeanceCard: FunctionComponent<{ name: string; description: string, 
   active
 }) => {
   return (
-    <Card active={active}>
+    <Card active={active} className="flex-col items-start">
       <h5 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
         {name}
       </h5>
