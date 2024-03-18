@@ -23,6 +23,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const listeSeance = resultListerSeance.data as DetailSeanceContrat[]
   const listeExercice = resultListerExercice.data as ListeExerciceContrat
 
+  console.log(listeSeance)
+
   return json({
     listeSeance,
     listeExercice,
